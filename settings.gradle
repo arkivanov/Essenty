@@ -1,0 +1,4 @@
+if (startParameter.projectProperties.containsKey("check_publication")) {
+    include(":tools:check-publication")
+}
+

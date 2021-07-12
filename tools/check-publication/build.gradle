@@ -1,0 +1,23 @@
+setupMultiplatform(project)
+
+def version = property("essentyVersion")
+
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/groups/staging/"
+
+        credentials  {
+            setUsername("arkivanov")
+            setPassword(System.getenv("SONATYPE_PASSWORD"))
+        }
+    }
+}
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+            }
+        }
+    }
+}
