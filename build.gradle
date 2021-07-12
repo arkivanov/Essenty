@@ -91,6 +91,17 @@ boolean setupMultiplatform(Project project, List<Target> targets = Target.values
         setupMultiplatformJs(project, Target.JS_IR in targets, Target.JS_LEGACY in targets)
     }
 
+    project.kotlin {
+        sourceSets {
+            all {
+                languageSettings {
+                    useExperimentalAnnotation("kotlin.RequiresOptIn")
+                    useExperimentalAnnotation("com.arkivanov.essenty.utils.internal.InternalEssentyApi")
+                }
+            }
+        }
+    }
+
     return true
 }
 
@@ -109,6 +120,22 @@ private void setupMultiplatformCommon(Project project) {
                     implementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion"
                 }
             }
+
+            nativeMain {
+                dependsOn commonMain
+            }
+
+            nativeTest {
+                dependsOn commonTest
+            }
+
+            nonNativeMain {
+                dependsOn commonMain
+            }
+
+            nonNativeTest {
+                dependsOn commonTest
+            }
         }
     }
 }
@@ -118,7 +145,13 @@ private void setupMultiplatformAndroid(Project project) {
         android()
 
         sourceSets {
+            androidMain {
+                dependsOn nonNativeMain
+            }
+
             androidTest {
+                dependsOn nonNativeTest
+
                 dependencies {
                     implementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
                 }
@@ -132,7 +165,13 @@ private void setupMultiplatformJvm(Project project) {
         jvm()
 
         sourceSets {
+            jvmMain {
+                dependsOn nonNativeMain
+            }
+
             jvmTest {
+                dependsOn nonNativeTest
+
                 dependencies {
                     implementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
                 }
@@ -144,30 +183,80 @@ private void setupMultiplatformJvm(Project project) {
 private void setupMultiplatformLinuxX64(Project project) {
     project.kotlin {
         linuxX64()
+
+        sourceSets {
+            linuxX64Main {
+                dependsOn nativeMain
+            }
+
+            linuxX64Test {
+                dependsOn nativeTest
+            }
+        }
     }
 }
 
 private void setupMultiplatformIos(Project project) {
     project.kotlin {
         ios()
+
+        sourceSets {
+            iosMain {
+                dependsOn nativeMain
+            }
+
+            iosTest {
+                dependsOn nativeTest
+            }
+        }
     }
 }
 
 private void setupMultiplatformWatchos(Project project) {
     project.kotlin {
         watchos()
+
+        sourceSets {
+            watchosMain {
+                dependsOn nativeMain
+            }
+
+            watchosTest {
+                dependsOn nativeTest
+            }
+        }
     }
 }
 
 private void setupMultiplatformTvos(Project project) {
     project.kotlin {
         tvos()
+
+        sourceSets {
+            tvosMain {
+                dependsOn nativeMain
+            }
+
+            tvosTest {
+                dependsOn nativeTest
+            }
+        }
     }
 }
 
 private void setupMultiplatformMacosX64(Project project) {
     project.kotlin {
         macosX64()
+
+        sourceSets {
+            macosX64Main {
+                dependsOn nativeMain
+            }
+
+            macosX64Test {
+                dependsOn nativeTest
+            }
+        }
     }
 }
 
@@ -179,7 +268,13 @@ private void setupMultiplatformJs(Project project, boolean isIr, boolean isLegac
         }
 
         sourceSets {
+            jsMain {
+                dependsOn nonNativeMain
+            }
+
             jsTest {
+                dependsOn nonNativeTest
+
                 dependencies {
                     implementation "org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion"
                 }
