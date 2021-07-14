@@ -1,5 +1,6 @@
 include ':utils-internal'
 include ':lifecycle'
+include ':parcelable'
 
 if (startParameter.projectProperties.containsKey("check_publication")) {
     include(":tools:check-publication")

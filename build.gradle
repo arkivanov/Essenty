@@ -121,12 +121,20 @@ private void setupMultiplatformCommon(Project project) {
                 }
             }
 
-            nativeMain {
+            nonAndroidMain {
                 dependsOn commonMain
             }
 
-            nativeTest {
+            nonAndroidTest {
                 dependsOn commonTest
+            }
+
+            nativeMain {
+                dependsOn nonAndroidMain
+            }
+
+            nativeTest {
+                dependsOn nonAndroidTest
             }
 
             nonNativeMain {
@@ -166,10 +174,12 @@ private void setupMultiplatformJvm(Project project) {
 
         sourceSets {
             jvmMain {
+                dependsOn nonAndroidMain
                 dependsOn nonNativeMain
             }
 
             jvmTest {
+                dependsOn nonAndroidTest
                 dependsOn nonNativeTest
 
                 dependencies {
@@ -269,10 +279,12 @@ private void setupMultiplatformJs(Project project, boolean isIr, boolean isLegac
 
         sourceSets {
             jsMain {
+                dependsOn nonAndroidMain
                 dependsOn nonNativeMain
             }
 
             jsTest {
+                dependsOn nonAndroidTest
                 dependsOn nonNativeTest
 
                 dependencies {
