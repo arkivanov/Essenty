@@ -9,4 +9,5 @@ interface ParcelableContainer : Parcelable {
     fun set(value: Parcelable?)
 }
 
+@Suppress("FunctionName") // Factory function
 expect fun ParcelableContainer(value: Parcelable? = null): ParcelableContainer
