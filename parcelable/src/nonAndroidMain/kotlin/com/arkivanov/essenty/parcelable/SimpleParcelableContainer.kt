@@ -3,7 +3,7 @@ package com.arkivanov.essenty.parcelable
 import com.arkivanov.essenty.utils.internal.ensureNeverFrozen
 import kotlin.reflect.KClass
 
-internal class SimpleParcelableContainer() : ParcelableContainer {
+internal class SimpleParcelableContainer : ParcelableContainer {
 
     init {
         ensureNeverFrozen()
