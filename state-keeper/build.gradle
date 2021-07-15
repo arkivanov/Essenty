@@ -11,5 +11,11 @@ kotlin {
                 implementation project(":utils-internal")
             }
         }
+
+        androidMain {
+            dependencies {
+                implementation "androidx.savedstate:savedstate-ktx:$androidxSavedStateVersion"
+            }
+        }
     }
 }
