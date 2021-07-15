@@ -1,0 +1,15 @@
+setupMultiplatform(project)
+setupMultiplatformPublications(project)
+
+plugins.apply("kotlin-parcelize")
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation project(":parcelable")
+                implementation project(":utils-internal")
+            }
+        }
+    }
+}
