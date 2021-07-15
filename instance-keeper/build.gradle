@@ -8,5 +8,11 @@ kotlin {
                 implementation project(":utils-internal")
             }
         }
+
+        androidMain {
+            dependencies {
+                implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidxLifecycleVersion"
+            }
+        }
     }
 }
