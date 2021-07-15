@@ -1,15 +1,12 @@
-package com.arkivanov.essenty.parcelable
+package com.arkivanov.essenty.statekeeper
 
-import com.arkivanov.essenty.utils.internal.ensureNeverFrozen
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.ParcelableContainer
 import kotlin.reflect.KClass
 
-internal class SimpleParcelableContainer : ParcelableContainer {
-
-    init {
-        ensureNeverFrozen()
-    }
-
-    private var value: Parcelable? = null
+class TestParcelableContainer(
+    private var value: Parcelable?
+) : ParcelableContainer, Parcelable by ParcelableStub() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Parcelable> consume(clazz: KClass<out T>): T? =

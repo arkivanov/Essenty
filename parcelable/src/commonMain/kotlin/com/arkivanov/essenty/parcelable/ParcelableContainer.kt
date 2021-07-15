@@ -1,5 +1,6 @@
 package com.arkivanov.essenty.parcelable
 
+import kotlin.js.JsName
 import kotlin.reflect.KClass
 
 interface ParcelableContainer : Parcelable {
@@ -9,5 +10,6 @@ interface ParcelableContainer : Parcelable {
     fun set(value: Parcelable?)
 }
 
+@JsName("parcelableContainer")
 @Suppress("FunctionName") // Factory function
 expect fun ParcelableContainer(value: Parcelable? = null): ParcelableContainer
