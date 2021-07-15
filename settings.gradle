@@ -2,8 +2,8 @@ include ':utils-internal'
 include ':lifecycle'
 include ':parcelable'
 include ':state-keeper'
+include ':instance-keeper'
 
 if (startParameter.projectProperties.containsKey("check_publication")) {
     include(":tools:check-publication")
 }
-
