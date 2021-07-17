@@ -17,6 +17,10 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation "com.arkivanov.essenty:lifecycle:$essentyVersion"
+                implementation "com.arkivanov.essenty:state-keeper:$essentyVersion"
+                implementation "com.arkivanov.essenty:instance-keeper:$essentyVersion"
+                implementation "com.arkivanov.essenty:back-pressed:$essentyVersion"
             }
         }
     }
