@@ -1,36 +1,36 @@
 package com.arkivanov.essenty.lifecycle
 
-inline fun Lifecycle.subscribe(
-    crossinline onCreate: () -> Unit = {},
-    crossinline onStart: () -> Unit = {},
-    crossinline onResume: () -> Unit = {},
-    crossinline onPause: () -> Unit = {},
-    crossinline onStop: () -> Unit = {},
-    crossinline onDestroy: () -> Unit = {},
+fun Lifecycle.subscribe(
+    onCreate: (() -> Unit)? = null,
+    onStart: (() -> Unit)? = null,
+    onResume: (() -> Unit)? = null,
+    onPause: (() -> Unit)? = null,
+    onStop: (() -> Unit)? = null,
+    onDestroy: (() -> Unit)? = null
 ): Lifecycle.Callbacks =
     object : Lifecycle.Callbacks {
         override fun onCreate() {
-            onCreate.invoke()
+            onCreate?.invoke()
         }
 
         override fun onStart() {
-            onStart.invoke()
+            onStart?.invoke()
         }
 
         override fun onResume() {
-            onResume.invoke()
+            onResume?.invoke()
         }
 
         override fun onPause() {
-            onPause.invoke()
+            onPause?.invoke()
         }
 
         override fun onStop() {
-            onStop.invoke()
+            onStop?.invoke()
         }
 
         override fun onDestroy() {
-            onDestroy.invoke()
+            onDestroy?.invoke()
         }
     }.also(::subscribe)
 
@@ -102,5 +102,11 @@ inline fun Lifecycle.doOnStop(isOneTime: Boolean = false, crossinline block: () 
 }
 
 inline fun Lifecycle.doOnDestroy(crossinline block: () -> Unit) {
-    subscribe(onDestroy = block)
+    subscribe(
+        object : Lifecycle.Callbacks {
+            override fun onDestroy() {
+                block()
+            }
+        }
+    )
 }

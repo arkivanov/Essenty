@@ -6,7 +6,15 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.arkivanov.essenty.lifecycle.Lifecycle as EssentyLifecycle
 
+/**
+ * Converts AndroidX [Lifecycle] to Essenty [Lifecycle][EssentyLifecycle]
+ */
 fun Lifecycle.asEssentyLifecycle(): EssentyLifecycle = EssentyLifecycleInterop(this)
+
+/**
+ * Converts AndroidX [Lifecycle] to Essenty [Lifecycle][EssentyLifecycle]
+ */
+fun LifecycleOwner.essentyLifecycle(): EssentyLifecycle = lifecycle.asEssentyLifecycle()
 
 private class EssentyLifecycleInterop(
     private val delegate: Lifecycle

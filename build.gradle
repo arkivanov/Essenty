@@ -489,4 +489,3 @@ private static Set<Target> getEnabledTargets() {
 private static Set<Target> getAllTargets() {
     return EnumSet.allOf(Target.class)
 }
-
