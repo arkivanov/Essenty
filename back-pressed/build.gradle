@@ -1,0 +1,18 @@
+setupMultiplatform(project)
+setupMultiplatformPublications(project)
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation project(":utils-internal")
+            }
+        }
+
+        androidMain {
+            dependencies {
+                implementation "androidx.activity:activity-ktx:$androidxActivityVersion"
+            }
+        }
+    }
+}

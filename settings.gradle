@@ -3,6 +3,7 @@ include ':lifecycle'
 include ':parcelable'
 include ':state-keeper'
 include ':instance-keeper'
+include ':back-pressed'
 
 if (startParameter.projectProperties.containsKey("check_publication")) {
     include(":tools:check-publication")
