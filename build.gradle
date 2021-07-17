@@ -362,7 +362,7 @@ void setupPublicationPom(Project project, Publication publication) {
 
         pom {
             name = "Essenty"
-            description = "Kotlin Multiplatform MVI framework"
+            description = "Essential libraries for Kotlin Multiplatform"
             url = "https://github.com/arkivanov/Essenty"
 
             licenses {
