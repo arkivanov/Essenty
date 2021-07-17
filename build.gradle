@@ -401,7 +401,7 @@ private void setupPublicationRepository(Project project) {
 
             repositories {
                 maven {
-                    url = "https://oss.sonatype.org/service/local/staging/deployByRepositoryId/${System.getenv("SONATYPE_REPOSITORY_ID")}"
+                    url = "https://s01.oss.sonatype.org/service/local/staging/deployByRepositoryId/${System.getenv("SONATYPE_REPOSITORY_ID")}"
                     credentials {
                         username = "arkivanov"
                         password = System.getenv("SONATYPE_PASSWORD")
