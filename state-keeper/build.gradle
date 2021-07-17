@@ -7,7 +7,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation project(":parcelable")
+                api project(":parcelable")
                 implementation project(":utils-internal")
             }
         }
@@ -15,6 +15,7 @@ kotlin {
         androidMain {
             dependencies {
                 implementation "androidx.savedstate:savedstate-ktx:$androidxSavedStateVersion"
+                implementation "androidx.lifecycle:lifecycle-runtime:$androidxLifecycleVersion"
             }
         }
     }

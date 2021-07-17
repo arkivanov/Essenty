@@ -2,11 +2,12 @@ package com.arkivanov.essenty.statekeeper
 
 import android.os.Bundle
 import androidx.savedstate.SavedStateRegistry
+import androidx.savedstate.SavedStateRegistryOwner
 
 private const val KEY_STATE = "STATE_KEEPER_STATE"
 
 /**
- * Creates a new instance of [StateKeeper] and attaches it to the provided [SavedStateRegistry].
+ * Creates a new instance of [StateKeeper] and attaches it to the provided AndroidX [SavedStateRegistry].
  *
  * @param isSavingAllowed called before saving the state.
  * When `true` then the state will be saved, otherwise it won't. Default value is `true`.
@@ -28,3 +29,15 @@ fun StateKeeper(
 
     return dispatcher
 }
+
+/**
+ * Creates a new instance of [StateKeeper] and attaches it to the AndroidX [SavedStateRegistry].
+ *
+ * @param isSavingAllowed called before saving the state.
+ * When `true` then the state will be saved, otherwise it won't. Default value is `true`.
+ */
+fun SavedStateRegistryOwner.stateKeeper(isSavingAllowed: () -> Boolean = { true }): StateKeeper =
+    StateKeeper(
+        savedStateRegistry = savedStateRegistry,
+        isSavingAllowed = isSavingAllowed
+    )

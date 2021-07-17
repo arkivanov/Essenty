@@ -5,16 +5,16 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.OnBackPressedDispatcherOwner
 
 /**
- * Creates a new instance of [BackPressedDispatcher] and attaches it to the provided [OnBackPressedDispatcher]
+ * Creates a new instance of [BackPressedDispatcher] and attaches it to the provided AndroidX [OnBackPressedDispatcher]
  */
 @Suppress("FunctionName") // Factory function
 fun BackPressedDispatcher(onBackPressedDispatcher: OnBackPressedDispatcher): BackPressedDispatcher =
     DelegatedBackPressedDispatcher(onBackPressedDispatcher)
 
 /**
- * Creates a new instance of [BackPressedDispatcher] and attaches it to the [OnBackPressedDispatcher]
+ * Creates a new instance of [BackPressedDispatcher] and attaches it to the AndroidX [OnBackPressedDispatcher]
  */
-fun OnBackPressedDispatcherOwner.essentyBackPressedDispatcher(): BackPressedDispatcher =
+fun OnBackPressedDispatcherOwner.backPressedDispatcher(): BackPressedDispatcher =
     BackPressedDispatcher(onBackPressedDispatcher)
 
 private class DelegatedBackPressedDispatcher(
