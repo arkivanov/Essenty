@@ -19,6 +19,7 @@ jobs:
           password: ${{ secrets.SONATYPE_PASSWORD }}
           staging-profile-id: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
           description: Created by GitHub Actions
+          base_url: https://s01.oss.sonatype.org/service/local/
   metadata-publish:
     name: Publish Metadata
     runs-on: ubuntu-latest
@@ -84,6 +85,7 @@ jobs:
           username: arkivanov
           password: ${{ secrets.SONATYPE_PASSWORD }}
           staging_repository_id: ${{ needs.create-staging-repository.outputs.repository-id }}
+          base_url: https://s01.oss.sonatype.org/service/local/
           close_only: 'true'
   linux-check-publication:
     name: Check publication on Linux
