@@ -47,4 +47,4 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Build on macOS
-        run: ./gradlew build --info -Dtargets=IOS,WATCHOS,MACOS_X64
+        run: ./gradlew build --info -Dtargets=IOS,WATCHOS,TVOS,MACOS_X64
