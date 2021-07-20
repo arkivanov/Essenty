@@ -2,5 +2,7 @@ package com.arkivanov.essenty.backpressed
 
 interface BackPressedHandler {
 
-    fun onBackPressed(): Boolean
+    fun register(handler: () -> Boolean)
+
+    fun unregister(handler: () -> Boolean)
 }

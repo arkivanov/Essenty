@@ -2,7 +2,10 @@ package com.arkivanov.essenty.backpressed
 
 import kotlin.js.JsName
 
-interface BackPressedDispatcher : BackPressedRegistry, BackPressedHandler
+interface BackPressedDispatcher : BackPressedHandler {
+
+    fun onBackPressed(): Boolean
+}
 
 @JsName("backPressedDispatcher")
 @Suppress("FunctionName")
