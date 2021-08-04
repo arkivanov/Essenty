@@ -1,28 +1,44 @@
 package com.arkivanov.essenty.parcelable
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Parcel
+import androidx.core.os.bundleOf
 import kotlin.reflect.KClass
 
-@Parcelize
 internal class AndroidParcelableContainer(
-    private val bundle: Bundle = Bundle()
+    private var bundle: Bundle? = null
 ) : ParcelableContainer {
 
-    override fun <T : Parcelable> consume(clazz: KClass<out T>): T? {
-        bundle.classLoader = clazz.java.classLoader
-        val value: T? = bundle.getParcelable(KEY)
-        if (value != null) {
-            bundle.remove(KEY)
-        }
+    private var value: Parcelable? = null
 
-        return value
+    override fun <T : Parcelable> consume(clazz: KClass<out T>): T? {
+        val consumedValue = value ?: bundle?.apply { classLoader = clazz.java.classLoader }?.getParcelable(KEY)
+        value = null
+        bundle = null
+
+        @Suppress("UNCHECKED_CAST")
+        return consumedValue as T?
     }
 
     override fun set(value: Parcelable?) {
-        bundle.putParcelable(KEY, value)
+        this.value = value
+        bundle = null
     }
 
-    private companion object {
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeBundle(value?.let { bundleOf(KEY to it) } ?: bundle)
+    }
+
+    companion object CREATOR : android.os.Parcelable.Creator<AndroidParcelableContainer> {
         private const val KEY = "key"
+
+        @SuppressLint("ParcelClassLoader") // ClassLoader is set when consumed
+        override fun createFromParcel(parcel: Parcel): AndroidParcelableContainer =
+            AndroidParcelableContainer(parcel.readBundle())
+
+        override fun newArray(size: Int): Array<AndroidParcelableContainer?> = arrayOfNulls(size)
     }
 }
