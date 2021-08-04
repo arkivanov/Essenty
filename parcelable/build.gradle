@@ -10,5 +10,17 @@ kotlin {
                 implementation project(":utils-internal")
             }
         }
+
+        androidMain {
+            dependencies {
+                implementation "androidx.core:core-ktx:$androidxCoreVersion"
+            }
+        }
+
+        androidTest {
+            dependencies {
+                implementation "org.robolectric:robolectric:$robolectricVersion"
+            }
+        }
     }
 }
