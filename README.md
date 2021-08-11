@@ -288,9 +288,20 @@ The [BackPressedDispatcher](https://github.com/arkivanov/Essenty/blob/master/bac
 
 From Android side, `BackPressedDispatcher` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/back-pressed/src/androidMain/kotlin/com/arkivanov/essenty/backpressed/AndroidExt.kt).
 
+> ⚠️  Due to the nature of AndroidX `OnBackPressedDispatcher` API, it is not possible to map it 1-1 to `BackPressedHandler`. Please keep in mind some possible side effects described in the [corresponding KDocs](https://github.com/arkivanov/Essenty/blob/master/back-pressed/src/androidMain/kotlin/com/arkivanov/essenty/backpressed/AndroidExt.kt).
+
 ### Usage example
 
-TBD
+```kotlin
+class SomeLogic(backPressedDispatcher: BackPressedDispatcher) {
+    init {
+        backPressedDispatcher.register {
+            // Called when the back button is pressed
+            true // Return true to consume the event, or false to allow other registered callbacks
+        }
+    }
+}
+```
 
 ## Author
 
