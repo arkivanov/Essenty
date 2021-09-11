@@ -122,29 +122,14 @@ private void setupMultiplatformCommon(Project project) {
                 }
             }
 
-            nonAndroidMain {
-                dependsOn commonMain
-            }
+            nonAndroidMain.dependsOn commonMain
+            nonAndroidTest.dependsOn commonTest
 
-            nonAndroidTest {
-                dependsOn commonTest
-            }
+            nativeMain.dependsOn nonAndroidMain
+            nativeTest.dependsOn nonAndroidTest
 
-            nativeMain {
-                dependsOn nonAndroidMain
-            }
-
-            nativeTest {
-                dependsOn nonAndroidTest
-            }
-
-            nonNativeMain {
-                dependsOn commonMain
-            }
-
-            nonNativeTest {
-                dependsOn commonTest
-            }
+            nonNativeMain.dependsOn commonMain
+            nonNativeTest.dependsOn commonTest
         }
     }
 }
@@ -154,9 +139,7 @@ private void setupMultiplatformAndroid(Project project) {
         android()
 
         sourceSets {
-            androidMain {
-                dependsOn nonNativeMain
-            }
+            androidMain.dependsOn nonNativeMain
 
             androidTest {
                 dependsOn nonNativeTest
@@ -196,61 +179,69 @@ private void setupMultiplatformLinuxX64(Project project) {
         linuxX64()
 
         sourceSets {
-            linuxX64Main {
-                dependsOn nativeMain
-            }
-
-            linuxX64Test {
-                dependsOn nativeTest
-            }
+            linuxX64Main.dependsOn nativeMain
+            linuxX64Test.dependsOn nativeTest
         }
     }
 }
 
 private void setupMultiplatformIos(Project project) {
     project.kotlin {
-        ios()
+        iosArm64()
+        iosX64()
+        iosSimulatorArm64()
 
         sourceSets {
-            iosMain {
-                dependsOn nativeMain
-            }
+            iosArm64Main.dependsOn nativeMain
+            iosArm64Test.dependsOn nativeTest
 
-            iosTest {
-                dependsOn nativeTest
-            }
+            iosX64Main.dependsOn nativeMain
+            iosX64Test.dependsOn nativeTest
+
+            iosSimulatorArm64Main.dependsOn nativeMain
+            iosSimulatorArm64Test.dependsOn nativeTest
         }
     }
 }
 
 private void setupMultiplatformWatchos(Project project) {
     project.kotlin {
-        watchos()
+        watchosArm32()
+        watchosArm64()
+        watchosX64()
+        watchosSimulatorArm64()
 
         sourceSets {
-            watchosMain {
-                dependsOn nativeMain
-            }
+            watchosArm32Main.dependsOn nativeMain
+            watchosArm32Test.dependsOn nativeTest
 
-            watchosTest {
-                dependsOn nativeTest
-            }
+            watchosArm64Main.dependsOn nativeMain
+            watchosArm64Test.dependsOn nativeTest
+
+            watchosX64Main.dependsOn nativeMain
+            watchosX64Test.dependsOn nativeTest
+
+            watchosSimulatorArm64Main.dependsOn nativeMain
+            watchosSimulatorArm64Test.dependsOn nativeTest
         }
     }
 }
 
 private void setupMultiplatformTvos(Project project) {
     project.kotlin {
-        tvos()
+        tvosArm64()
+        tvosX64()
+        tvosSimulatorArm64()
 
         sourceSets {
-            tvosMain {
-                dependsOn nativeMain
-            }
+            tvosArm64Main.dependsOn nativeMain
+            tvosArm64Test.dependsOn nativeTest
 
-            tvosTest {
-                dependsOn nativeTest
-            }
+            tvosX64Main.dependsOn nativeMain
+            tvosX64Test.dependsOn nativeTest
+
+            tvosSimulatorArm64Main.dependsOn nativeMain
+            tvosSimulatorArm64Test.dependsOn nativeTest
         }
     }
 }
@@ -258,15 +249,14 @@ private void setupMultiplatformTvos(Project project) {
 private void setupMultiplatformMacosX64(Project project) {
     project.kotlin {
         macosX64()
+        macosArm64()
 
         sourceSets {
-            macosX64Main {
-                dependsOn nativeMain
-            }
+            macosX64Main.dependsOn nativeMain
+            macosX64Test.dependsOn nativeTest
 
-            macosX64Test {
-                dependsOn nativeTest
-            }
+            macosArm64Main.dependsOn nativeMain
+            macosArm64Test.dependsOn nativeTest
         }
     }
 }
