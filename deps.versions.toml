@@ -1,0 +1,28 @@
+[versions]
+
+essenty = "0.1.3"
+kotlin = "1.5.30"
+junit = "4.13.2"
+androidGradle = "4.2.0"
+androidxCore = "1.6.0"
+androidxLifecycle = "2.2.0"
+androidxSavedstate = "1.1.0"
+androidxActivity = "1.3.0-rc02"
+robolectric = "4.4"
+
+[libraries]
+
+kotlin-kotlinGradlePlug = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradle" }
+
+androidx-core-coreKtx  = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-lifecycle-lifecycleCommonJava8 = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "androidxLifecycle" }
+androidx-lifecycle-lifecycleRuntime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "androidxLifecycle" }
+androidx-lifecycle-lifecycleViewmodelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-savedstate-savedstateKtx = { group = "androidx.savedstate", name = "savedstate-ktx", version.ref = "androidxSavedstate" }
+androidx-activity-activityKtx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
+
+robolectric-robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+
+#  = { group = "", name = "", version.ref = "" }
