@@ -69,6 +69,7 @@ internal class LifecycleRegistryImpl : LifecycleRegistry {
         checkState(State.CREATED)
         _state = State.DESTROYED
         callbacks.reversed().forEach(Callbacks::onDestroy)
+        callbacks = emptySet()
     }
 
     private fun checkState(required: State) {
