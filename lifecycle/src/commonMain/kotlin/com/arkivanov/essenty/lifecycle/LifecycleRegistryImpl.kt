@@ -32,8 +32,6 @@ internal class LifecycleRegistryImpl : LifecycleRegistry {
     }
 
     override fun unsubscribe(callbacks: Callbacks) {
-        check(callbacks in this.callbacks) { "Not subscribed" }
-
         this.callbacks -= callbacks
     }
 

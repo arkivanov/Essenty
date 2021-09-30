@@ -33,11 +33,9 @@ private class EssentyLifecycleInterop(
     }
 
     override fun unsubscribe(callbacks: EssentyLifecycle.Callbacks) {
-        val observer = observerMap.remove(callbacks)
-
-        check(observer != null) { "Not subscribed" }
-
-        delegate.removeObserver(observer)
+        observerMap.remove(callbacks)?.also {
+            delegate.removeObserver(it)
+        }
     }
 }
 
