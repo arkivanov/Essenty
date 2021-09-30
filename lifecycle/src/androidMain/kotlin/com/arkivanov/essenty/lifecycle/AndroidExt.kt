@@ -27,17 +27,15 @@ private class EssentyLifecycleInterop(
     override fun subscribe(callbacks: EssentyLifecycle.Callbacks) {
         check(callbacks !in observerMap) { "Already subscribed" }
 
-        val observer = AndroidLifecycleObserver(callbacks)
-        this.observerMap[callbacks] = observer
+        val observer = AndroidLifecycleObserver(delegate = callbacks, onDestroy = { observerMap -= callbacks })
+        observerMap[callbacks] = observer
         delegate.addObserver(observer)
     }
 
     override fun unsubscribe(callbacks: EssentyLifecycle.Callbacks) {
-        val observer = observerMap.remove(callbacks)
-
-        check(observer != null) { "Not subscribed" }
-
-        delegate.removeObserver(observer)
+        observerMap.remove(callbacks)?.also {
+            delegate.removeObserver(it)
+        }
     }
 }
 
@@ -51,7 +49,8 @@ private fun Lifecycle.State.toEssentyLifecycleState(): EssentyLifecycle.State =
     }
 
 private class AndroidLifecycleObserver(
-    private val delegate: EssentyLifecycle.Callbacks
+    private val delegate: EssentyLifecycle.Callbacks,
+    private val onDestroy: () -> Unit,
 ) : DefaultLifecycleObserver {
     override fun onCreate(owner: LifecycleOwner) {
         delegate.onCreate()
@@ -75,5 +74,6 @@ private class AndroidLifecycleObserver(
 
     override fun onDestroy(owner: LifecycleOwner) {
         delegate.onDestroy()
+        onDestroy.invoke()
     }
 }

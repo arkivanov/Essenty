@@ -32,8 +32,6 @@ internal class LifecycleRegistryImpl : LifecycleRegistry {
     }
 
     override fun unsubscribe(callbacks: Callbacks) {
-        check(callbacks in this.callbacks) { "Not subscribed" }
-
         this.callbacks -= callbacks
     }
 
@@ -71,6 +69,7 @@ internal class LifecycleRegistryImpl : LifecycleRegistry {
         checkState(State.CREATED)
         _state = State.DESTROYED
         callbacks.reversed().forEach(Callbacks::onDestroy)
+        callbacks = emptySet()
     }
 
     private fun checkState(required: State) {
