@@ -6,6 +6,8 @@ interface InstanceKeeper {
 
     fun put(key: Any, instance: Instance)
 
+    fun remove(key: Any): Instance?
+
     interface Instance {
         fun onDestroy()
     }
