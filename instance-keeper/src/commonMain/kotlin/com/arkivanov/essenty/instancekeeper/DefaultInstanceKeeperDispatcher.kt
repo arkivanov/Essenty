@@ -19,6 +19,8 @@ internal class DefaultInstanceKeeperDispatcher : InstanceKeeperDispatcher {
         map[key] = instance
     }
 
+    override fun remove(key: Any): Instance? = map.remove(key)
+
     override fun destroy() {
         map.values.forEach(Instance::onDestroy)
         map.clear()

@@ -84,6 +84,49 @@ class DefaultInstanceKeeperDispatcherTest {
         assertNull(returnedInstance)
     }
 
+    @Test
+    fun GEVEN_instance_not_put_WHEN_remove_THEN_returns_null() {
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+
+        val returnedInstance = dispatcher.remove(key = "key")
+
+        assertNull(returnedInstance)
+    }
+
+    @Test
+    fun GEVEN_instance_put_WHEN_remove_THEN_returns_instance() {
+        val instance = TestInstance()
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+        dispatcher.put("key", instance)
+
+        val returnedInstance = dispatcher.remove(key = "key")
+
+        assertSame(instance, returnedInstance)
+    }
+
+    @Test
+    fun GEVEN_instance_removed_WHEN_remove_THEN_returns_null() {
+        val instance = TestInstance()
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+        dispatcher.put("key", instance)
+        dispatcher.remove("key")
+
+        val returnedInstance = dispatcher.remove(key = "key")
+
+        assertNull(returnedInstance)
+    }
+
+    @Test
+    fun GIVEN_instance_destroyed_WHEN_remove_THEN_returns_null() {
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+        dispatcher.put(key = "key", instance = TestInstance())
+        dispatcher.destroy()
+
+        val returnedInstance = dispatcher.remove(key = "key")
+
+        assertNull(returnedInstance)
+    }
+
     private class TestInstance : InstanceKeeper.Instance {
         var isDestroyed: Boolean = false
 
