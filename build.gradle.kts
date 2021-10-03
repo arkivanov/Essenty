@@ -33,10 +33,10 @@ setupDefaults {
         Target.Jvm,
         Target.Js(),
         Target.Linux,
-        Target.Ios,
-        Target.WatchOs,
-        Target.TvOs,
-        Target.MacOs,
+        Target.Ios(),
+        Target.WatchOs(),
+        Target.TvOs(),
+        Target.MacOs(),
     )
 
     multiplatformSourceSets {
