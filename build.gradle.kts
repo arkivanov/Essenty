@@ -1,3 +1,4 @@
+import com.arkivanov.gradle.AndroidConfig
 import com.arkivanov.gradle.PublicationConfig
 import com.arkivanov.gradle.Target
 import com.arkivanov.gradle.named
@@ -48,6 +49,14 @@ setupDefaults {
         listOf(android, jvm, js).dependsOn(nonNative)
         nativeSet.dependsOn(native)
     }
+
+    androidConfig(
+        AndroidConfig(
+            minSdkVersion = 15,
+            compileSdkVersion = 31,
+            targetSdkVersion = 31,
+        )
+    )
 
     publicationConfig(
         PublicationConfig(
