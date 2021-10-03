@@ -3,7 +3,7 @@
 essenty = "0.2.0"
 kotlin = "1.5.30"
 junit = "4.13.2"
-androidGradle = "4.2.0"
+androidGradle = "7.0.1"
 androidxCore = "1.6.0"
 androidxLifecycle = "2.2.0"
 androidxSavedstate = "1.1.0"
