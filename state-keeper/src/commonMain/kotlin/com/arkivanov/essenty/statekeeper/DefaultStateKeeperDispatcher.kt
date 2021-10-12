@@ -14,7 +14,7 @@ internal class DefaultStateKeeperDispatcher internal constructor(
 
     constructor(savedState: ParcelableContainer?) : this(
         savedState = savedState,
-        parcelableContainerFactory = ::ParcelableContainer
+        parcelableContainerFactory = { ParcelableContainer(it) } // Lambda because of https://youtrack.jetbrains.com/issue/KT-49186
     )
 
     init {

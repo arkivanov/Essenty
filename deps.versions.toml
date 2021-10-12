@@ -1,6 +1,6 @@
 [versions]
 
-essenty = "0.2.0"
+essenty = "0.2.1"
 kotlin = "1.5.30"
 junit = "4.13.2"
 androidGradle = "4.2.0"
