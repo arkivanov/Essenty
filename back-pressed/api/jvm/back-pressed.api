@@ -1,0 +1,21 @@
+public abstract interface class com/arkivanov/essenty/backpressed/BackPressedDispatcher : com/arkivanov/essenty/backpressed/BackPressedHandler {
+	public abstract fun onBackPressed ()Z
+}
+
+public final class com/arkivanov/essenty/backpressed/BackPressedDispatcherKt {
+	public static final fun BackPressedDispatcher ()Lcom/arkivanov/essenty/backpressed/BackPressedDispatcher;
+}
+
+public abstract interface class com/arkivanov/essenty/backpressed/BackPressedDispatcherOwner {
+	public abstract fun getBackPressedDispatcher ()Lcom/arkivanov/essenty/backpressed/BackPressedDispatcher;
+}
+
+public abstract interface class com/arkivanov/essenty/backpressed/BackPressedHandler {
+	public abstract fun register (Lkotlin/jvm/functions/Function0;)V
+	public abstract fun unregister (Lkotlin/jvm/functions/Function0;)V
+}
+
+public abstract interface class com/arkivanov/essenty/backpressed/BackPressedHandlerOwner {
+	public abstract fun getBackPressedHandler ()Lcom/arkivanov/essenty/backpressed/BackPressedHandler;
+}
+

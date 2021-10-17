@@ -1,0 +1,20 @@
+public abstract interface class com/arkivanov/essenty/parcelable/Parcelable {
+}
+
+public abstract interface class com/arkivanov/essenty/parcelable/ParcelableContainer : com/arkivanov/essenty/parcelable/Parcelable {
+	public abstract fun consume (Lkotlin/reflect/KClass;)Lcom/arkivanov/essenty/parcelable/Parcelable;
+	public abstract fun set (Lcom/arkivanov/essenty/parcelable/Parcelable;)V
+}
+
+public final class com/arkivanov/essenty/parcelable/ParcelableContainerExtKt {
+	public static final fun consumeRequired (Lcom/arkivanov/essenty/parcelable/ParcelableContainer;Lkotlin/reflect/KClass;)Lcom/arkivanov/essenty/parcelable/Parcelable;
+}
+
+public final class com/arkivanov/essenty/parcelable/ParcelableContainerKt {
+	public static final fun ParcelableContainer (Lcom/arkivanov/essenty/parcelable/Parcelable;)Lcom/arkivanov/essenty/parcelable/ParcelableContainer;
+	public static synthetic fun ParcelableContainer$default (Lcom/arkivanov/essenty/parcelable/Parcelable;ILjava/lang/Object;)Lcom/arkivanov/essenty/parcelable/ParcelableContainer;
+}
+
+public abstract interface annotation class com/arkivanov/essenty/parcelable/Parcelize : java/lang/annotation/Annotation {
+}
+

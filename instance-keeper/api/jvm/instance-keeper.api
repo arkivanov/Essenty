@@ -1,0 +1,22 @@
+public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKeeper {
+	public abstract fun get (Ljava/lang/Object;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;
+	public abstract fun put (Ljava/lang/Object;Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;)V
+	public abstract fun remove (Ljava/lang/Object;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;
+}
+
+public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance {
+	public abstract fun onDestroy ()V
+}
+
+public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKeeperDispatcher : com/arkivanov/essenty/instancekeeper/InstanceKeeper {
+	public abstract fun destroy ()V
+}
+
+public final class com/arkivanov/essenty/instancekeeper/InstanceKeeperDispatcherKt {
+	public static final fun InstanceKeeperDispatcher ()Lcom/arkivanov/essenty/instancekeeper/InstanceKeeperDispatcher;
+}
+
+public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKeeperOwner {
+	public abstract fun getInstanceKeeper ()Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;
+}
+

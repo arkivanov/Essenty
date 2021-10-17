@@ -1,0 +1,19 @@
+public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeper {
+	public abstract fun consume (Ljava/lang/String;Lkotlin/reflect/KClass;)Lcom/arkivanov/essenty/parcelable/Parcelable;
+	public abstract fun register (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V
+	public abstract fun unregister (Ljava/lang/String;)V
+}
+
+public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeperDispatcher : com/arkivanov/essenty/statekeeper/StateKeeper {
+	public abstract fun save ()Lcom/arkivanov/essenty/parcelable/ParcelableContainer;
+}
+
+public final class com/arkivanov/essenty/statekeeper/StateKeeperDispatcherKt {
+	public static final fun StateKeeperDispatcher (Lcom/arkivanov/essenty/parcelable/ParcelableContainer;)Lcom/arkivanov/essenty/statekeeper/StateKeeperDispatcher;
+	public static synthetic fun StateKeeperDispatcher$default (Lcom/arkivanov/essenty/parcelable/ParcelableContainer;ILjava/lang/Object;)Lcom/arkivanov/essenty/statekeeper/StateKeeperDispatcher;
+}
+
+public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeperOwner {
+	public abstract fun getStateKeeper ()Lcom/arkivanov/essenty/statekeeper/StateKeeper;
+}
+

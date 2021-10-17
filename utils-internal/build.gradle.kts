@@ -7,5 +7,4 @@ plugins {
 setupMultiplatform {
     targets()
     publications()
-    binaryCompatibilityValidator()
 }
