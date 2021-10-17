@@ -2,6 +2,7 @@
 
 essenty = "0.2.2"
 kotlin = "1.5.30"
+kotlinxBinaryCompatibilityValidatorGradlePlugin = "0.8.0-RC"
 junit = "4.13.2"
 androidGradle = "7.0.1"
 androidxCore = "1.6.0"
@@ -13,6 +14,8 @@ robolectric = "4.6.1"
 [libraries]
 
 kotlin-kotlinGradlePlug = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+kotlinx-binaryCompatibilityValidatorGradlePlug = { group = "org.jetbrains.kotlinx.binary-compatibility-validator", name = "org.jetbrains.kotlinx.binary-compatibility-validator.gradle.plugin", version.ref = "kotlinxBinaryCompatibilityValidatorGradlePlugin" }
 
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradle" }
 

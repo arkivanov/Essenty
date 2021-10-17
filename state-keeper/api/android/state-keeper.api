@@ -1,0 +1,33 @@
+public final class com/arkivanov/essenty/statekeeper/AndroidExtKt {
+	public static final fun StateKeeper (Landroidx/savedstate/SavedStateRegistry;Lkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
+	public static synthetic fun StateKeeper$default (Landroidx/savedstate/SavedStateRegistry;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
+	public static final fun stateKeeper (Landroidx/savedstate/SavedStateRegistryOwner;Lkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
+	public static synthetic fun stateKeeper$default (Landroidx/savedstate/SavedStateRegistryOwner;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
+}
+
+public final class com/arkivanov/essenty/statekeeper/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
+public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeper {
+	public abstract fun consume (Ljava/lang/String;Lkotlin/reflect/KClass;)Landroid/os/Parcelable;
+	public abstract fun register (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V
+	public abstract fun unregister (Ljava/lang/String;)V
+}
+
+public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeperDispatcher : com/arkivanov/essenty/statekeeper/StateKeeper {
+	public abstract fun save ()Lcom/arkivanov/essenty/parcelable/ParcelableContainer;
+}
+
+public final class com/arkivanov/essenty/statekeeper/StateKeeperDispatcherKt {
+	public static final fun StateKeeperDispatcher (Lcom/arkivanov/essenty/parcelable/ParcelableContainer;)Lcom/arkivanov/essenty/statekeeper/StateKeeperDispatcher;
+	public static synthetic fun StateKeeperDispatcher$default (Lcom/arkivanov/essenty/parcelable/ParcelableContainer;ILjava/lang/Object;)Lcom/arkivanov/essenty/statekeeper/StateKeeperDispatcher;
+}
+
+public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeperOwner {
+	public abstract fun getStateKeeper ()Lcom/arkivanov/essenty/statekeeper/StateKeeper;
+}
+
