@@ -41,9 +41,9 @@ implementation("com.arkivanov.essenty:lifecycle:<essenty_version>")
 
 ### Content
 
-The main [Lifecycle](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/Lifecycle.kt) interface provides ability to observe the lifecycle state changes.
+The main [Lifecycle](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/Lifecycle.kt) interface provides ability to observe the lifecycle state changes. There are also handy [extension functions](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/LifecycleExt.kt) for convenience.
 
-The [LifecycleRegistry](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/LifecycleRegistry.kt) interface extends both the `Lifecycle` and the `Lifecycle.Callbacks` at the same time. It can be used to manually control the lifecycle, for example in tests.
+The [LifecycleRegistry](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/LifecycleRegistry.kt) interface extends both the `Lifecycle` and the `Lifecycle.Callbacks` at the same time. It can be used to manually control the lifecycle, for example in tests. You can also find some useful [extension functions](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/LifecycleRegistryExt.kt).
 
 The [LifecycleOwner](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/LifecycleOwner.kt) just holds the `Lifecyle`. It may be implemented by an arbitrary class, to provide convenient API.
 
@@ -51,8 +51,9 @@ The [LifecycleOwner](https://github.com/arkivanov/Essenty/blob/master/lifecycle/
 
 From Android, the `Lifecycle` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/androidMain/kotlin/com/arkivanov/essenty/lifecycle/AndroidExt.kt).
 
-
 ### Usage example
+
+#### Observing the Lifecyle
 
 The lifecycle can be observed using its `subscribe`/`unsubscribe` methods:
 
@@ -107,6 +108,24 @@ class SomeLogic(lifecycle: Lifecycle) {
 }
 ```
 
+#### Using the LifecycleRegistry manually
+
+A default implementation of the `LifecycleRegisty` interface can be instantiated using the corresponding builder function:
+
+```kotlin
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
+import com.arkivanov.essenty.lifecycle.resume
+import com.arkivanov.essenty.lifecycle.destroy
+
+val lifecycleRegistry = LifecycleRegistry()
+val someLogic = SomeLogic(lifecycleRegistry)
+
+lifecycleRegistry.resume()
+
+// At some point later
+lifecycleRegistry.destroy()
+```
+
 ## Parcelable and Parcelize
 
 Essenty brings both [Android Parcelable](https://developer.android.com/reference/android/os/Parcelable) interface and the `@Parcelize` annotation from [kotlin-parcelize](https://developer.android.com/kotlin/parcelize) compiler plugin to Kotlin Multiplatform, so they both can be used in common code. This is typically used for state/data preservation over [Android configuration changes](https://developer.android.com/guide/topics/resources/runtime-changes), when writing common code targeting Android.
@@ -156,7 +175,9 @@ Currently there is no extra code generated when compiled for Darwin/Apple target
 
 ## StateKeeper
 
-When writing common code targetting Android, it might be required to preserve some data over Android configuration changes or process death. For this purpose, Essenty provides the `StateKeeper` API, which is inspired by the AndroidX [SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle). The `StateKeeper` API relies on the `Parcelable` interface provided by the `parcelable` module described above.
+When writing common code targetting Android, it might be required to preserve some data over Android configuration changes or process death. For this purpose, Essenty provides the `StateKeeper` API, which is inspired by the AndroidX [SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle).
+
+> ⚠️  The `StateKeeper` API relies on the `Parcelable` interface provided by the `parcelable` module described above. It can fail in non-instrumented Android tests (unit tests). Consider using your own test implementations or mocks.
 
 ### Setup
 
@@ -174,7 +195,7 @@ implementation("com.arkivanov.essenty:state-keeper:<essenty_version>")
 
 ### Content
 
-The main [StateKeeper](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/commonMain/kotlin/com/arkivanov/essenty/statekeeper/StateKeeper.kt) interface provides ability to register/unregister state suppliers, and also to consume any previously saved state.
+The main [StateKeeper](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/commonMain/kotlin/com/arkivanov/essenty/statekeeper/StateKeeper.kt) interface provides ability to register/unregister state suppliers, and also to consume any previously saved state. You can also find some handy [extension functions](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/commonMain/kotlin/com/arkivanov/essenty/statekeeper/StateKeeperExt.kt).
 
 The [StateKeeperDispatcher](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/commonMain/kotlin/com/arkivanov/essenty/statekeeper/StateKeeperDispatcher.kt) interface extens `StateKeeper` and  allows state saving, by calling all registered state providers.
 
@@ -184,7 +205,9 @@ The [StateKeeperOwner](https://github.com/arkivanov/Essenty/blob/master/state-ke
 
 From Android side, `StateKeeper` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/androidMain/kotlin/com/arkivanov/essenty/statekeeper/AndroidExt.kt).
 
-#### Usage example
+### Usage example
+
+#### Using the StateKeeper
 
 ```kotlin
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -208,6 +231,22 @@ class SomeLogic(stateKeeper: StateKeeper) {
 }
 ```
 
+#### Using the StateKeeperDisptacher manually
+
+A default implementation of the `StateKeeperDisptacher` interface can be instantiated using the corresponding builder function:
+
+```kotlin
+import com.arkivanov.essenty.parcelable.ParcelableContainer
+import com.arkivanov.essenty.statekeeper.StateKeeper
+import com.arkivanov.essenty.statekeeper.StateKeeperDispatcher
+
+val stateKeeperDispatcher = StateKeeperDispatcher(/*Previously saved state, or null*/)
+val someLogic = SomeLogic(stateKeeperDispatcher)
+
+// At some point later
+val savedState: ParcelableContainer = stateKeeperDispatcher.save()
+```
+
 ## InstanceKeeper
 
 When writing common code targetting Android, it might be required to retain objects over Android configuration changes. This use case is covered by the `InstanceKeeper` API, which is similar to the AndroidX [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel).
@@ -228,7 +267,7 @@ implementation("com.arkivanov.essenty:instance-keeper:<essenty_version>")
 
 ### Content
 
-The main [InstanceKeeper](https://github.com/arkivanov/Essenty/blob/master/instance-keeper/src/commonMain/kotlin/com/arkivanov/essenty/instancekeeper/InstanceKeeper.kt) interface is responsible for storing object instances, represented by the [InstanceKeeper.Instance] interface. Instances of the `InstanceKeeper.Instance` interface survive Android Configuration changes, the `InstanceKeeper.Instance.onDestroy()` method is called when `InstanceKeeper` goes out of scope (e.g. the screen is finished).
+The main [InstanceKeeper](https://github.com/arkivanov/Essenty/blob/master/instance-keeper/src/commonMain/kotlin/com/arkivanov/essenty/instancekeeper/InstanceKeeper.kt) interface is responsible for storing object instances, represented by the [InstanceKeeper.Instance] interface. Instances of the `InstanceKeeper.Instance` interface survive Android Configuration changes, the `InstanceKeeper.Instance.onDestroy()` method is called when `InstanceKeeper` goes out of scope (e.g. the screen is finished). You can also find some handy [extension functions](https://github.com/arkivanov/Essenty/blob/master/instance-keeper/src/commonMain/kotlin/com/arkivanov/essenty/instancekeeper/InstanceKeeperExt.kt).
 
 The [InstanceKeeperDispatcher](https://github.com/arkivanov/Essenty/blob/master/instance-keeper/src/commonMain/kotlin/com/arkivanov/essenty/instancekeeper/InstanceKeeperDispatcher.kt) interface extens `InstanceKeeper` and adds ability to destroy all registered instances.
 
@@ -239,6 +278,8 @@ The [InstanceKeeperOwner](https://github.com/arkivanov/Essenty/blob/master/insta
 From Android side, `InstanceKeeper` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/instance-keeper/src/androidMain/kotlin/com/arkivanov/essenty/instancekeeper/AndroidExt.kt).
 
 ### Usage example
+
+#### Using the InstanceKeeper
 
 ```kotlin
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
@@ -258,6 +299,22 @@ class RetainedThing : InstanceKeeper.Instance {
         // Called when the screen is finished
     }
 }
+```
+
+#### Using the InstanceKeeperDispatcher manually
+
+A default implementation of the `InstanceKeeperDispatcher` interface can be instantiated using the corresponding builder function:
+
+```kotlin
+import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+import com.arkivanov.essenty.instancekeeper.InstanceKeeperDispatcher
+
+// Create a new instance of InstanceKeeperDispatcher, or reuse an existing one
+val instanceKeeperDispatcher = InstanceKeeperDispatcher()
+val someLogic = SomeLogic(instanceKeeperDispatcher)
+
+// At some point later
+instanceKeeperDispatcher.destroy()
 ```
 
 ## BackPressedDispatcher
@@ -292,14 +349,32 @@ From Android side, `BackPressedDispatcher` can be obtained by using special func
 
 ### Usage example
 
+#### Using the BackPressedHandler
+
 ```kotlin
-class SomeLogic(backPressedDispatcher: BackPressedDispatcher) {
+class SomeLogic(backPressedHandler: BackPressedHandler) {
     init {
-        backPressedDispatcher.register {
+        backPressedHandler.register {
             // Called when the back button is pressed
             true // Return true to consume the event, or false to allow other registered callbacks
         }
     }
+}
+```
+
+#### Using the BackPressedDispatcher manually
+
+A default implementation of the `BackPressedDispatcher` interface can be instantiated using the corresponding builder function:
+
+```kotlin
+import com.arkivanov.essenty.backpressed.BackPressedDispatcher
+import com.arkivanov.essenty.backpressed.BackPressedHandler
+
+val backPressedDispatcher = BackPressedDispatcher()
+val someLogic = SomeLogic(backPressedDispatcher)
+
+if (!backPressedDispatcher.onBackPressed()) {
+    // The back pressed event was not handled
 }
 ```
 
