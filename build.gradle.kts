@@ -3,7 +3,6 @@ import com.arkivanov.gradle.PublicationConfig
 import com.arkivanov.gradle.Target
 import com.arkivanov.gradle.named
 import com.arkivanov.gradle.nativeSet
-import io.gitlab.arturbosch.detekt.detekt
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -21,15 +20,15 @@ buildscript {
         classpath(deps.kotlin.kotlinGradlePlug)
         classpath(deps.android.gradle)
         classpath(deps.kotlinx.binaryCompatibilityValidatorGradlePlug)
+        classpath(deps.detekt.gradleDetektPlug)
     }
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.14.2")
     id("com.arkivanov.gradle.setup")
 }
 
-setupDefaults {
+setupAllProjects {
     multiplatformTargets(
         Target.Android,
         Target.Jvm,
@@ -79,29 +78,14 @@ setupDefaults {
             repositoryPassword = System.getenv("SONATYPE_PASSWORD"),
         )
     )
+
+    detekt()
 }
 
 allprojects {
     repositories {
         mavenCentral()
         google()
-    }
-
-    plugins.apply("io.gitlab.arturbosch.detekt")
-
-    detekt {
-        toolVersion = "1.14.2"
-        parallel = true
-        config = files("$rootDir/detekt.yml")
-        input = files(file("src").listFiles()?.find { it.isDirectory } ?: emptyArray<Any>())
-    }
-
-    // Workaround until Detekt is updated: https://github.com/detekt/detekt/issues/3840.
-    // The current version depends on kotlinx-html-jvm:0.7.2 which is not in Maven Central.
-    configurations.named("detekt") {
-        resolutionStrategy {
-            force("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.3")
-        }
     }
 
     afterEvaluate {
