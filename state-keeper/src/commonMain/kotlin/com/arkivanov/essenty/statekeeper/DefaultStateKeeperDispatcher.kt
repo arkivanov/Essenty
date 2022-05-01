@@ -39,14 +39,16 @@ internal class DefaultStateKeeperDispatcher internal constructor(
             ?.consume(clazz)
 
     override fun <T : Parcelable> register(key: String, supplier: () -> T) {
-        check(key !in suppliers)
+        check(!isRegistered(key)) { "Another supplier is already registered with the key: $key" }
         suppliers[key] = supplier
     }
 
     override fun unregister(key: String) {
-        check(key in suppliers)
+        check(isRegistered(key)) { "No supplier is registered with the key: $key" }
         suppliers -= key
     }
+
+    override fun isRegistered(key: String): Boolean = key in suppliers
 
     @Parcelize
     private class SavedState(

@@ -10,4 +10,6 @@ interface StateKeeper {
     fun <T : Parcelable> register(key: String, supplier: () -> T)
 
     fun unregister(key: String)
+
+    fun isRegistered(key: String): Boolean
 }

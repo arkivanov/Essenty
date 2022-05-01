@@ -2,7 +2,9 @@ package com.arkivanov.essenty.statekeeper
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @Suppress("TestFunctionName")
 class DefaultStateKeeperDispatcherTest {
@@ -59,5 +61,34 @@ class DefaultStateKeeperDispatcherTest {
         val restoredParcelable = dispatcher2.consume("key", ParcelableStub::class)
 
         assertNull(restoredParcelable)
+    }
+
+    @Test
+    fun GIVEN_not_registered_WHEN_isRegistered_THEN_returns_false() {
+        val dispatcher = DefaultStateKeeperDispatcher(savedState = null)
+
+        val result = dispatcher.isRegistered(key = "key")
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun GIVEN_registered_with_one_key_WHEN_isRegistered_with_another_key_THEN_returns_false() {
+        val dispatcher = DefaultStateKeeperDispatcher(savedState = null)
+        dispatcher.register(key = "key1") { ParcelableStub() }
+
+        val result = dispatcher.isRegistered(key = "key2")
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun GIVEN_registered_WHEN_isRegistered_with_same_key_THEN_returns_true() {
+        val dispatcher = DefaultStateKeeperDispatcher(savedState = null)
+        dispatcher.register(key = "key") { ParcelableStub() }
+
+        val result = dispatcher.isRegistered(key = "key")
+
+        assertTrue(result)
     }
 }
