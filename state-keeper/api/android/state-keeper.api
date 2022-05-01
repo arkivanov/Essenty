@@ -12,6 +12,14 @@ public final class com/arkivanov/essenty/statekeeper/BuildConfig {
 	public fun <init> ()V
 }
 
+public final class com/arkivanov/essenty/statekeeper/DefaultStateKeeperDispatcher$SavedState$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/arkivanov/essenty/statekeeper/DefaultStateKeeperDispatcher$SavedState;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/arkivanov/essenty/statekeeper/DefaultStateKeeperDispatcher$SavedState;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
 public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeper {
 	public abstract fun consume (Ljava/lang/String;Lkotlin/reflect/KClass;)Landroid/os/Parcelable;
 	public abstract fun isRegistered (Ljava/lang/String;)Z
