@@ -1,5 +1,6 @@
 public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeper {
 	public abstract fun consume (Ljava/lang/String;Lkotlin/reflect/KClass;)Lcom/arkivanov/essenty/parcelable/Parcelable;
+	public abstract fun isRegistered (Ljava/lang/String;)Z
 	public abstract fun register (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V
 	public abstract fun unregister (Ljava/lang/String;)V
 }
