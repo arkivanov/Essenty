@@ -1,3 +1,10 @@
+import com.arkivanov.gradle.bundle
+import com.arkivanov.gradle.dependsOn
+import com.arkivanov.gradle.setupBinaryCompatibilityValidator
+import com.arkivanov.gradle.setupMultiplatform
+import com.arkivanov.gradle.setupPublication
+import com.arkivanov.gradle.setupSourceSets
+
 plugins {
     id("kotlin-multiplatform")
     id("com.android.library")
@@ -5,30 +12,28 @@ plugins {
     id("com.arkivanov.gradle.setup")
 }
 
-setupMultiplatform {
-    targets()
-    publications()
-    binaryCompatibilityValidator()
-}
+setupMultiplatform()
+setupPublication()
+setupBinaryCompatibilityValidator()
 
 kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation(project(":utils-internal"))
-            }
+    setupSourceSets {
+        val android by bundle()
+        val nonAndroid by bundle()
+
+        nonAndroid dependsOn common
+        (allSet - android) dependsOn nonAndroid
+
+        common.main.dependencies {
+            implementation(project(":utils-internal"))
         }
 
-        named("androidMain") {
-            dependencies {
-                implementation(deps.androidx.core.coreKtx)
-            }
+        android.main.dependencies {
+            implementation(deps.androidx.core.coreKtx)
         }
 
-        named("androidTest") {
-            dependencies {
-                implementation(deps.robolectric.robolectric)
-            }
+        android.test.dependencies {
+            implementation(deps.robolectric.robolectric)
         }
     }
 }

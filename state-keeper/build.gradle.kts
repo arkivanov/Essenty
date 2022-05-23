@@ -1,3 +1,9 @@
+import com.arkivanov.gradle.bundle
+import com.arkivanov.gradle.setupBinaryCompatibilityValidator
+import com.arkivanov.gradle.setupMultiplatform
+import com.arkivanov.gradle.setupPublication
+import com.arkivanov.gradle.setupSourceSets
+
 plugins {
     id("kotlin-multiplatform")
     id("com.android.library")
@@ -5,26 +11,22 @@ plugins {
     id("com.arkivanov.gradle.setup")
 }
 
-setupMultiplatform {
-    targets()
-    publications()
-    binaryCompatibilityValidator()
-}
+setupMultiplatform()
+setupPublication()
+setupBinaryCompatibilityValidator()
 
 kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                api(project(":parcelable"))
-                implementation(project(":utils-internal"))
-            }
+    setupSourceSets {
+        val android by bundle()
+
+        common.main.dependencies {
+            api(project(":parcelable"))
+            implementation(project(":utils-internal"))
         }
 
-        named("androidMain") {
-            dependencies {
-                implementation(deps.androidx.savedstate.savedstateKtx)
-                implementation(deps.androidx.lifecycle.lifecycleRuntime)
-            }
+        android.main.dependencies {
+            implementation(deps.androidx.savedstate.savedstateKtx)
+            implementation(deps.androidx.lifecycle.lifecycleRuntime)
         }
     }
 }
