@@ -23,7 +23,7 @@ buildscript {
 
         classpath(deps.kotlin.kotlinGradlePlug)
         classpath(deps.android.gradle)
-        classpath(deps.kotlinx.binaryCompatibilityValidatorGradlePlug)
+        classpath(deps.kotlinx.binaryCompatibilityValidator)
         classpath(deps.detekt.gradleDetektPlug)
     }
 }
