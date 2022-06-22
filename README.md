@@ -169,6 +169,33 @@ data class User(
 
 When compiled for Android, the `Parcelable` implementation will be generated automatically. When compiled for other targets, it will be just a regular class without any extra generated code.
 
+#### Custom Parcelers
+
+If you don't own the type that you need to `@Parcelize`, you can write a custom Parceler for it (Similar to [kotlin-parcelize](https://developer.android.com/kotlin/parcelize#custom_parcelers))
+
+```kotlin
+import com.arkivanov.essenty.parcelable.Parceler
+import kotlinx.datetime.Instant
+
+actual object InstantParceler : Parceler<Instant> {
+  override fun Instant.write(parcel: Parcel, flags: Int) { parcel.writeLong(epochSeconds) }
+  override fun create(parcel: Parcel): Instant = Instant.fromEpochSeconds(parcel.readLong())
+}
+```
+
+Which can be used likewise
+```kotlin
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.WriteWith
+import kotlinx.datetime.Instant
+
+@Parcelize
+data class User(
+    val id: Long,
+    val name: String,
+    val dateOfBirth: @WriteWith<InstantParceler> Instant,
+) : Parcelable
+```
 #### Parcelize for Darwin/Apple targets
 
 Currently there is no extra code generated when compiled for Darwin/Apple targets. However I made a proof of concept: [kotlin-parcelize-darwin](https://github.com/arkivanov/kotlin-parcelize-darwin) compiler plugin. It is not used yet by Essenty, and the applicabilty is being considered. Please raise a [Discussion](https://github.com/arkivanov/Essenty/discussions) if you are interested.
