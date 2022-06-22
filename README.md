@@ -157,6 +157,8 @@ implementation("com.arkivanov.essenty:parcelable:<essenty_version>")
 Once the dependency is added and the plugin is applied, we can use it as follows:
 
 ```kotlin
+// In commonMain
+
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 
@@ -171,21 +173,46 @@ When compiled for Android, the `Parcelable` implementation will be generated aut
 
 #### Custom Parcelers
 
-If you don't own the type that you need to `@Parcelize`, you can write a custom Parceler for it (Similar to [kotlin-parcelize](https://developer.android.com/kotlin/parcelize#custom_parcelers))
+If you don't own the type that you need to `@Parcelize`, you can write a custom `Parceler` for it (similar to [kotlin-parcelize](https://developer.android.com/kotlin/parcelize#custom_parcelers)).
 
 ```kotlin
+// In commonMain
+
 import com.arkivanov.essenty.parcelable.Parceler
 import kotlinx.datetime.Instant
 
-actual object InstantParceler : Parceler<Instant> {
-  override fun Instant.write(parcel: Parcel, flags: Int) { parcel.writeLong(epochSeconds) }
-  override fun create(parcel: Parcel): Instant = Instant.fromEpochSeconds(parcel.readLong())
+internal expect object InstantParceler : Parceler<Instant>
+```
+
+```kotlin
+// In androidMain
+
+import com.arkivanov.essenty.parcelable.Parceler
+import kotlinx.datetime.Instant
+
+internal actual object InstantParceler : Parceler<Instant> {
+    override fun create(parcel: Parcel): Instant = 
+        Instant.fromEpochSeconds(parcel.readLong())
+
+    override fun Instant.write(parcel: Parcel, flags: Int) {
+        parcel.writeLong(epochSeconds) 
+    }
 }
 ```
 
-Which can be used likewise
 ```kotlin
+// In all other sources (or in a custom nonAndroidMain source set)
+
+internal actual object InstantParceler : Parceler<Instant>
+```
+
+Which can be used as follows:
+
+```kotlin
+// In commonMain
+
 import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import com.arkivanov.essenty.parcelable.WriteWith
 import kotlinx.datetime.Instant
 
@@ -196,6 +223,7 @@ data class User(
     val dateOfBirth: @WriteWith<InstantParceler> Instant,
 ) : Parcelable
 ```
+
 #### Parcelize for Darwin/Apple targets
 
 Currently there is no extra code generated when compiled for Darwin/Apple targets. However I made a proof of concept: [kotlin-parcelize-darwin](https://github.com/arkivanov/kotlin-parcelize-darwin) compiler plugin. It is not used yet by Essenty, and the applicabilty is being considered. Please raise a [Discussion](https://github.com/arkivanov/Essenty/discussions) if you are interested.
