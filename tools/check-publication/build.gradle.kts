@@ -1,12 +1,13 @@
+import com.arkivanov.gradle.setupMultiplatform
+import com.arkivanov.gradle.setupSourceSets
+
 plugins {
     id("kotlin-multiplatform")
     id("com.android.library")
     id("com.arkivanov.gradle.setup")
 }
 
-setupMultiplatform {
-    targets()
-}
+setupMultiplatform()
 
 repositories {
     maven("https://s01.oss.sonatype.org/content/groups/staging/") {
@@ -18,15 +19,14 @@ repositories {
 }
 
 kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                val version = deps.versions.essenty.get()
-                implementation("com.arkivanov.essenty:lifecycle:$version")
-                implementation("com.arkivanov.essenty:state-keeper:$version")
-                implementation("com.arkivanov.essenty:instance-keeper:$version")
-                implementation("com.arkivanov.essenty:back-pressed:$version")
-            }
+    setupSourceSets {
+        common.main.dependencies {
+            val version = deps.versions.essenty.get()
+            implementation("com.arkivanov.essenty:back-pressed:$version")
+            implementation("com.arkivanov.essenty:instance-keeper:$version")
+            implementation("com.arkivanov.essenty:lifecycle:$version")
+            implementation("com.arkivanov.essenty:parcelable:$version")
+            implementation("com.arkivanov.essenty:state-keeper:$version")
         }
     }
 }
