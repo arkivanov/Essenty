@@ -36,7 +36,10 @@ setupDefaults(
     multiplatformConfigurator = {
         android()
         jvm()
-        js(IR) { browser() }
+        js(BOTH) {
+            browser()
+            nodejs()
+        }
         linuxX64()
         iosCompat()
         watchosCompat()
