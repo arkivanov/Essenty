@@ -18,9 +18,6 @@ buildscript {
     }
 
     dependencies {
-        @Suppress("UnstableApiUsage")
-        val deps = project.extensions.getByType<VersionCatalogsExtension>().named("deps") as org.gradle.accessors.dm.LibrariesForDeps
-
         classpath(deps.kotlin.kotlinGradlePlug)
         classpath(deps.android.gradle)
         classpath(deps.kotlinx.binaryCompatibilityValidator)
