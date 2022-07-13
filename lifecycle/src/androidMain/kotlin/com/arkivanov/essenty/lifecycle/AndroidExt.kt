@@ -20,7 +20,7 @@ private class EssentyLifecycleInterop(
     private val delegate: Lifecycle
 ) : EssentyLifecycle {
 
-    private var observerMap = HashMap<EssentyLifecycle.Callbacks, LifecycleObserver>()
+    private val observerMap = HashMap<EssentyLifecycle.Callbacks, LifecycleObserver>()
 
     override val state: EssentyLifecycle.State get() = delegate.currentState.toEssentyLifecycleState()
 

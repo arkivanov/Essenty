@@ -1,11 +1,11 @@
 [versions]
 
 essenty = "0.4.1"
-kotlin = "1.6.21"
+kotlin = "1.7.10"
 kotlinxBinaryCompatibilityValidator = "0.10.0"
-detektGradlePlugin = "1.19.0"
+detektGradlePlugin = "1.21.0-RC2"
 junit = "4.13.2"
-androidGradle = "7.1.0"
+androidGradle = "7.2.0"
 androidxCore = "1.6.0"
 androidxLifecycle = "2.2.0"
 androidxSavedstate = "1.1.0"
