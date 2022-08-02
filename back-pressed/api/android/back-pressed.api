@@ -1,7 +1,5 @@
 public final class com/arkivanov/essenty/backpressed/AndroidExtKt {
-	public static final fun BackPressedDispatcher (Landroidx/activity/OnBackPressedDispatcher;)Lcom/arkivanov/essenty/backpressed/BackPressedDispatcher;
 	public static final fun BackPressedHandler (Landroidx/activity/OnBackPressedDispatcher;)Lcom/arkivanov/essenty/backpressed/BackPressedHandler;
-	public static final fun backPressedDispatcher (Landroidx/activity/OnBackPressedDispatcherOwner;)Lcom/arkivanov/essenty/backpressed/BackPressedDispatcher;
 	public static final fun backPressedHandler (Landroidx/activity/OnBackPressedDispatcherOwner;)Lcom/arkivanov/essenty/backpressed/BackPressedHandler;
 }
 

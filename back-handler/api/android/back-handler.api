@@ -1,0 +1,42 @@
+public final class com/arkivanov/essenty/backhandler/AndroidBackHandlerKt {
+	public static final fun BackHandler (Landroidx/activity/OnBackPressedDispatcher;)Lcom/arkivanov/essenty/backhandler/BackHandler;
+	public static final fun backHandler (Landroidx/activity/OnBackPressedDispatcherOwner;)Lcom/arkivanov/essenty/backhandler/BackHandler;
+}
+
+public abstract interface class com/arkivanov/essenty/backhandler/BackDispatcher : com/arkivanov/essenty/backhandler/BackHandler {
+	public abstract fun back ()Z
+	public abstract fun isEnabled ()Z
+}
+
+public final class com/arkivanov/essenty/backhandler/BackDispatcherKt {
+	public static final fun BackDispatcher ()Lcom/arkivanov/essenty/backhandler/BackDispatcher;
+}
+
+public abstract interface class com/arkivanov/essenty/backhandler/BackHandler {
+	public abstract fun getCallbacks ()Lcom/arkivanov/essenty/backhandler/BackHandler$Callbacks;
+}
+
+public abstract interface class com/arkivanov/essenty/backhandler/BackHandler$Callbacks {
+	public abstract fun get (Lkotlin/jvm/functions/Function0;)Ljava/lang/Boolean;
+	public abstract fun put (Lkotlin/jvm/functions/Function0;Z)V
+	public abstract fun remove (Lkotlin/jvm/functions/Function0;)V
+}
+
+public final class com/arkivanov/essenty/backhandler/BackHandlerKt {
+	public static final fun minusAssign (Lcom/arkivanov/essenty/backhandler/BackHandler$Callbacks;Lkotlin/jvm/functions/Function0;)V
+	public static final fun plusAssign (Lcom/arkivanov/essenty/backhandler/BackHandler$Callbacks;Lkotlin/jvm/functions/Function0;)V
+	public static final fun put (Lcom/arkivanov/essenty/backhandler/BackHandler$Callbacks;Lkotlin/jvm/functions/Function0;)V
+	public static final fun set (Lcom/arkivanov/essenty/backhandler/BackHandler$Callbacks;Lkotlin/jvm/functions/Function0;Z)V
+}
+
+public abstract interface class com/arkivanov/essenty/backhandler/BackHandlerOwner {
+	public abstract fun getBackHandler ()Lcom/arkivanov/essenty/backhandler/BackHandler;
+}
+
+public final class com/arkivanov/essenty/backhandler/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
