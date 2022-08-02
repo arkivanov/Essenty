@@ -372,9 +372,75 @@ val someLogic = SomeLogic(instanceKeeperDispatcher)
 instanceKeeperDispatcher.destroy()
 ```
 
+## BackHandler
+
+The `BackHandler` API provides ability to handle back button clicks (e.g. the Android device's back button), in common code. This API is similar to AndroidX [OnBackPressedDispatcher](https://developer.android.com/reference/androidx/activity/OnBackPressedDispatcher).
+
+### Setup
+
+Groovy:
+```groovy
+// Add the dependency, typically under the commonMain source set
+implementation "com.arkivanov.essenty:back-handler:<essenty_version>"
+```
+
+Kotlin:
+```kotlin
+// Add the dependency, typically under the commonMain source set
+implementation("com.arkivanov.essenty:back-handler:<essenty_version>")
+```
+
+### Content
+
+The [BackHandler](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/commonMain/kotlin/com/arkivanov/essenty/backhandler/BackHandler.kt) interface provides ability to register and unregister back button callbacks. When the device's back button is pressed, all registered callbacks are called in reverse order, the first enabled callback is called and the iteration finishes.
+
+The [BackDispatcher](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/commonMain/kotlin/com/arkivanov/essenty/backhandler/BackDispatcher.kt) interface extends `BackHandler` and is responsible for triggering the registered callbacks. The `BackDispatcher.back()` method triggers all registered callbacks in reverse order, and returns `true` if an enabled callback was called, and `false` if no enabled callback was found.
+
+#### Android extensions
+
+From Android side, `BackHandler` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/androidMain/kotlin/com/arkivanov/essenty/backhandler/AndroidBackHandler.kt).
+
+### Usage example
+
+#### Using the BackHandler
+
+```kotlin
+import com.arkivanov.essenty.backhandler.BackHandler
+
+class SomeLogic(backHandler: BackHandler) {
+    private val callback = BackHandler.Callback {
+        // Called when the back button is pressed
+    }
+
+    init {
+        backHandler.register(callback)
+
+        // Disable the callback when needed
+        callback.isEnabled = false
+    }
+}
+```
+
+#### Using the BackDispatcher manually
+
+A default implementation of the `BackDispatcher` interface can be instantiated using the corresponding builder function:
+
+```kotlin
+import com.arkivanov.essenty.backhandler.BackDispatcher
+
+val backDispatcher = BackDispatcher()
+val someLogic = SomeLogic(backDispatcher)
+
+if (!backDispatcher.back()) {
+    // The back pressed event was not handled
+}
+```
+
 ## BackPressedDispatcher
 
-The `BackPressedDispatcher` API provides ability to handle back button clicks (e.g. an Android device's back button), in common code. This API is similar to AndroidX [OnBackPressedDispatcher](https://developer.android.com/reference/androidx/activity/OnBackPressedDispatcher).
+> ⚠️  `BackPressedHandler` and `BackPressedDispatcher` API (the `back-pressed` module) is entirely deprecated. Please use `BackHandler` and `BackDispatcher` described above.
+
+The `BackPressedDispatcher` API provides ability to handle back button events (e.g. an Android device's back button), in common code. This API is similar to AndroidX [OnBackPressedDispatcher](https://developer.android.com/reference/androidx/activity/OnBackPressedDispatcher).
 
 ### Setup
 
