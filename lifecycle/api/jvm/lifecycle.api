@@ -73,6 +73,8 @@ public final class com/arkivanov/essenty/lifecycle/LifecycleRegistryExtKt {
 }
 
 public final class com/arkivanov/essenty/lifecycle/LifecycleRegistryKt {
-	public static final fun LifecycleRegistry ()Lcom/arkivanov/essenty/lifecycle/LifecycleRegistry;
+	public static final synthetic fun LifecycleRegistry ()Lcom/arkivanov/essenty/lifecycle/LifecycleRegistry;
+	public static final fun LifecycleRegistry (Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;)Lcom/arkivanov/essenty/lifecycle/LifecycleRegistry;
+	public static synthetic fun LifecycleRegistry$default (Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;ILjava/lang/Object;)Lcom/arkivanov/essenty/lifecycle/LifecycleRegistry;
 }
 

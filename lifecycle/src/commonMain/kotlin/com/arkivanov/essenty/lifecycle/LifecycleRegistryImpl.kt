@@ -4,14 +4,14 @@ import com.arkivanov.essenty.lifecycle.Lifecycle.Callbacks
 import com.arkivanov.essenty.lifecycle.Lifecycle.State
 import com.arkivanov.essenty.utils.internal.ensureNeverFrozen
 
-internal class LifecycleRegistryImpl : LifecycleRegistry {
+internal class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
 
     init {
         ensureNeverFrozen()
     }
 
     private var callbacks = emptySet<Callbacks>()
-    private var _state = State.INITIALIZED
+    private var _state = initialState
     override val state: State get() = _state
 
     override fun subscribe(callbacks: Callbacks) {

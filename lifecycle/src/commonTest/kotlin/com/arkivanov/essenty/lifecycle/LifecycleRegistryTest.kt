@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 @Suppress("TestFunctionName")
 class LifecycleRegistryTest {
 
-    private val registry = LifecycleRegistry()
+    private val registry = LifecycleRegistryImpl(initialState = Lifecycle.State.INITIALIZED)
 
     @Test
     fun WHEN_called_THEN_calls_subscribers_in_correct_order() {
@@ -86,7 +86,6 @@ class LifecycleRegistryTest {
         assertEquals(emptyList(), events)
     }
 
-
     @Test
     fun WHEN_unsubscribed_from_callback_and_called_THEN_callbacks_not_called() {
         val events = ArrayList<String>()
@@ -107,5 +106,37 @@ class LifecycleRegistryTest {
         registry.onStart()
 
         assertEquals(emptyList(), events)
+    }
+
+    @Test
+    fun WHEN_created_with_initial_state_THEN_state_returns_that_state() {
+        val registry = LifecycleRegistryImpl(initialState = Lifecycle.State.RESUMED)
+
+        assertEquals(Lifecycle.State.RESUMED, registry.state)
+    }
+
+    @Test
+    fun GIVEN_created_with_initial_state_WHEN_subscribed_THEN_callbacks_called() {
+        val registry = LifecycleRegistryImpl(initialState = Lifecycle.State.RESUMED)
+        val events = ArrayList<String>()
+
+        val callbacks =
+            object : Lifecycle.Callbacks {
+                override fun onCreate() {
+                    events += "onCreate"
+                }
+
+                override fun onStart() {
+                    events += "onStart"
+                }
+
+                override fun onResume() {
+                    events += "onResume"
+                }
+            }
+
+        registry.subscribe(callbacks)
+
+        assertEquals(listOf("onCreate", "onStart", "onResume"), events)
     }
 }
