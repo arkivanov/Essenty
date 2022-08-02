@@ -40,6 +40,10 @@ import androidx.activity.OnBackPressedDispatcherOwner
  * }
  * ```
  */
+@Deprecated(
+    "Use BackHandler from back-handler module.",
+    ReplaceWith("BackHandler(onBackPressedDispatcher)", "com.arkivanov.essenty.backhandler.BackHandler"),
+)
 @Suppress("FunctionName") // Factory function
 fun BackPressedHandler(onBackPressedDispatcher: OnBackPressedDispatcher): BackPressedHandler =
     DelegatedBackPressedDispatcher(onBackPressedDispatcher)
@@ -80,32 +84,11 @@ fun BackPressedHandler(onBackPressedDispatcher: OnBackPressedDispatcher): BackPr
  * }
  * ```
  */
+@Deprecated(
+    "Use backHandler from back-handler module.",
+    ReplaceWith("this.backHandler()", "com.arkivanov.essenty.backhandler.backHandler"),
+)
 fun OnBackPressedDispatcherOwner.backPressedHandler(): BackPressedHandler =
-    DelegatedBackPressedDispatcher(onBackPressedDispatcher)
-
-/**
- * Creates a new instance of [BackPressedDispatcher] and attaches it to the provided AndroidX [OnBackPressedDispatcher]
- */
-@Deprecated(
-    message = "Please use BackPressedHandler factory function. " +
-        "Calling BackPressedDispatcher.onBackPressed() method manually is incorrect in this particular case. " +
-        "This API will be removed soon.",
-    replaceWith = ReplaceWith("BackPressedHandler(onBackPressedDispatcher)")
-)
-@Suppress("FunctionName") // Factory function
-fun BackPressedDispatcher(onBackPressedDispatcher: OnBackPressedDispatcher): BackPressedDispatcher =
-    DelegatedBackPressedDispatcher(onBackPressedDispatcher)
-
-/**
- * Creates a new instance of [BackPressedDispatcher] and attaches it to the AndroidX [OnBackPressedDispatcher]
- */
-@Deprecated(
-    message = "Please use backPressedHandler extensions function. " +
-        "Calling BackPressedDispatcher.onBackPressed() method manually is incorrect in this particular case. " +
-        "This API will be removed soon.",
-    replaceWith = ReplaceWith("this.backPressedHandler()")
-)
-fun OnBackPressedDispatcherOwner.backPressedDispatcher(): BackPressedDispatcher =
     DelegatedBackPressedDispatcher(onBackPressedDispatcher)
 
 private class DelegatedBackPressedDispatcher(

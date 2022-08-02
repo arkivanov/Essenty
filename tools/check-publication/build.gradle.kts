@@ -23,6 +23,7 @@ kotlin {
         common.main.dependencies {
             val version = deps.versions.essenty.get()
             implementation("com.arkivanov.essenty:back-pressed:$version")
+            implementation("com.arkivanov.essenty:back-handler:$version")
             implementation("com.arkivanov.essenty:instance-keeper:$version")
             implementation("com.arkivanov.essenty:lifecycle:$version")
             implementation("com.arkivanov.essenty:parcelable:$version")
