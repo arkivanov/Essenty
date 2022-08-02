@@ -34,6 +34,7 @@ if (!startParameter.projectProperties.containsKey("check_publication")) {
     include(":parcelable")
     include(":state-keeper")
     include(":instance-keeper")
+    include(":back-handler")
     include(":back-pressed")
 } else {
     include(":tools:check-publication")

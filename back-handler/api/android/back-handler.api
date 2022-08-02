@@ -1,0 +1,40 @@
+public final class com/arkivanov/essenty/backhandler/AndroidBackHandlerKt {
+	public static final fun BackHandler (Landroidx/activity/OnBackPressedDispatcher;)Lcom/arkivanov/essenty/backhandler/BackHandler;
+	public static final fun backHandler (Landroidx/activity/OnBackPressedDispatcherOwner;)Lcom/arkivanov/essenty/backhandler/BackHandler;
+}
+
+public abstract interface class com/arkivanov/essenty/backhandler/BackDispatcher : com/arkivanov/essenty/backhandler/BackHandler {
+	public abstract fun back ()Z
+	public abstract fun isEnabled ()Z
+}
+
+public final class com/arkivanov/essenty/backhandler/BackDispatcherKt {
+	public static final fun BackDispatcher ()Lcom/arkivanov/essenty/backhandler/BackDispatcher;
+}
+
+public abstract interface class com/arkivanov/essenty/backhandler/BackHandler {
+	public abstract fun register (Lcom/arkivanov/essenty/backhandler/BackHandler$Callback;)V
+	public abstract fun unregister (Lcom/arkivanov/essenty/backhandler/BackHandler$Callback;)V
+}
+
+public final class com/arkivanov/essenty/backhandler/BackHandler$Callback {
+	public fun <init> (ZLkotlin/jvm/functions/Function0;)V
+	public synthetic fun <init> (ZLkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun addEnabledChangedListener (Lkotlin/jvm/functions/Function1;)V
+	public final fun getCallback ()Lkotlin/jvm/functions/Function0;
+	public final fun isEnabled ()Z
+	public final fun removeEnabledChangedListener (Lkotlin/jvm/functions/Function1;)V
+	public final fun setEnabled (Z)V
+}
+
+public abstract interface class com/arkivanov/essenty/backhandler/BackHandlerOwner {
+	public abstract fun getBackHandler ()Lcom/arkivanov/essenty/backhandler/BackHandler;
+}
+
+public final class com/arkivanov/essenty/backhandler/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
