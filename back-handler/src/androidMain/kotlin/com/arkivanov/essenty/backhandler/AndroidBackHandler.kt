@@ -18,11 +18,29 @@ fun OnBackPressedDispatcherOwner.backHandler(): BackHandler =
 
 internal class AndroidBackHandler(
     delegate: OnBackPressedDispatcher,
-) : AbstractBackHandler() {
+) : BackHandler {
 
-    private val delegateCallback = delegate.addCallback(enabled = false) { callCallbacks() }
+    private var set = emptySet<BackCallback>()
+    private val delegateCallback = delegate.addCallback(enabled = false) { set.call() }
+    private val enabledChangedListener: (Boolean) -> Unit = { onEnabledChanged() }
 
-    override fun onEnabledChanged(isEnabled: Boolean) {
-        delegateCallback.isEnabled = isEnabled
+    override fun register(callback: BackCallback) {
+        check(callback !in set) { "Callback is already registered" }
+
+        this.set += callback
+        callback.addEnabledChangedListener(enabledChangedListener)
+        onEnabledChanged()
+    }
+
+    override fun unregister(callback: BackCallback) {
+        check(callback in set) { "Callback is not registered" }
+
+        callback.removeEnabledChangedListener(enabledChangedListener)
+        this.set -= callback
+        onEnabledChanged()
+    }
+
+    private fun onEnabledChanged() {
+        delegateCallback.isEnabled = set.any(BackCallback::isEnabled)
     }
 }
