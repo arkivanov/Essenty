@@ -1,6 +1,5 @@
 package com.arkivanov.essenty.backhandler
 
-import com.arkivanov.essenty.backhandler.BackHandler.Callback
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertFalse
@@ -214,6 +213,6 @@ class DefaultBackDispatcherTest {
         assertFalse(result)
     }
 
-    private fun callback(isEnabled: Boolean = true, callback: () -> Unit = {}) =
-        Callback(isEnabled = isEnabled, callback = callback)
+    private fun callback(isEnabled: Boolean = true, onBack: () -> Unit = {}): BackCallback =
+        BackCallback(isEnabled = isEnabled, onBack = onBack)
 }

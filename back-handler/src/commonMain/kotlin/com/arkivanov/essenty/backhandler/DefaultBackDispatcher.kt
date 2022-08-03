@@ -2,17 +2,26 @@ package com.arkivanov.essenty.backhandler
 
 import com.arkivanov.essenty.utils.internal.ensureNeverFrozen
 
-internal class DefaultBackDispatcher : AbstractBackHandler(), BackDispatcher {
+internal class DefaultBackDispatcher : BackDispatcher {
 
     init {
         ensureNeverFrozen()
     }
 
-    override var isEnabled: Boolean = false
+    private var set = emptySet<BackCallback>()
+    override val isEnabled: Boolean get() = set.any(BackCallback::isEnabled)
 
-    override fun onEnabledChanged(isEnabled: Boolean) {
-        this.isEnabled = isEnabled
+    override fun register(callback: BackCallback) {
+        check(callback !in set) { "Callback is already registered" }
+
+        this.set += callback
     }
 
-    override fun back(): Boolean = callCallbacks()
+    override fun unregister(callback: BackCallback) {
+        check(callback in set) { "Callback is not registered" }
+
+        this.set -= callback
+    }
+
+    override fun back(): Boolean = set.call()
 }

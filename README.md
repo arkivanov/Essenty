@@ -408,7 +408,7 @@ From Android side, `BackHandler` can be obtained by using special functions, can
 import com.arkivanov.essenty.backhandler.BackHandler
 
 class SomeLogic(backHandler: BackHandler) {
-    private val callback = BackHandler.Callback {
+    private val callback = BackCallback {
         // Called when the back button is pressed
     }
 

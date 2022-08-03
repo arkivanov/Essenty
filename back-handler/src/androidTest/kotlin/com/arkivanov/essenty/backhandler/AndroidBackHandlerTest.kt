@@ -1,7 +1,6 @@
 package com.arkivanov.essenty.backhandler
 
 import androidx.activity.OnBackPressedDispatcher
-import com.arkivanov.essenty.backhandler.BackHandler.Callback
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertFalse
@@ -143,6 +142,6 @@ class AndroidBackHandlerTest {
         assertContentEquals(listOf(true, false, false), called)
     }
 
-    private fun callback(isEnabled: Boolean = true, callback: () -> Unit = {}): Callback =
-        Callback(isEnabled = isEnabled, callback = callback)
+    private fun callback(isEnabled: Boolean = true, onBack: () -> Unit = {}): BackCallback =
+        BackCallback(isEnabled = isEnabled, onBack = onBack)
 }
