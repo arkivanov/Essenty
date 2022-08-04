@@ -4,13 +4,10 @@ import kotlin.js.JsName
 
 interface LifecycleRegistry : Lifecycle, Lifecycle.Callbacks
 
-@Deprecated(message = "Hidden for binary compatibility", level = DeprecationLevel.HIDDEN)
-@JsName("lifecycleRegistryDeprecated")
+@JsName("lifecycleRegistry")
 fun LifecycleRegistry(): LifecycleRegistry = LifecycleRegistry(initialState = Lifecycle.State.INITIALIZED)
 
-@JsName("lifecycleRegistry")
-@Suppress("FunctionName") // Factory function
 fun LifecycleRegistry(
-    initialState: Lifecycle.State = Lifecycle.State.INITIALIZED,
+    initialState: Lifecycle.State,
 ): LifecycleRegistry =
     LifecycleRegistryImpl(initialState)
