@@ -1,5 +1,8 @@
 package com.arkivanov.essenty.lifecycle
 
+/**
+ * A convenience method for [Lifecycle.subscribe].
+ */
 fun Lifecycle.subscribe(
     onCreate: (() -> Unit)? = null,
     onStart: (() -> Unit)? = null,
