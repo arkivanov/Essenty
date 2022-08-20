@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 
 internal class DefaultStateKeeperDispatcher internal constructor(
     savedState: ParcelableContainer?,
-    private val parcelableContainerFactory: (Parcelable?) -> ParcelableContainer
+    private val parcelableContainerFactory: (Parcelable) -> ParcelableContainer
 ) : StateKeeperDispatcher {
 
     constructor(savedState: ParcelableContainer?) : this(
@@ -22,23 +22,25 @@ internal class DefaultStateKeeperDispatcher internal constructor(
     }
 
     private val savedState: MutableMap<String, ParcelableContainer>? = savedState?.consume<SavedState>()?.map
-    private val suppliers = HashMap<String, () -> Parcelable>()
+    private val suppliers = HashMap<String, () -> Parcelable?>()
 
-    override fun save(): ParcelableContainer =
-        parcelableContainerFactory(
-            SavedState(
-                suppliers.mapValuesTo(HashMap()) { (_, supplier) ->
-                    parcelableContainerFactory(supplier())
-                }
-            )
-        )
+    override fun save(): ParcelableContainer {
+        val map = HashMap<String, ParcelableContainer>()
+        suppliers.forEach { (key, supplier) ->
+            supplier()?.also {
+                map[key] = parcelableContainerFactory(it)
+            }
+        }
+
+        return ParcelableContainer(SavedState(map))
+    }
 
     override fun <T : Parcelable> consume(key: String, clazz: KClass<out T>): T? =
         savedState
             ?.remove(key)
             ?.consume(clazz)
 
-    override fun <T : Parcelable> register(key: String, supplier: () -> T) {
+    override fun <T : Parcelable> register(key: String, supplier: () -> T?) {
         check(!isRegistered(key)) { "Another supplier is already registered with the key: $key" }
         suppliers[key] = supplier
     }
