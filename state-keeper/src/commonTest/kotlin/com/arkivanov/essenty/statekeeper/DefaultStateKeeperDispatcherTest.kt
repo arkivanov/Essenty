@@ -22,6 +22,7 @@ class DefaultStateKeeperDispatcherTest {
 
         dispatcher1.register("key1") { parcelable1 }
         dispatcher1.register("key2") { parcelable2 }
+        dispatcher1.register("key3") { null }
 
         val savedState = dispatcher1.save()
 
@@ -33,9 +34,11 @@ class DefaultStateKeeperDispatcherTest {
 
         val restoredParcelable1 = dispatcher2.consume("key1", ParcelableStub::class)
         val restoredParcelable2 = dispatcher2.consume("key2", ParcelableStub::class)
+        val restoredParcelable3 = dispatcher2.consume("key3", ParcelableStub::class)
 
         assertEquals(parcelable1, restoredParcelable1)
         assertEquals(parcelable2, restoredParcelable2)
+        assertNull(restoredParcelable3)
     }
 
     @Test

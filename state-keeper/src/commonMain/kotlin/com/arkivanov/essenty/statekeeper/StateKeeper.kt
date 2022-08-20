@@ -7,7 +7,7 @@ interface StateKeeper {
 
     fun <T : Parcelable> consume(key: String, clazz: KClass<out T>): T?
 
-    fun <T : Parcelable> register(key: String, supplier: () -> T)
+    fun <T : Parcelable> register(key: String, supplier: () -> T?)
 
     fun unregister(key: String)
 
