@@ -74,14 +74,30 @@ class DefaultInstanceKeeperDispatcherTest {
     }
 
     @Test
-    fun GIVEN_instance_destroyed_WHEN_get_THEN_returns_null() {
+    fun GIVEN_instance_destroyed_WHEN_get_THEN_throws_exception() {
         val dispatcher = DefaultInstanceKeeperDispatcher()
         dispatcher.put(key = "key", instance = TestInstance())
         dispatcher.destroy()
 
-        val returnedInstance = dispatcher.get(key = "key")
+        assertFails { dispatcher.get(key = "key") }
+    }
 
-        assertNull(returnedInstance)
+    @Test
+    fun GIVEN_instance_destroyed_WHEN_put_THEN_throws_exception() {
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+        dispatcher.destroy()
+        assertFails {
+            dispatcher.put(key = "key", instance = TestInstance())
+        }
+    }
+
+    @Test
+    fun GIVEN_instance_destroyed_WHEN_destroy_THEN_throws_exception() {
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+        dispatcher.destroy()
+        assertFails {
+            dispatcher.destroy()
+        }
     }
 
     @Test
@@ -117,14 +133,12 @@ class DefaultInstanceKeeperDispatcherTest {
     }
 
     @Test
-    fun GIVEN_instance_destroyed_WHEN_remove_THEN_returns_null() {
+    fun GIVEN_instance_destroyed_WHEN_remove_THEN_throws_exception() {
         val dispatcher = DefaultInstanceKeeperDispatcher()
         dispatcher.put(key = "key", instance = TestInstance())
         dispatcher.destroy()
 
-        val returnedInstance = dispatcher.remove(key = "key")
-
-        assertNull(returnedInstance)
+        assertFails { dispatcher.remove(key = "key") }
     }
 
     private class TestInstance : InstanceKeeper.Instance {
