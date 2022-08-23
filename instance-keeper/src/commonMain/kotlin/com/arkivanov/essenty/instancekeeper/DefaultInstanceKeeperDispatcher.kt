@@ -10,10 +10,15 @@ internal class DefaultInstanceKeeperDispatcher : InstanceKeeperDispatcher {
     }
 
     private val map = HashMap<Any, Instance>()
+    private var isDestroyed = false
 
-    override fun get(key: Any): Instance? = map[key]
+    override fun get(key: Any): Instance? {
+        checkIsNotDestroyed()
+        return map[key]
+    }
 
     override fun put(key: Any, instance: Instance) {
+        checkIsNotDestroyed()
         check(key !in map) { "Another instance is already associated with the key: $key" }
 
         map[key] = instance
@@ -22,7 +27,12 @@ internal class DefaultInstanceKeeperDispatcher : InstanceKeeperDispatcher {
     override fun remove(key: Any): Instance? = map.remove(key)
 
     override fun destroy() {
+        isDestroyed = true
         map.values.forEach(Instance::onDestroy)
         map.clear()
+    }
+
+    private fun checkIsNotDestroyed() {
+        check(!isDestroyed) { "InstanceKeeper is destroyed" }
     }
 }
