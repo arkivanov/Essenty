@@ -11,7 +11,7 @@ Supported targets:
 - `android`
 - `jvm`
 - `js` (`IR` and `LEGACY`)
-- `ios`, `ios`
+- `ios`
 - `watchos`
 - `tvos`
 - `macos`
