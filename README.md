@@ -11,10 +11,10 @@ Supported targets:
 - `android`
 - `jvm`
 - `js` (`IR` and `LEGACY`)
-- `iosArm64`, `iosX64`
-- `watchosArm32`, `watchosArm64`, `watchosX64`
-- `tvosArm64`, `tvosX64`
-- `macosX64`
+- `ios`, `ios`
+- `watchos`
+- `tvos`
+- `macos`
 - `linuxX64`
 
 ## Lifecyle
