@@ -5,7 +5,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 @Suppress("TestFunctionName")
@@ -22,19 +21,6 @@ class AndroidParcelableContainerRobolectricTest {
         val consumedValue = container.consume(Some::class)
 
         assertEquals(value, consumedValue)
-    }
-
-    @Test
-    fun WHEN_parcelling_ignored_THEN_returns_default_value() {
-        val value = Ignored(ignored = "value")
-        var container = AndroidParcelableContainer()
-
-        container.set(value)
-        container = container.recreate()
-        val consumedValue = container.consume(Ignored::class)
-
-        assertNotNull(consumedValue)
-        assertNull(consumedValue.ignored)
     }
 
     @Test
@@ -72,7 +58,4 @@ class AndroidParcelableContainerRobolectricTest {
 
     @Parcelize
     private data class Some(val value: String) : Parcelable
-
-    @Parcelize
-    private data class Ignored(@IgnoredOnParcel val ignored: String? = null) : Parcelable
 }
