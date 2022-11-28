@@ -206,16 +206,35 @@ internal actual object InstantParceler : Parceler<Instant> {
 internal actual object InstantParceler : Parceler<Instant>
 ```
 
-Which can be used as follows:
+Which can be applied using `@TypeParceler` or `@WriteWith` annotations:
 
 ```kotlin
 // In commonMain
 
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import com.arkivanov.essenty.parcelable.TypeParceler
 import com.arkivanov.essenty.parcelable.WriteWith
 import kotlinx.datetime.Instant
 
+// Class-local parceler
+@Parcelize
+@TypeParceler<Instant, InstantParceler>()
+data class User(
+    val id: Long,
+    val name: String,
+    val dateOfBirth: Instant,
+) : Parcelable
+
+// Property-local parceler
+@Parcelize
+data class User(
+    val id: Long,
+    val name: String,
+    @TypeParceler<Instant, InstantParceler>() val dateOfBirth: Instant,
+) : Parcelable
+
+// Type-local parceler
 @Parcelize
 data class User(
     val id: Long,
