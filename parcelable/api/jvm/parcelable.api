@@ -18,6 +18,3 @@ public final class com/arkivanov/essenty/parcelable/ParcelableContainerKt {
 public abstract interface class com/arkivanov/essenty/parcelable/Parceler {
 }
 
-public abstract interface annotation class com/arkivanov/essenty/parcelable/Parcelize : java/lang/annotation/Annotation {
-}
-
