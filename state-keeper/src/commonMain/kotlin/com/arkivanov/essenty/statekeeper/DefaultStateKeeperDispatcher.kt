@@ -54,6 +54,6 @@ internal class DefaultStateKeeperDispatcher internal constructor(
 
     @Parcelize
     private class SavedState(
-        val map: HashMap<String, ParcelableContainer>
+        val map: MutableMap<String, ParcelableContainer>
     ) : Parcelable
 }

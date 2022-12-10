@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 buildscript {
     repositories {
         gradlePluginPortal()
+        mavenCentral()
         google()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
@@ -22,6 +23,7 @@ buildscript {
         classpath(deps.android.gradle)
         classpath(deps.kotlinx.binaryCompatibilityValidator)
         classpath(deps.detekt.gradleDetektPlug)
+        classpath(deps.parcelizeDarwin.gradlePlug)
     }
 }
 

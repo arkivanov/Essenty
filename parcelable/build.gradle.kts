@@ -9,6 +9,7 @@ plugins {
     id("kotlin-multiplatform")
     id("com.android.library")
     id("kotlin-parcelize")
+    id("com.arkivanov.parcelize.darwin")
     id("com.arkivanov.gradle.setup")
 }
 
@@ -19,10 +20,13 @@ setupBinaryCompatibilityValidator()
 kotlin {
     setupSourceSets {
         val android by bundle()
-        val nonAndroid by bundle()
+        val notParcelable by bundle()
+        val darwin by bundle()
 
-        nonAndroid dependsOn common
-        (allSet - android) dependsOn nonAndroid
+        notParcelable dependsOn common
+        (allSet - android - darwinSet) dependsOn notParcelable
+        darwin dependsOn common
+        darwinSet dependsOn darwin
 
         common.main.dependencies {
             implementation(project(":utils-internal"))
@@ -34,6 +38,10 @@ kotlin {
 
         android.test.dependencies {
             implementation(deps.robolectric.robolectric)
+        }
+
+        darwin.main.dependencies {
+            implementation(deps.parcelizeDarwin.runtime)
         }
     }
 }
