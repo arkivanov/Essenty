@@ -130,12 +130,17 @@ lifecycleRegistry.destroy()
 
 Essenty brings both [Android Parcelable](https://developer.android.com/reference/android/os/Parcelable) interface and the `@Parcelize` annotation from [kotlin-parcelize](https://developer.android.com/kotlin/parcelize) compiler plugin to Kotlin Multiplatform, so they both can be used in common code. This is typically used for state/data preservation over [Android configuration changes](https://developer.android.com/guide/topics/resources/runtime-changes), when writing common code targeting Android.
 
+Additionally, Essenty provides an experimental support of `Parcelable` and `@Parcelize` for all Darwin (Apple) targets via [parcelize-darwin](https://github.com/arkivanov/parcelize-darwin) compiler plugin. This only affects your project's runtime if you explicitly enable the `parcelize-darwin` compiler plugin in your project. Otherwise, it's just no-op.
+
+> ⚠️  If you experience any issues with the `parcelize-darwin` plugin, please report them [here](https://github.com/arkivanov/Essenty/issues).
+
 ### Setup
 
 Groovy:
 ```groovy
 plugins {
     id "kotlin-parcelize" // Apply the plugin for Android
+    id "parcelize-darwin" // Optional, only if you need support for Darwin targets
 }
 
 // Add the dependency, typically under the commonMain source set
@@ -146,11 +151,14 @@ Kotlin:
 ```kotlin
 plugins {
     id("kotlin-parcelize") // Apply the plugin for Android
+    id("parcelize-darwin") // Optional, only if you need support for Darwin targets
 }
 
 // Add the dependency, typically under the commonMain source set
 implementation("com.arkivanov.essenty:parcelable:<essenty_version>")
 ```
+
+The `parcelize-darwin` is published on Maven Central, you may need to add `mavenCentral()` repository to your project. You can find more information about `parcelize-darwin` plugin setup [here](https://github.com/arkivanov/parcelize-darwin).
 
 ### Usage example
 
@@ -172,6 +180,8 @@ data class User(
 When compiled for Android, the `Parcelable` implementation will be generated automatically. When compiled for other targets, it will be just a regular class without any extra generated code.
 
 #### Custom Parcelers
+
+> ⚠️  Not yet supported on Darwin (Apple) targets. Feel free to contribute!
 
 If you don't own the type that you need to `@Parcelize`, you can write a custom `Parceler` for it (similar to [kotlin-parcelize](https://developer.android.com/kotlin/parcelize#custom_parcelers)).
 
@@ -242,10 +252,6 @@ data class User(
     val dateOfBirth: @WriteWith<InstantParceler> Instant,
 ) : Parcelable
 ```
-
-#### Parcelize for Darwin/Apple targets
-
-Currently there is no extra code generated when compiled for Darwin/Apple targets. However I made a proof of concept: [kotlin-parcelize-darwin](https://github.com/arkivanov/kotlin-parcelize-darwin) compiler plugin. It is not used yet by Essenty, and the applicabilty is being considered. Please raise a [Discussion](https://github.com/arkivanov/Essenty/discussions) if you are interested.
 
 ## StateKeeper
 
