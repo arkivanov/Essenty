@@ -1,3 +1,6 @@
+public abstract interface annotation class com/arkivanov/essenty/parcelable/IgnoredOnParcel : java/lang/annotation/Annotation {
+}
+
 public abstract interface class com/arkivanov/essenty/parcelable/Parcelable {
 }
 
@@ -16,5 +19,18 @@ public final class com/arkivanov/essenty/parcelable/ParcelableContainerKt {
 }
 
 public abstract interface class com/arkivanov/essenty/parcelable/Parceler {
+}
+
+public abstract interface annotation class com/arkivanov/essenty/parcelable/Parcelize : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/arkivanov/essenty/parcelable/TypeParceler : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/arkivanov/essenty/parcelable/TypeParceler$Container : java/lang/annotation/Annotation {
+	public abstract fun value ()[Lcom/arkivanov/essenty/parcelable/TypeParceler;
+}
+
+public abstract interface annotation class com/arkivanov/essenty/parcelable/WriteWith : java/lang/annotation/Annotation {
 }
 
