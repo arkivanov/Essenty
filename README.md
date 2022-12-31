@@ -130,9 +130,15 @@ lifecycleRegistry.destroy()
 
 Essenty brings both [Android Parcelable](https://developer.android.com/reference/android/os/Parcelable) interface and the `@Parcelize` annotation from [kotlin-parcelize](https://developer.android.com/kotlin/parcelize) compiler plugin to Kotlin Multiplatform, so they both can be used in common code. This is typically used for state/data preservation over [Android configuration changes](https://developer.android.com/guide/topics/resources/runtime-changes), when writing common code targeting Android.
 
+### Parcelable for Darwin (Apple) targets (experimental)
+
 Additionally, Essenty provides an experimental support of `Parcelable` and `@Parcelize` for all Darwin (Apple) targets via [parcelize-darwin](https://github.com/arkivanov/parcelize-darwin) compiler plugin. This only affects your project's runtime if you explicitly enable the `parcelize-darwin` compiler plugin in your project. Otherwise, it's just no-op.
 
 > ⚠️  If you experience any issues with the `parcelize-darwin` plugin, please report them [here](https://github.com/arkivanov/Essenty/issues).
+
+### Parcelable for JVM targets (experimental)
+
+`Parcelable` interface extends `java.io.Serializable` on JVM. This makes it possible to serialize and deserialize `Parcelable` classes as `ByteArray` using [ObjectOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html) and [ObjectInputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectInputStream.html).
 
 ### Setup
 
@@ -181,7 +187,7 @@ When compiled for Android, the `Parcelable` implementation will be generated aut
 
 #### Custom Parcelers
 
-> ⚠️  Not yet supported on Darwin (Apple) targets. Feel free to contribute!
+> ⚠️  Supported only on Android.
 
 If you don't own the type that you need to `@Parcelize`, you can write a custom `Parceler` for it (similar to [kotlin-parcelize](https://developer.android.com/kotlin/parcelize#custom_parcelers)).
 
@@ -255,7 +261,7 @@ data class User(
 
 ## StateKeeper
 
-When writing common code targetting Android, it might be required to preserve some data over Android configuration changes or process death. For this purpose, Essenty provides the `StateKeeper` API, which is inspired by the AndroidX [SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle).
+When writing common code targeting Android, it might be required to preserve some data over Android configuration changes or process death. For this purpose, Essenty provides the `StateKeeper` API, which is inspired by the AndroidX [SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle).
 
 > ⚠️  The `StateKeeper` API relies on the `Parcelable` interface provided by the `parcelable` module described above. It can fail in non-instrumented Android tests (unit tests). Consider using your own test implementations or mocks.
 
