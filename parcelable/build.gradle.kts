@@ -1,3 +1,4 @@
+import com.arkivanov.gradle.SourceSetBundle
 import com.arkivanov.gradle.bundle
 import com.arkivanov.gradle.dependsOn
 import com.arkivanov.gradle.setupBinaryCompatibilityValidator
@@ -20,11 +21,12 @@ setupBinaryCompatibilityValidator()
 kotlin {
     setupSourceSets {
         val android by bundle()
-        val notParcelable by bundle()
+        val jvm by bundle()
         val darwin by bundle()
+        val notParcelable by bundle()
 
         notParcelable dependsOn common
-        (allSet - android - darwinSet) dependsOn notParcelable
+        (allSet - android - jvm - darwinSet) dependsOn notParcelable
         darwin dependsOn common
         darwinSet dependsOn darwin
 

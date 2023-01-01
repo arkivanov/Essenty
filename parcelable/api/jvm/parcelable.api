@@ -1,7 +1,7 @@
 public abstract interface annotation class com/arkivanov/essenty/parcelable/IgnoredOnParcel : java/lang/annotation/Annotation {
 }
 
-public abstract interface class com/arkivanov/essenty/parcelable/Parcelable {
+public abstract interface class com/arkivanov/essenty/parcelable/Parcelable : java/io/Serializable {
 }
 
 public abstract interface class com/arkivanov/essenty/parcelable/ParcelableContainer : com/arkivanov/essenty/parcelable/Parcelable {
