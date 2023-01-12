@@ -1,5 +1,6 @@
 public final class com/arkivanov/essenty/backhandler/AndroidBackHandlerKt {
 	public static final fun BackHandler (Landroidx/activity/OnBackPressedDispatcher;)Lcom/arkivanov/essenty/backhandler/BackHandler;
+	public static final fun BackHandler (Landroidx/activity/OnBackPressedDispatcher;Landroidx/lifecycle/LifecycleOwner;)Lcom/arkivanov/essenty/backhandler/BackHandler;
 	public static final fun backHandler (Landroidx/activity/OnBackPressedDispatcherOwner;)Lcom/arkivanov/essenty/backhandler/BackHandler;
 }
 

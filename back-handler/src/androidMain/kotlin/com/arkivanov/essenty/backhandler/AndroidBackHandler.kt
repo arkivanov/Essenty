@@ -1,27 +1,53 @@
 package com.arkivanov.essenty.backhandler
 
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.activity.addCallback
+import androidx.lifecycle.LifecycleOwner
 
 /**
  * Creates a new instance of [BackHandler] and attaches it to the provided AndroidX [OnBackPressedDispatcher].
  */
 fun BackHandler(onBackPressedDispatcher: OnBackPressedDispatcher): BackHandler =
-    AndroidBackHandler(onBackPressedDispatcher)
+    AndroidBackHandler(
+        addCallback = { onBackPressed ->
+            onBackPressedDispatcher.addCallback(
+                enabled = false,
+                onBackPressed = onBackPressed,
+            )
+        }
+    )
+
+/**
+ * Creates a new instance of [BackHandler] and attaches it to the provided AndroidX [OnBackPressedDispatcher].
+ */
+fun BackHandler(
+    onBackPressedDispatcher: OnBackPressedDispatcher,
+    lifecycleOwner: LifecycleOwner,
+): BackHandler =
+    AndroidBackHandler(
+        addCallback = { onBackPressed ->
+            onBackPressedDispatcher.addCallback(
+                owner = lifecycleOwner,
+                enabled = false,
+                onBackPressed = onBackPressed,
+            )
+        }
+    )
 
 /**
  * Creates a new instance of [BackHandler] and attaches it to the AndroidX [OnBackPressedDispatcher].
  */
 fun OnBackPressedDispatcherOwner.backHandler(): BackHandler =
-    AndroidBackHandler(onBackPressedDispatcher)
+    BackHandler(onBackPressedDispatcher = onBackPressedDispatcher)
 
-internal class AndroidBackHandler(
-    delegate: OnBackPressedDispatcher,
+private class AndroidBackHandler(
+    addCallback: (onBackPressed: OnBackPressedCallback.() -> Unit) -> OnBackPressedCallback,
 ) : BackHandler {
 
     private var set = emptySet<BackCallback>()
-    private val delegateCallback = delegate.addCallback(enabled = false) { set.call() }
+    private val delegateCallback = addCallback { set.call() }
     private val enabledChangedListener: (Boolean) -> Unit = { onEnabledChanged() }
 
     override fun register(callback: BackCallback) {

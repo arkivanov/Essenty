@@ -10,7 +10,7 @@ import kotlin.test.assertTrue
 class AndroidBackHandlerTest {
 
     private val dispatcher = OnBackPressedDispatcher()
-    private val handler = AndroidBackHandler(dispatcher)
+    private val handler = BackHandler(onBackPressedDispatcher = dispatcher)
 
     @Test
     fun WHEN_created_THEN_hasEnabledCallbacks_false() {
