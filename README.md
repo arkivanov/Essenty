@@ -467,69 +467,6 @@ if (!backDispatcher.back()) {
 }
 ```
 
-## BackPressedDispatcher
-
-> ⚠️  `BackPressedHandler` and `BackPressedDispatcher` API (the `back-pressed` module) is entirely deprecated. Please use `BackHandler` and `BackDispatcher` described above.
-
-The `BackPressedDispatcher` API provides ability to handle back button events (e.g. an Android device's back button), in common code. This API is similar to AndroidX [OnBackPressedDispatcher](https://developer.android.com/reference/androidx/activity/OnBackPressedDispatcher).
-
-### Setup
-
-Groovy:
-```groovy
-// Add the dependency, typically under the commonMain source set
-implementation "com.arkivanov.essenty:back-pressed:<essenty_version>"
-```
-
-Kotlin:
-```kotlin
-// Add the dependency, typically under the commonMain source set
-implementation("com.arkivanov.essenty:back-pressed:<essenty_version>")
-```
-
-### Content
-
-The [BackPressedHandler](https://github.com/arkivanov/Essenty/blob/master/back-pressed/src/commonMain/kotlin/com/arkivanov/essenty/backpressed/BackPressedHandler.kt) interface provides ability to register/unregister back button handlers. When the device's back button is clicked, all registered handlers are called in reverse order. If a handler returns `true` then the event is considered as handled and the handling process stops, the remaining handlers are not called. If none of the handlers returned `true` then the event is considered as unhandled.
-
-The [BackPressedDispatcher](https://github.com/arkivanov/Essenty/blob/master/back-pressed/src/commonMain/kotlin/com/arkivanov/essenty/backpressed/BackPressedDispatcher.kt) interface extends `BackPressedHandler` and is responsible for triggering the registered handlers. The `BackPressedDispatcher.onBackPressed()` triggers all registered handlers in reverse order, returns `true` if the event is handled, and `false` if the event is unhandled.
-
-#### Android extensions
-
-From Android side, `BackPressedDispatcher` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/back-pressed/src/androidMain/kotlin/com/arkivanov/essenty/backpressed/AndroidExt.kt).
-
-> ⚠️  Due to the nature of AndroidX `OnBackPressedDispatcher` API, it is not possible to map it 1-1 to `BackPressedHandler`. Please keep in mind some possible side effects described in the [corresponding KDocs](https://github.com/arkivanov/Essenty/blob/master/back-pressed/src/androidMain/kotlin/com/arkivanov/essenty/backpressed/AndroidExt.kt).
-
-### Usage example
-
-#### Using the BackPressedHandler
-
-```kotlin
-class SomeLogic(backPressedHandler: BackPressedHandler) {
-    init {
-        backPressedHandler.register {
-            // Called when the back button is pressed
-            true // Return true to consume the event, or false to allow other registered callbacks
-        }
-    }
-}
-```
-
-#### Using the BackPressedDispatcher manually
-
-A default implementation of the `BackPressedDispatcher` interface can be instantiated using the corresponding builder function:
-
-```kotlin
-import com.arkivanov.essenty.backpressed.BackPressedDispatcher
-import com.arkivanov.essenty.backpressed.BackPressedHandler
-
-val backPressedDispatcher = BackPressedDispatcher()
-val someLogic = SomeLogic(backPressedDispatcher)
-
-if (!backPressedDispatcher.onBackPressed()) {
-    // The back pressed event was not handled
-}
-```
-
 ## Author
 
 Twitter: [@arkann1985](https://twitter.com/arkann1985)
