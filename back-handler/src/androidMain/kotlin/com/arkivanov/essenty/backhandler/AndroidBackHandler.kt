@@ -20,7 +20,8 @@ fun BackHandler(onBackPressedDispatcher: OnBackPressedDispatcher): BackHandler =
     )
 
 /**
- * Creates a new instance of [BackHandler] and attaches it to the provided AndroidX [OnBackPressedDispatcher].
+ * Creates a new instance of [BackHandler] and attaches it to the provided AndroidX [OnBackPressedDispatcher]
+ * only when the [LifecycleOwner]'s Lifecycle is [STARTED][androidx.lifecycle.Lifecycle.State.STARTED].
  */
 fun BackHandler(
     onBackPressedDispatcher: OnBackPressedDispatcher,
