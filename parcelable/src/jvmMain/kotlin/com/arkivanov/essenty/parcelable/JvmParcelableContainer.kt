@@ -7,6 +7,7 @@ internal data class JvmParcelableContainer(
 ) : ParcelableContainer {
 
     override fun <T : Parcelable> consume(clazz: KClass<out T>): T? =
+        @Suppress("UNCHECKED_CAST")
         (parcelable as T?).also {
             parcelable = null
         }

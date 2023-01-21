@@ -13,9 +13,12 @@ plugins {
 setupMultiplatform()
 setupPublication()
 
+android {
+    namespace = "com.arkivanov.essenty.utils.internal"
+}
+
 kotlin {
     setupSourceSets {
-        val js by bundle()
         val native by bundle()
         val nonNative by bundle()
 
