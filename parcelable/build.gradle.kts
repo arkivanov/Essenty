@@ -1,4 +1,3 @@
-import com.arkivanov.gradle.SourceSetBundle
 import com.arkivanov.gradle.bundle
 import com.arkivanov.gradle.dependsOn
 import com.arkivanov.gradle.setupBinaryCompatibilityValidator
@@ -17,6 +16,10 @@ plugins {
 setupMultiplatform()
 setupPublication()
 setupBinaryCompatibilityValidator()
+
+android {
+    namespace = "com.arkivanov.essenty.parcelable"
+}
 
 kotlin {
     setupSourceSets {

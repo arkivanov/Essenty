@@ -18,6 +18,10 @@ repositories {
     }
 }
 
+android {
+    namespace = "com.arkivanov.essenty.tools.checkpublication"
+}
+
 kotlin {
     setupSourceSets {
         common.main.dependencies {

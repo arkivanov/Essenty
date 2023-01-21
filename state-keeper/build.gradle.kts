@@ -16,6 +16,10 @@ setupMultiplatform()
 setupPublication()
 setupBinaryCompatibilityValidator()
 
+android {
+    namespace = "com.arkivanov.essenty.statekeeper"
+}
+
 kotlin {
     setupSourceSets {
         val android by bundle()

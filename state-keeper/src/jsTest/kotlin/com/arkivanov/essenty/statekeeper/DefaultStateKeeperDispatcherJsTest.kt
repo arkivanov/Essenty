@@ -14,6 +14,7 @@ class DefaultStateKeeperDispatcherJsTest {
 
         val parcelableContainer = stateKeeper.save()
 
+        @Suppress("USELESS_IS_CHECK")
         assertTrue(parcelableContainer is ParcelableContainer)
     }
 }
