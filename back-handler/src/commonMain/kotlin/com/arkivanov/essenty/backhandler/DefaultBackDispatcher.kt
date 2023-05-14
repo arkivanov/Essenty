@@ -1,5 +1,6 @@
 package com.arkivanov.essenty.backhandler
 
+import com.arkivanov.essenty.backhandler.BackDispatcher.PredictiveBackDispatcher
 import com.arkivanov.essenty.utils.internal.ensureNeverFrozen
 
 internal class DefaultBackDispatcher : BackDispatcher {
@@ -24,4 +25,24 @@ internal class DefaultBackDispatcher : BackDispatcher {
     }
 
     override fun back(): Boolean = set.call()
+
+    override fun startPredictiveBack(backEvent: BackEvent): PredictiveBackDispatcher? {
+        val callback = set.findMostImportant() ?: return null
+
+        callback.onBackStarted(backEvent)
+
+        return object : PredictiveBackDispatcher {
+            override fun progress(backEvent: BackEvent) {
+                callback.onBackProgressed(backEvent)
+            }
+
+            override fun finish() {
+                callback.onBack()
+            }
+
+            override fun cancel() {
+                callback.onBackCancelled()
+            }
+        }
+    }
 }

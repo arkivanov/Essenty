@@ -42,9 +42,27 @@ abstract class BackCallback(
     }
 
     /**
-     * Handles the back button press.
+     * Called when the back button is pressed, or the predictive back gesture is finished.
      */
     abstract fun onBack()
+
+    /**
+     * Called when the predictive back gesture starts.
+     */
+    open fun onBackStarted(backEvent: BackEvent) {
+    }
+
+    /**
+     * Called on every progress of the predictive back gesture.
+     */
+    open fun onBackProgressed(backEvent: BackEvent) {
+    }
+
+    /**
+     * Called when the predictive back gesture is cancelled.
+     */
+    open fun onBackCancelled() {
+    }
 
     companion object {
         const val PRIORITY_DEFAULT: Int = 0

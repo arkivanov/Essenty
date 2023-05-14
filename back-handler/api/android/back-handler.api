@@ -15,6 +15,9 @@ public abstract class com/arkivanov/essenty/backhandler/BackCallback {
 	public final fun getPriority ()I
 	public final fun isEnabled ()Z
 	public abstract fun onBack ()V
+	public fun onBackCancelled ()V
+	public fun onBackProgressed (Lcom/arkivanov/essenty/backhandler/BackEvent;)V
+	public fun onBackStarted (Lcom/arkivanov/essenty/backhandler/BackEvent;)V
 	public final fun removeEnabledChangedListener (Lkotlin/jvm/functions/Function1;)V
 	public final fun setEnabled (Z)V
 	public final fun setPriority (I)V
@@ -32,10 +35,40 @@ public final class com/arkivanov/essenty/backhandler/BackCallbackKt {
 public abstract interface class com/arkivanov/essenty/backhandler/BackDispatcher : com/arkivanov/essenty/backhandler/BackHandler {
 	public abstract fun back ()Z
 	public abstract fun isEnabled ()Z
+	public abstract fun startPredictiveBack (Lcom/arkivanov/essenty/backhandler/BackEvent;)Lcom/arkivanov/essenty/backhandler/BackDispatcher$PredictiveBackDispatcher;
+}
+
+public final class com/arkivanov/essenty/backhandler/BackDispatcher$DefaultImpls {
+	public static fun startPredictiveBack (Lcom/arkivanov/essenty/backhandler/BackDispatcher;Lcom/arkivanov/essenty/backhandler/BackEvent;)Lcom/arkivanov/essenty/backhandler/BackDispatcher$PredictiveBackDispatcher;
+}
+
+public abstract interface class com/arkivanov/essenty/backhandler/BackDispatcher$PredictiveBackDispatcher {
+	public abstract fun cancel ()V
+	public abstract fun finish ()V
+	public abstract fun progress (Lcom/arkivanov/essenty/backhandler/BackEvent;)V
 }
 
 public final class com/arkivanov/essenty/backhandler/BackDispatcherKt {
 	public static final fun BackDispatcher ()Lcom/arkivanov/essenty/backhandler/BackDispatcher;
+}
+
+public final class com/arkivanov/essenty/backhandler/BackEvent {
+	public fun <init> ()V
+	public fun <init> (FLcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;FF)V
+	public synthetic fun <init> (FLcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;FFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getProgress ()F
+	public final fun getSwipeEdge ()Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
+	public final fun getTouchX ()F
+	public final fun getTouchY ()F
+}
+
+public final class com/arkivanov/essenty/backhandler/BackEvent$SwipeEdge : java/lang/Enum {
+	public static final field BOTTOM Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
+	public static final field LEFT Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
+	public static final field RIGHT Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
+	public static final field UNKNOWN Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
+	public static fun valueOf (Ljava/lang/String;)Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
+	public static fun values ()[Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 }
 
 public abstract interface class com/arkivanov/essenty/backhandler/BackHandler {
