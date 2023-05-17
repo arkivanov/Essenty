@@ -32,5 +32,6 @@ style:
     active: false
   MaxLineLength:
     maxLineLength: 140
+    excludes: ['**/test/**', '**/*Test/**']
   ReturnCount:
     active: false
