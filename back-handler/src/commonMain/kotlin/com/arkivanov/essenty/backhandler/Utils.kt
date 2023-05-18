@@ -1,7 +1,10 @@
 package com.arkivanov.essenty.backhandler
 
+internal fun Iterable<BackCallback>.findMostImportant(): BackCallback? =
+    sortedBy(BackCallback::priority).lastOrNull(BackCallback::isEnabled)
+
 internal fun Iterable<BackCallback>.call(): Boolean {
-    lastOrNull(BackCallback::isEnabled)?.also {
+    findMostImportant()?.also {
         it.onBack()
         return true
     }

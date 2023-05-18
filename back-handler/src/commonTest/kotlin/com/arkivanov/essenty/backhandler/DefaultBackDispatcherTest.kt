@@ -116,6 +116,37 @@ class DefaultBackDispatcherTest {
     }
 
     @Test
+    fun GIVEN_enabled_callbacks_registered_with_priorities_WHEN_back_THEN_last_callback_with_higher_priority_called() {
+        val list = ArrayList<Int>()
+        dispatcher.register(callback(isEnabled = true, priority = 0) { list += 1 })
+        dispatcher.register(callback(isEnabled = true, priority = 1) { list += 2 })
+        dispatcher.register(callback(isEnabled = true, priority = 2) { list += 3 })
+        dispatcher.register(callback(isEnabled = true, priority = 1) { list += 4 })
+        dispatcher.register(callback(isEnabled = true, priority = 2) { list += 5 })
+        dispatcher.register(callback(isEnabled = true, priority = 0) { list += 6 })
+        dispatcher.register(callback(isEnabled = true, priority = 1) { list += 7 })
+        dispatcher.register(callback(isEnabled = true, priority = 0) { list += 8 })
+
+        dispatcher.back()
+
+        assertContentEquals(listOf(5), list)
+    }
+
+    @Test
+    fun GIVEN_enabled_callbacks_registered_with_priorities_WHEN_priority_changed_and_back_THEN_last_callback_with_higher_priority_called() {
+        val list = ArrayList<Int>()
+        dispatcher.register(callback(isEnabled = true, priority = 0) { list += 1 })
+        val callback = callback(isEnabled = true, priority = 1) { list += 2 }
+        dispatcher.register(callback)
+        dispatcher.register(callback(isEnabled = true, priority = 2) { list += 3 })
+
+        callback.priority = 3
+        dispatcher.back()
+
+        assertContentEquals(listOf(2), list)
+    }
+
+    @Test
     fun GIVEN_callbacks_not_registered_WHEN_back_THEN_returned_false() {
         val result = dispatcher.back()
 
@@ -213,6 +244,10 @@ class DefaultBackDispatcherTest {
         assertFalse(result)
     }
 
-    private fun callback(isEnabled: Boolean = true, onBack: () -> Unit = {}): BackCallback =
-        BackCallback(isEnabled = isEnabled, onBack = onBack)
+    private fun callback(
+        isEnabled: Boolean = true,
+        priority: Int = 0,
+        onBack: () -> Unit = {},
+    ): BackCallback =
+        BackCallback(isEnabled = isEnabled, priority = priority, onBack = onBack)
 }
