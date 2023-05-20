@@ -66,6 +66,8 @@ abstract class BackCallback(
 
     companion object {
         const val PRIORITY_DEFAULT: Int = 0
+        const val PRIORITY_MIN: Int = Int.MIN_VALUE
+        const val PRIORITY_MAX: Int = Int.MAX_VALUE
     }
 }
 
