@@ -16,7 +16,7 @@ class AndroidBackHandlerWithLifecycleTest {
 
     @Test
     fun GIVEN_lifecycle_created_WHEN_handler_created_THEN_hasEnabledCallbacks_returns_false() {
-        lifecycleOwner.registry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        lifecycleOwner.lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
 
         val handler = handler()
         handler.register(callback())
@@ -26,7 +26,7 @@ class AndroidBackHandlerWithLifecycleTest {
 
     @Test
     fun GIVEN_lifecycle_started_WHEN_handler_created_THEN_hasEnabledCallbacks_returns_true() {
-        lifecycleOwner.registry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+        lifecycleOwner.lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         val handler = handler()
         handler.register(callback())
@@ -39,18 +39,18 @@ class AndroidBackHandlerWithLifecycleTest {
         val handler = handler()
         handler.register(callback())
 
-        lifecycleOwner.registry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+        lifecycleOwner.lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         assertTrue(dispatcher.hasEnabledCallbacks())
     }
 
     @Test
     fun GIVEN_lifecycle_started_WHEN_lifecycle_stopped_THEN_hasEnabledCallbacks_returns_false() {
-        lifecycleOwner.registry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+        lifecycleOwner.lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
         val handler = handler()
         handler.register(callback())
 
-        lifecycleOwner.registry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+        lifecycleOwner.lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
 
         assertFalse(dispatcher.hasEnabledCallbacks())
     }
@@ -65,8 +65,6 @@ class AndroidBackHandlerWithLifecycleTest {
         BackCallback(isEnabled = true, onBack = {})
 
     private class LifecycleOwnerImpl : LifecycleOwner {
-        val registry: LifecycleRegistry = LifecycleRegistry.createUnsafe(this)
-
-        override fun getLifecycle(): Lifecycle = registry
+        override val lifecycle: LifecycleRegistry = LifecycleRegistry.createUnsafe(this)
     }
 }

@@ -18,6 +18,33 @@ interface BackDispatcher : BackHandler {
      * @return `true` if any handler was triggered, `false` otherwise.
      */
     fun back(): Boolean
+
+    /**
+     * Starts handling the predictive back gesture. Picks one of the enabled callback (if any)
+     * that will be handling the gesture and calls [BackCallback.onBackStarted].
+     */
+    fun startPredictiveBack(backEvent: BackEvent): PredictiveBackDispatcher? = null
+
+    /**
+     * Dispatches predictive back gesture events to the callback selected by [startPredictiveBack].
+     */
+    interface PredictiveBackDispatcher {
+
+        /**
+         * Calls [BackCallback.onBackProgressed] on the selected callback.
+         */
+        fun progress(backEvent: BackEvent)
+
+        /**
+         * Calls [BackCallback.onBack] on the selected callback.
+         */
+        fun finish()
+
+        /**
+         * Calls [BackCallback.onBackCancelled] on the selected callback.
+         */
+        fun cancel()
+    }
 }
 
 /**
