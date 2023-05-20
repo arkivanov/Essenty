@@ -7,6 +7,8 @@ public final class com/arkivanov/essenty/backhandler/AndroidBackHandlerKt {
 public abstract class com/arkivanov/essenty/backhandler/BackCallback {
 	public static final field Companion Lcom/arkivanov/essenty/backhandler/BackCallback$Companion;
 	public static final field PRIORITY_DEFAULT I
+	public static final field PRIORITY_MAX I
+	public static final field PRIORITY_MIN I
 	public fun <init> ()V
 	public synthetic fun <init> (Z)V
 	public fun <init> (ZI)V
