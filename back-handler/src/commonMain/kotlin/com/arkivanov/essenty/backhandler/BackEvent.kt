@@ -23,6 +23,5 @@ class BackEvent(
         UNKNOWN,
         LEFT,
         RIGHT,
-        BOTTOM,
     }
 }
