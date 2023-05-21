@@ -65,7 +65,6 @@ public final class com/arkivanov/essenty/backhandler/BackEvent {
 }
 
 public final class com/arkivanov/essenty/backhandler/BackEvent$SwipeEdge : java/lang/Enum {
-	public static final field BOTTOM Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 	public static final field LEFT Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 	public static final field RIGHT Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 	public static final field UNKNOWN Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
