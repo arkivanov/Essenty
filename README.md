@@ -423,7 +423,9 @@ implementation("com.arkivanov.essenty:back-handler:<essenty_version>")
 
 ### Content
 
-The [BackHandler](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/commonMain/kotlin/com/arkivanov/essenty/backhandler/BackHandler.kt) interface provides ability to register and unregister back button callbacks. When the device's back button is pressed, all registered callbacks as sorted in ascending order first by priority and then by index, the last enabled callback is called.
+The [BackHandler](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/commonMain/kotlin/com/arkivanov/essenty/backhandler/BackHandler.kt) interface provides ability to register and unregister back button callbacks. When the device's back button is pressed, all registered callbacks are called in reverse order, the first enabled callback is called and the iteration finishes.
+
+> Starting from `v1.2.x`, when the device's back button is pressed, all registered callbacks are sorted in ascending order first by priority and then by index, the last enabled callback is called.
 
 [BackCallback](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/commonMain/kotlin/com/arkivanov/essenty/backhandler/BackCallback.kt) allows handling back events, including predictive back gestures.
 
@@ -433,7 +435,7 @@ The [BackDispatcher](https://github.com/arkivanov/Essenty/blob/master/back-handl
 
 From Android side, `BackHandler` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/androidMain/kotlin/com/arkivanov/essenty/backhandler/AndroidBackHandler.kt).
 
-### Predictive Back Gesture
+### Predictive Back Gesture (starting from v1.2.x)
 
 Both `BackHandler` and `BackDispatcher` bring the new [Android Predictive Back Gesture](https://developer.android.com/guide/navigation/custom-back/predictive-back-gesture) to Kotlin Multiplatform. 
 
