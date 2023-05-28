@@ -423,13 +423,27 @@ implementation("com.arkivanov.essenty:back-handler:<essenty_version>")
 
 ### Content
 
-The [BackHandler](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/commonMain/kotlin/com/arkivanov/essenty/backhandler/BackHandler.kt) interface provides ability to register and unregister back button callbacks. When the device's back button is pressed, all registered callbacks are called in reverse order, the first enabled callback is called and the iteration finishes.
+The [BackHandler](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/commonMain/kotlin/com/arkivanov/essenty/backhandler/BackHandler.kt) interface provides ability to register and unregister back button callbacks. When the device's back button is pressed, all registered callbacks as sorted in ascending order first by priority and then by index, the last enabled callback is called.
+
+[BackCallback](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/commonMain/kotlin/com/arkivanov/essenty/backhandler/BackCallback.kt) allows handling back events, including predictive back gestures.
 
 The [BackDispatcher](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/commonMain/kotlin/com/arkivanov/essenty/backhandler/BackDispatcher.kt) interface extends `BackHandler` and is responsible for triggering the registered callbacks. The `BackDispatcher.back()` method triggers all registered callbacks in reverse order, and returns `true` if an enabled callback was called, and `false` if no enabled callback was found.
 
 #### Android extensions
 
 From Android side, `BackHandler` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/androidMain/kotlin/com/arkivanov/essenty/backhandler/AndroidBackHandler.kt).
+
+### Predictive Back Gesture
+
+Both `BackHandler` and `BackDispatcher` bring the new [Android Predictive Back Gesture](https://developer.android.com/guide/navigation/custom-back/predictive-back-gesture) to Kotlin Multiplatform. 
+
+#### Predictive Back Gesture on Android
+
+On Android, the predictive back gesture only works starting with Android T. On Android T, it works only between Activities, if enabled in the system settings. Starting with Android U, the predictive back gesture also works between application's screens inside an Activity. In the latter case, back gesture events can be handled using `BackCallback`.
+
+#### Predictive Back Gesture on other platforms
+
+On all other platforms, predictive back gestures can be dispatched manually via `BackDispatcher`. This can be done e.g. by adding an overlay on top of the UI and handling touch events manually.
 
 ### Usage example
 
