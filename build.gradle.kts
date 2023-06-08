@@ -47,8 +47,8 @@ setupDefaults(
     },
     androidConfig = AndroidConfig(
         minSdkVersion = 15,
-        compileSdkVersion = 33,
-        targetSdkVersion = 33,
+        compileSdkVersion = 34,
+        targetSdkVersion = 34,
     ),
     publicationConfig = PublicationConfig(
         group = "com.arkivanov.essenty",

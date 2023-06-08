@@ -1,12 +1,10 @@
 package com.arkivanov.essenty.backhandler
 
-import android.os.Build
+import androidx.activity.BackEventCompat
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.OnBackPressedDispatcherOwner
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
-import android.window.BackEvent as AndroidBackEvent
 
 /**
  * Creates a new instance of [BackHandler] and attaches it to the provided AndroidX [OnBackPressedDispatcher].
@@ -46,17 +44,14 @@ private class AndroidBackHandler(
                 set.findMostImportant()?.onBack()
             }
 
-            @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-            override fun handleOnBackStarted(backEvent: AndroidBackEvent) {
-                set.findMostImportant()?.onBackStarted(backEvent.toBackEvent())
+            override fun handleOnBackStarted(backEvent: BackEventCompat) {
+                set.findMostImportant()?.onBackStarted(backEvent.toEssentyBackEvent())
             }
 
-            @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-            override fun handleOnBackProgressed(backEvent: AndroidBackEvent) {
-                set.findMostImportant()?.onBackProgressed(backEvent.toBackEvent())
+            override fun handleOnBackProgressed(backEvent: BackEventCompat) {
+                set.findMostImportant()?.onBackProgressed(backEvent.toEssentyBackEvent())
             }
 
-            @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
             override fun handleOnBackCancelled() {
                 set.findMostImportant()?.onBackCancelled()
             }
@@ -88,13 +83,12 @@ private class AndroidBackHandler(
         delegateCallback.isEnabled = set.any(BackCallback::isEnabled)
     }
 
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-    private fun AndroidBackEvent.toBackEvent(): BackEvent =
+    private fun BackEventCompat.toEssentyBackEvent(): BackEvent =
         BackEvent(
             progress = progress,
             swipeEdge = when (swipeEdge) {
-                AndroidBackEvent.EDGE_LEFT -> BackEvent.SwipeEdge.LEFT
-                AndroidBackEvent.EDGE_RIGHT -> BackEvent.SwipeEdge.RIGHT
+                BackEventCompat.EDGE_LEFT -> BackEvent.SwipeEdge.LEFT
+                BackEventCompat.EDGE_RIGHT -> BackEvent.SwipeEdge.RIGHT
                 else -> BackEvent.SwipeEdge.UNKNOWN
             },
             touchX = touchX,
