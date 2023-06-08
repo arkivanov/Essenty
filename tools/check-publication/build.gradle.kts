@@ -20,7 +20,6 @@ repositories {
 
 android {
     namespace = "com.arkivanov.essenty.tools.checkpublication"
-    compileSdkPreview = "UpsideDownCake"
 }
 
 kotlin {

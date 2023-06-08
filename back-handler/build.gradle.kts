@@ -16,7 +16,6 @@ setupBinaryCompatibilityValidator()
 
 android {
     namespace = "com.arkivanov.essenty.backhandler"
-    compileSdkPreview = "UpsideDownCake"
 }
 
 kotlin {
