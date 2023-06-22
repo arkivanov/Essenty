@@ -9,7 +9,7 @@ androidGradle = "7.3.1"
 androidxCore = "1.6.0"
 androidxLifecycle = "2.2.0"
 androidxSavedstate = "1.1.0"
-androidxActivity = "1.8.0-alpha05"
+androidxActivity = "1.8.0-alpha06"
 robolectric = "4.9.1"
 parcelizeDarwin = "0.1.4"
 
