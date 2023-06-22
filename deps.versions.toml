@@ -1,6 +1,6 @@
 [versions]
 
-essenty = "1.2.0-alpha-02"
+essenty = "1.2.0-alpha-03"
 kotlin = "1.8.20"
 kotlinxBinaryCompatibilityValidator = "0.12.1"
 detektGradlePlugin = "1.22.0"
