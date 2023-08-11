@@ -28,6 +28,7 @@ public final class com/arkivanov/essenty/lifecycle/Lifecycle$State : java/lang/E
 	public static final field INITIALIZED Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
 	public static final field RESUMED Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
 	public static final field STARTED Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
 	public static fun values ()[Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
 }

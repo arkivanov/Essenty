@@ -64,6 +64,7 @@ public final class com/arkivanov/essenty/backhandler/BackEvent$SwipeEdge : java/
 	public static final field LEFT Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 	public static final field RIGHT Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 	public static final field UNKNOWN Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 	public static fun values ()[Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 }

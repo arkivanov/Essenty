@@ -33,9 +33,9 @@ plugins {
 
 setupDefaults(
     multiplatformConfigurator = {
-        android()
+        androidTarget()
         jvm()
-        js(BOTH) {
+        js {
             browser()
             nodejs()
         }

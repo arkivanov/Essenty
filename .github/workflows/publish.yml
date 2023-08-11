@@ -28,9 +28,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 11
+          distribution: 'zulu'
+          java-version: 17
       - name: Publish
         env:
           SONATYPE_REPOSITORY_ID: ${{ needs.create-staging-repository.outputs.repository-id }}
@@ -59,8 +60,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Install Java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 11
+          distribution: 'zulu'
+          java-version: 17
       - name: Check publication
         run: ./gradlew kotlinUpgradeYarnLock :tools:check-publication:build -Pcheck_publication

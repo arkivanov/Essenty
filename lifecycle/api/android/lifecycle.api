@@ -3,13 +3,6 @@ public final class com/arkivanov/essenty/lifecycle/AndroidExtKt {
 	public static final fun essentyLifecycle (Landroidx/lifecycle/LifecycleOwner;)Lcom/arkivanov/essenty/lifecycle/Lifecycle;
 }
 
-public final class com/arkivanov/essenty/lifecycle/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-
 public abstract interface class com/arkivanov/essenty/lifecycle/Lifecycle {
 	public abstract fun getState ()Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
 	public abstract fun subscribe (Lcom/arkivanov/essenty/lifecycle/Lifecycle$Callbacks;)V
@@ -40,6 +33,7 @@ public final class com/arkivanov/essenty/lifecycle/Lifecycle$State : java/lang/E
 	public static final field INITIALIZED Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
 	public static final field RESUMED Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
 	public static final field STARTED Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
 	public static fun values ()[Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;
 }
