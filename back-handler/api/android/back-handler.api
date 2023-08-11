@@ -70,6 +70,7 @@ public final class com/arkivanov/essenty/backhandler/BackEvent$SwipeEdge : java/
 	public static final field LEFT Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 	public static final field RIGHT Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 	public static final field UNKNOWN Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 	public static fun values ()[Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 }
@@ -81,12 +82,5 @@ public abstract interface class com/arkivanov/essenty/backhandler/BackHandler {
 
 public abstract interface class com/arkivanov/essenty/backhandler/BackHandlerOwner {
 	public abstract fun getBackHandler ()Lcom/arkivanov/essenty/backhandler/BackHandler;
-}
-
-public final class com/arkivanov/essenty/backhandler/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
 }
 

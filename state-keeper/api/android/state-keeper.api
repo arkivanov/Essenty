@@ -5,13 +5,6 @@ public final class com/arkivanov/essenty/statekeeper/AndroidExtKt {
 	public static synthetic fun stateKeeper$default (Landroidx/savedstate/SavedStateRegistryOwner;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
 }
 
-public final class com/arkivanov/essenty/statekeeper/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-
 public final class com/arkivanov/essenty/statekeeper/DefaultStateKeeperDispatcher$SavedState$Creator : android/os/Parcelable$Creator {
 	public fun <init> ()V
 	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/arkivanov/essenty/statekeeper/DefaultStateKeeperDispatcher$SavedState;

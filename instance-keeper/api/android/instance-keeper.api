@@ -3,13 +3,6 @@ public final class com/arkivanov/essenty/instancekeeper/AndroidExtKt {
 	public static final fun instanceKeeper (Landroidx/lifecycle/ViewModelStoreOwner;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;
 }
 
-public final class com/arkivanov/essenty/instancekeeper/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-
 public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKeeper {
 	public abstract fun get (Ljava/lang/Object;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;
 	public abstract fun put (Ljava/lang/Object;Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;)V
