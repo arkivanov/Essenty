@@ -11,7 +11,7 @@ androidxLifecycle = "2.2.0"
 androidxSavedstate = "1.1.0"
 androidxActivity = "1.8.0-alpha06"
 robolectric = "4.9.1"
-parcelizeDarwin = "0.1.4"
+parcelizeDarwin = "0.1.5"
 
 [libraries]
 
