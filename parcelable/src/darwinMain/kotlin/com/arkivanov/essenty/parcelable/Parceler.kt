@@ -1,3 +1,3 @@
 package com.arkivanov.essenty.parcelable
 
-actual interface Parceler<T>
+actual typealias Parceler<T> = com.arkivanov.parcelize.darwin.Parceler<T>
