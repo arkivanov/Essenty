@@ -1,7 +1,16 @@
 package com.arkivanov.essenty.parcelable
 
 /**
- * A multiplatform alias for `kotlinx.parcelize.Parceler` from the `kotlin-parcelize` Gradle plugin.
- * Make sure you have the `kotlin-parcelize` Gradle plugin applied.
+ * A multiplatform alias for platform-specific `Parceler` interfaces.
+ *
+ * On Android, refers to `kotlinx.parcelize.Parceler` from the `kotlin-parcelize` Gradle plugin.
+ *
+ * On Darwin (Apple) targets, refers to `com.arkivanov.parcelize.darwin.Parceler` from
+ * the `parcelize-darwin` Gradle plugin.
+ *
+ * No-op on all other targets.
+ *
+ * Make sure you have the required Gradle plugins applied if you need `Parcelize` support.
+ * The `parcelize-darwin` plugin is optional, only apply if you actually need serialization.
  */
 expect interface Parceler<T>

@@ -1,4 +1,45 @@
+public abstract interface class com/arkivanov/essenty/parcelable/CommonParceler : com/arkivanov/essenty/parcelable/Parceler {
+	public abstract fun create (Lcom/arkivanov/essenty/parcelable/ParcelReader;)Ljava/lang/Object;
+	public abstract fun write (Ljava/lang/Object;Lcom/arkivanov/essenty/parcelable/ParcelWriter;)V
+}
+
 public abstract interface annotation class com/arkivanov/essenty/parcelable/IgnoredOnParcel : java/lang/annotation/Annotation {
+}
+
+public final class com/arkivanov/essenty/parcelable/ParcelReader {
+}
+
+public final class com/arkivanov/essenty/parcelable/ParcelReaderKt {
+	public static final fun readParcelable (Lcom/arkivanov/essenty/parcelable/ParcelReader;Lkotlin/reflect/KClass;)Lcom/arkivanov/essenty/parcelable/Parcelable;
+	public static final fun readString (Lcom/arkivanov/essenty/parcelable/ParcelReader;)Ljava/lang/String;
+}
+
+public final class com/arkivanov/essenty/parcelable/ParcelReader_jvmKt {
+	public static final fun readBoolean (Lcom/arkivanov/essenty/parcelable/ParcelReader;)Z
+	public static final fun readDouble (Lcom/arkivanov/essenty/parcelable/ParcelReader;)D
+	public static final fun readFloat (Lcom/arkivanov/essenty/parcelable/ParcelReader;)F
+	public static final fun readInt (Lcom/arkivanov/essenty/parcelable/ParcelReader;)I
+	public static final fun readLong (Lcom/arkivanov/essenty/parcelable/ParcelReader;)J
+	public static final fun readParcelableOrNull (Lcom/arkivanov/essenty/parcelable/ParcelReader;Lkotlin/reflect/KClass;)Lcom/arkivanov/essenty/parcelable/Parcelable;
+	public static final fun readStringOrNull (Lcom/arkivanov/essenty/parcelable/ParcelReader;)Ljava/lang/String;
+}
+
+public final class com/arkivanov/essenty/parcelable/ParcelWriter {
+}
+
+public final class com/arkivanov/essenty/parcelable/ParcelWriterKt {
+	public static final fun writeParcelable (Lcom/arkivanov/essenty/parcelable/ParcelWriter;Lcom/arkivanov/essenty/parcelable/Parcelable;)V
+	public static final fun writeString (Lcom/arkivanov/essenty/parcelable/ParcelWriter;Ljava/lang/String;)V
+}
+
+public final class com/arkivanov/essenty/parcelable/ParcelWriter_jvmKt {
+	public static final fun writeBoolean (Lcom/arkivanov/essenty/parcelable/ParcelWriter;Z)V
+	public static final fun writeDouble (Lcom/arkivanov/essenty/parcelable/ParcelWriter;D)V
+	public static final fun writeFloat (Lcom/arkivanov/essenty/parcelable/ParcelWriter;F)V
+	public static final fun writeInt (Lcom/arkivanov/essenty/parcelable/ParcelWriter;I)V
+	public static final fun writeLong (Lcom/arkivanov/essenty/parcelable/ParcelWriter;J)V
+	public static final fun writeParcelableOrNull (Lcom/arkivanov/essenty/parcelable/ParcelWriter;Lcom/arkivanov/essenty/parcelable/Parcelable;)V
+	public static final fun writeStringOrNull (Lcom/arkivanov/essenty/parcelable/ParcelWriter;Ljava/lang/String;)V
 }
 
 public abstract interface class com/arkivanov/essenty/parcelable/Parcelable : java/io/Serializable {
