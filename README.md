@@ -185,11 +185,33 @@ data class User(
 
 When compiled for Android, the `Parcelable` implementation will be generated automatically. When compiled for other targets, it will be just a regular class without any extra generated code.
 
-#### Custom Parcelers
+### Custom Parcelers
 
-> ⚠️  Supported only on Android.
+> ⚠️  Supported only on Android and Darwin (Apple) targets. For Darwin (Apple) targets the support was added in version `1.2.0-alpha-06`.
 
 If you don't own the type that you need to `@Parcelize`, you can write a custom `Parceler` for it (similar to [kotlin-parcelize](https://developer.android.com/kotlin/parcelize#custom_parcelers)).
+
+#### Simple option in commonMain
+
+```kotlin
+import com.arkivanov.essenty.parcelable.CommonParceler
+import com.arkivanov.essenty.parcelable.ParcelReader
+import com.arkivanov.essenty.parcelable.ParcelWriter
+import com.arkivanov.essenty.parcelable.readLong
+import com.arkivanov.essenty.parcelable.writeLong
+import kotlinx.datetime.Instant
+
+internal object InstantParceler : CommonParceler<Instant> {
+    override fun create(reader: ParcelReader): Instant =
+        Instant.fromEpochSeconds(reader.readLong())
+
+    override fun Instant.write(writer: ParcelWriter) {
+        writer.writeLong(epochSeconds)
+    }
+}
+```
+
+#### Full-featured parcelers with platform-specific serialization
 
 ```kotlin
 // In commonMain
@@ -217,12 +239,31 @@ internal actual object InstantParceler : Parceler<Instant> {
 ```
 
 ```kotlin
+// In iosMain or darwinMain
+
+import com.arkivanov.essenty.parcelable.Parceler
+import kotlinx.datetime.Instant
+import platform.Foundation.NSCoder
+import platform.Foundation.decodeInt64ForKey
+import platform.Foundation.encodeInt64
+
+internal actual object InstantParceler : Parceler<Instant> {
+    override fun create(coder: NSCoder): Instant =
+        Instant.fromEpochSeconds(coder.decodeInt64ForKey(key = "epochSeconds"))
+
+    override fun Instant.write(coder: NSCoder) {
+        coder.encodeInt64(value = epochSeconds, forKey = "epochSeconds")
+    }
+}
+```
+
+```kotlin
 // In all other sources (or in a custom nonAndroidMain source set)
 
 internal actual object InstantParceler : Parceler<Instant>
 ```
 
-Which can be applied using `@TypeParceler` or `@WriteWith` annotations:
+#### Applying the parceler
 
 ```kotlin
 // In commonMain
@@ -240,14 +281,6 @@ data class User(
     val id: Long,
     val name: String,
     val dateOfBirth: Instant,
-) : Parcelable
-
-// Property-local parceler
-@Parcelize
-data class User(
-    val id: Long,
-    val name: String,
-    @TypeParceler<Instant, InstantParceler>() val dateOfBirth: Instant,
 ) : Parcelable
 
 // Type-local parceler
