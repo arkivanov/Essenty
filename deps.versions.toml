@@ -9,9 +9,9 @@ androidGradle = "8.0.2"
 androidxCore = "1.6.0"
 androidxLifecycle = "2.2.0"
 androidxSavedstate = "1.1.0"
-androidxActivity = "1.8.0-alpha06"
+androidxActivity = "1.8.0-beta01"
 robolectric = "4.9.1"
-parcelizeDarwin = "0.2.0"
+parcelizeDarwin = "0.2.1"
 
 [libraries]
 
