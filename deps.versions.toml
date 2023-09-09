@@ -10,6 +10,7 @@ androidxCore = "1.6.0"
 androidxLifecycle = "2.2.0"
 androidxSavedstate = "1.1.0"
 androidxActivity = "1.8.0-rc01"
+jetbrainsKotlinxSerialization = "1.6.0"
 robolectric = "4.9.1"
 parcelizeDarwin = "0.2.1"
 
@@ -29,6 +30,9 @@ androidx-lifecycle-lifecycleRuntime = { group = "androidx.lifecycle", name = "li
 androidx-lifecycle-lifecycleViewmodelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 androidx-savedstate-savedstateKtx = { group = "androidx.savedstate", name = "savedstate-ktx", version.ref = "androidxSavedstate" }
 androidx-activity-activityKtx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
+
+jetbrains-kotlin-serializationGradlePlug = { group = "org.jetbrains.kotlin", name = "kotlin-serialization", version.ref = "kotlin" }
+jetbrains-kotlinx-kotlinxSerializationCore = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-core", version.ref = "jetbrainsKotlinxSerialization" }
 
 robolectric-robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 

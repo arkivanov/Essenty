@@ -35,11 +35,13 @@ internal class DefaultStateKeeperDispatcher internal constructor(
         return ParcelableContainer(SavedState(map))
     }
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun <T : Parcelable> consume(key: String, clazz: KClass<out T>): T? =
         savedState
             ?.remove(key)
             ?.consume(clazz)
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun <T : Parcelable> register(key: String, supplier: () -> T?) {
         check(!isRegistered(key)) { "Another supplier is already registered with the key: $key" }
         suppliers[key] = supplier

@@ -1,5 +1,7 @@
 package com.arkivanov.essenty.parcelable
 
+import com.arkivanov.essenty.utils.internal.PARCELABLE_DEPRECATED_MESSAGE
+
 /**
  * A multiplatform alias for platform-specific `TypeParceler` annotations.
  *
@@ -13,6 +15,7 @@ package com.arkivanov.essenty.parcelable
  * Make sure you have the required Gradle plugins applied if you need `Parcelize` support.
  * The `parcelize-darwin` plugin is optional, only apply if you actually need serialization.
  */
+@Deprecated(PARCELABLE_DEPRECATED_MESSAGE)
 @Retention(AnnotationRetention.SOURCE)
 @Repeatable
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
