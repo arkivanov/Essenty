@@ -21,6 +21,7 @@ public final class com/arkivanov/essenty/parcelable/ParcelReaderKt {
 
 public final class com/arkivanov/essenty/parcelable/ParcelReader_androidKt {
 	public static final fun readBoolean (Lcom/arkivanov/essenty/parcelable/ParcelReader;)Z
+	public static final fun readByteArray (Lcom/arkivanov/essenty/parcelable/ParcelReader;)[B
 	public static final fun readDouble (Lcom/arkivanov/essenty/parcelable/ParcelReader;)D
 	public static final fun readFloat (Lcom/arkivanov/essenty/parcelable/ParcelReader;)F
 	public static final fun readInt (Lcom/arkivanov/essenty/parcelable/ParcelReader;)I
@@ -39,6 +40,7 @@ public final class com/arkivanov/essenty/parcelable/ParcelWriterKt {
 
 public final class com/arkivanov/essenty/parcelable/ParcelWriter_androidKt {
 	public static final fun writeBoolean (Lcom/arkivanov/essenty/parcelable/ParcelWriter;Z)V
+	public static final fun writeByteArray (Lcom/arkivanov/essenty/parcelable/ParcelWriter;[B)V
 	public static final fun writeDouble (Lcom/arkivanov/essenty/parcelable/ParcelWriter;D)V
 	public static final fun writeFloat (Lcom/arkivanov/essenty/parcelable/ParcelWriter;F)V
 	public static final fun writeInt (Lcom/arkivanov/essenty/parcelable/ParcelWriter;I)V

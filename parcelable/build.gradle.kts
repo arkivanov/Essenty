@@ -9,6 +9,7 @@ plugins {
     id("kotlin-multiplatform")
     id("com.android.library")
     id("kotlin-parcelize")
+    id("kotlinx-serialization")
     id("com.arkivanov.parcelize.darwin")
     id("com.arkivanov.gradle.setup")
 }
