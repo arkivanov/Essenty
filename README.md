@@ -146,7 +146,7 @@ Groovy:
 ```groovy
 plugins {
     id "kotlin-parcelize" // Apply the plugin for Android
-    id "parcelize-darwin" // Optional, only if you need support for Darwin targets
+    id "com.arkivanov.parcelize.darwin" // Optional, only if you need support for Darwin targets
 }
 
 // Add the dependency, typically under the commonMain source set
@@ -157,7 +157,7 @@ Kotlin:
 ```kotlin
 plugins {
     id("kotlin-parcelize") // Apply the plugin for Android
-    id("parcelize-darwin") // Optional, only if you need support for Darwin targets
+    id("com.arkivanov.parcelize.darwin") // Optional, only if you need support for Darwin targets
 }
 
 // Add the dependency, typically under the commonMain source set
