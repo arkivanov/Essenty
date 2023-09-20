@@ -1,7 +1,9 @@
 package com.arkivanov.essenty.instancekeeper
 
+import com.arkivanov.essenty.instancekeeper.InstanceKeeper.SimpleInstance
+
 /**
- * Returns a previously stored [InstanceKeeper.Instance] with the given key,
+ * Returns a previously stored [InstanceKeeper.Instance] of type [T] with the given key,
  * or creates and stores a new one if it doesn't exist.
  */
 inline fun <reified T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(key: Any, factory: () -> T): T {
@@ -15,7 +17,27 @@ inline fun <reified T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(key:
 }
 
 /**
- * Returns a previously stored [InstanceKeeper.Instance] with the given key,
- * or creates and stores a new one if it doesn't exist.
+ * Returns a previously stored [InstanceKeeper.Instance] of type [T],
+ * or creates and stores a new one if it doesn't exist. Uses `T::class` as key.
  */
-inline fun <reified T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(factory: () -> T): T = getOrCreate(T::class, factory)
+inline fun <reified T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(factory: () -> T): T =
+    getOrCreate(key = T::class, factory = factory)
+
+/**
+ * Returns a previously stored instance of type [T] with the given key,
+ * or creates and stores a new one if it doesn't exist.
+ *
+ * This overload is for simple cases when instance destroying is not required.
+ */
+inline fun <reified T> InstanceKeeper.getOrCreateSimple(key: Any, factory: () -> T): T =
+    getOrCreate(key = key) { SimpleInstance(factory()) }
+        .instance
+
+/**
+ * Returns a previously stored instance of type [T] with the given key,
+ * or creates and stores a new one if it doesn't exist. Uses `T::class` as key.
+ *
+ * This overload is for simple cases when instance destroying is not required.
+ */
+inline fun <reified T> InstanceKeeper.getOrCreateSimple(factory: () -> T): T =
+    getOrCreateSimple(key = T::class, factory = factory)

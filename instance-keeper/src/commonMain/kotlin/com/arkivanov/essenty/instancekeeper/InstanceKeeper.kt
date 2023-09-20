@@ -31,6 +31,11 @@ interface InstanceKeeper {
         /**
          * Called at the end of the [InstanceKeeper]'s scope.
          */
-        fun onDestroy()
+        fun onDestroy() {}
     }
+
+    /**
+     * Are simple [Instance] wrapper for cases when destroying is not required.
+     */
+    class SimpleInstance<out T>(val instance: T) : Instance
 }
