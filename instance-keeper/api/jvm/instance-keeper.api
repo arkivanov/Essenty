@@ -8,6 +8,16 @@ public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKee
 	public abstract fun onDestroy ()V
 }
 
+public final class com/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance$DefaultImpls {
+	public static fun onDestroy (Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;)V
+}
+
+public final class com/arkivanov/essenty/instancekeeper/InstanceKeeper$SimpleInstance : com/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun getInstance ()Ljava/lang/Object;
+	public fun onDestroy ()V
+}
+
 public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKeeperDispatcher : com/arkivanov/essenty/instancekeeper/InstanceKeeper {
 	public abstract fun destroy ()V
 }
