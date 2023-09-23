@@ -126,7 +126,9 @@ lifecycleRegistry.resume()
 lifecycleRegistry.destroy()
 ```
 
-## Parcelable and Parcelize
+## Parcelable and Parcelize (deprecated since v1.3.0-alpha01)
+
+> ⚠️  Unfortunatelly, the new K2 compiler will not support Parcelable/Parcelize with Kotlin Multiplatform (see [#102](https://github.com/arkivanov/Essenty/issues/102)). This module is mostly deprecated since `v1.3.0-alpha01` and will be removed in `v2.0`. As a replacement, Essenty supports [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization) since `v1.3.0-alpha01`.
 
 Essenty brings both [Android Parcelable](https://developer.android.com/reference/android/os/Parcelable) interface and the `@Parcelize` annotation from [kotlin-parcelize](https://developer.android.com/kotlin/parcelize) compiler plugin to Kotlin Multiplatform, so they both can be used in common code. This is typically used for state/data preservation over [Android configuration changes](https://developer.android.com/guide/topics/resources/runtime-changes), when writing common code targeting Android.
 
@@ -296,7 +298,7 @@ data class User(
 
 When writing common code targeting Android, it might be required to preserve some data over Android configuration changes or process death. For this purpose, Essenty provides the `StateKeeper` API, which is inspired by the AndroidX [SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle).
 
-> ⚠️  The `StateKeeper` API relies on the `Parcelable` interface provided by the `parcelable` module described above. It can fail in non-instrumented Android tests (unit tests). Consider using your own test implementations or mocks.
+> ⚠️  The `StateKeeper` API is used to rely on the `Parcelable` interface provided by the `parcelable` module described above. As described above, Parcelable/Parcelize support is deprecated since `v1.3.0-alpha01`. As a replacement, the `StateKeeper` API now supports [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization).
 
 ### Setup
 
@@ -326,7 +328,31 @@ From Android side, `StateKeeper` can be obtained by using special functions, can
 
 ### Usage example
 
-#### Using the StateKeeper
+#### Using StateKeeper (the recommended way since v1.3.0-alpha01)
+
+> ⚠️  Make sure you [setup](https://github.com/Kotlin/kotlinx.serialization#setup) `kotlinx-serialization` properly. 
+
+```kotlin
+import com.arkivanov.essenty.parcelable.Parcelable
+import kotlinx.serialization.Serializable
+
+class SomeLogic(stateKeeper: StateKeeper) {
+    // Use the saved State if any, otherwise create a new State
+    private var state: State = stateKeeper.consume(key = "SAVED_STATE", strategy = State.serializer()) ?: State()
+
+    init {
+        // Register the State supplier
+        stateKeeper.register(key = "SAVED_STATE", strategy = State.serializer()) { state }
+    }
+
+    @Serializable
+    private class State(
+        val someValue: Int = 0
+    ) : Parcelable
+}
+```
+
+#### Using StateKeeper (the deprecated Parcelable way before v1.3.0-alpha01)
 
 ```kotlin
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -351,6 +377,8 @@ class SomeLogic(stateKeeper: StateKeeper) {
 ```
 
 #### Using the StateKeeperDisptacher manually
+
+> ⚠️  There is no any `kotlinx-serialization` replacement for `ParcelableContainer` currently, please continue using it until v2.0
 
 A default implementation of the `StateKeeperDisptacher` interface can be instantiated using the corresponding builder function:
 
