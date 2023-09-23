@@ -15,13 +15,33 @@ public final class com/arkivanov/essenty/statekeeper/DefaultStateKeeperDispatche
 
 public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeper {
 	public abstract fun consume (Ljava/lang/String;Lkotlin/reflect/KClass;)Landroid/os/Parcelable;
+	public abstract fun consume (Ljava/lang/String;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
 	public abstract fun isRegistered (Ljava/lang/String;)Z
 	public abstract fun register (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V
+	public abstract fun register (Ljava/lang/String;Lkotlinx/serialization/SerializationStrategy;Lkotlin/jvm/functions/Function0;)V
 	public abstract fun unregister (Ljava/lang/String;)V
+}
+
+public final class com/arkivanov/essenty/statekeeper/StateKeeper$DefaultImpls {
+	public static fun consume (Lcom/arkivanov/essenty/statekeeper/StateKeeper;Ljava/lang/String;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
+	public static fun register (Lcom/arkivanov/essenty/statekeeper/StateKeeper;Ljava/lang/String;Lkotlinx/serialization/SerializationStrategy;Lkotlin/jvm/functions/Function0;)V
+}
+
+public final class com/arkivanov/essenty/statekeeper/StateKeeper$ParcelableData$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/arkivanov/essenty/statekeeper/StateKeeper$ParcelableData;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/arkivanov/essenty/statekeeper/StateKeeper$ParcelableData;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
 public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeperDispatcher : com/arkivanov/essenty/statekeeper/StateKeeper {
 	public abstract fun save ()Lcom/arkivanov/essenty/parcelable/ParcelableContainer;
+}
+
+public final class com/arkivanov/essenty/statekeeper/StateKeeperDispatcher$DefaultImpls {
+	public static fun consume (Lcom/arkivanov/essenty/statekeeper/StateKeeperDispatcher;Ljava/lang/String;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
+	public static fun register (Lcom/arkivanov/essenty/statekeeper/StateKeeperDispatcher;Ljava/lang/String;Lkotlinx/serialization/SerializationStrategy;Lkotlin/jvm/functions/Function0;)V
 }
 
 public final class com/arkivanov/essenty/statekeeper/StateKeeperDispatcherKt {

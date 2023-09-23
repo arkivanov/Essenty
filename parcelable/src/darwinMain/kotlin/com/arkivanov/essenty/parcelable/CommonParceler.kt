@@ -1,11 +1,13 @@
 package com.arkivanov.essenty.parcelable
 
 import com.arkivanov.essenty.utils.internal.ExperimentalEssentyApi
+import com.arkivanov.essenty.utils.internal.PARCELABLE_DEPRECATED_MESSAGE
 import platform.Foundation.NSCoder
 
 /**
  * Interface for [Parceler] implementations in common code (e.g. in `commonMain` source set).
  */
+@Deprecated(PARCELABLE_DEPRECATED_MESSAGE)
 @ExperimentalEssentyApi
 actual interface CommonParceler<T> : Parceler<T> {
 
