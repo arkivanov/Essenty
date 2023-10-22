@@ -74,13 +74,36 @@ abstract class BackCallback(
 fun BackCallback(
     isEnabled: Boolean = true,
     priority: Int = 0,
+    onBackStarted: ((BackEvent) -> Unit)? = null,
+    onBackProgressed: ((BackEvent) -> Unit)? = null,
+    onBackCancelled: (() -> Unit)? = null,
     onBack: () -> Unit,
 ): BackCallback =
     object : BackCallback(isEnabled = isEnabled, priority = priority) {
+        override fun onBackStarted(backEvent: BackEvent) {
+            onBackStarted?.invoke(backEvent)
+        }
+
+        override fun onBackProgressed(backEvent: BackEvent) {
+            onBackProgressed?.invoke(backEvent)
+        }
+
+        override fun onBackCancelled() {
+            onBackCancelled?.invoke()
+        }
+
         override fun onBack() {
             onBack.invoke()
         }
     }
+
+@Deprecated(message = "For binary compatibility", level = DeprecationLevel.HIDDEN)
+fun BackCallback(
+    isEnabled: Boolean = true,
+    priority: Int = 0,
+    onBack: () -> Unit,
+): BackCallback =
+    BackCallback(isEnabled = isEnabled, priority, onBack = onBack)
 
 @Deprecated(message = "For binary compatibility", level = DeprecationLevel.HIDDEN)
 fun BackCallback(
