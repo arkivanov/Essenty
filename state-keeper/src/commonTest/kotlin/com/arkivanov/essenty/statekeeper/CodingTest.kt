@@ -6,6 +6,10 @@ import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -16,6 +20,22 @@ class CodingTest {
         val some = getSome()
 
         val some2 = some.serialize(Some.serializer()).deserialize(Some.serializer())
+
+        assertEquals(some, some2)
+    }
+
+    @Test
+    fun serializes_and_deserializes_with_module() {
+        val module =
+            SerializersModule {
+                polymorphic(SomeInterface::class) {
+                    subclass(Some::class)
+                }
+            }
+
+        val some = SomeValue(some = getSome())
+
+        val some2 = some.serialize(SomeValue.serializer(), module).deserialize(SomeValue.serializer(), module)
 
         assertEquals(some, some2)
     }
@@ -579,4 +599,9 @@ class CodingTest {
         override fun deserialize(decoder: Decoder): NotParcelable2 =
             NotParcelable2(value = decoder.decodeInt())
     }
+
+    @Serializable
+    private data class SomeValue(
+        val some: SomeInterface,
+    )
 }

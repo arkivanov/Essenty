@@ -12,6 +12,7 @@ import com.arkivanov.essenty.utils.internal.ExperimentalEssentyApi
 import com.arkivanov.essenty.utils.internal.PARCELABLE_DEPRECATED_MESSAGE
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.modules.SerializersModule
 import kotlin.reflect.KClass
 
 /**
@@ -40,10 +41,10 @@ interface StateKeeper {
      * @return the value for the given [key] or `null` if no value is found.
      */
     @Suppress("DEPRECATION")
-    fun <T : Any> consume(key: String, strategy: DeserializationStrategy<T>): T? =
+    fun <T : Any> consume(key: String, strategy: DeserializationStrategy<T>, module: SerializersModule? = null): T? =
         consume(key = key, clazz = ParcelableData::class)
             ?.bytes
-            ?.deserialize(strategy = strategy)
+            ?.deserialize(strategy = strategy, module = module)
 
     /**
      * Registers the value [supplier] to be called when it's time to persist the data.
@@ -65,10 +66,10 @@ interface StateKeeper {
      * @param supplier a supplier of the value.
      */
     @Suppress("DEPRECATION")
-    fun <T : Any> register(key: String, strategy: SerializationStrategy<T>, supplier: () -> T?) {
+    fun <T : Any> register(key: String, strategy: SerializationStrategy<T>, module: SerializersModule? = null, supplier: () -> T?) {
         register(key = key) {
             supplier()
-                ?.serialize(strategy = strategy)
+                ?.serialize(strategy = strategy, module = module)
                 ?.let(::ParcelableData)
         }
     }
