@@ -3,6 +3,8 @@ package com.arkivanov.essenty.backhandler
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @Suppress("TestFunctionName")
@@ -242,6 +244,61 @@ class DefaultBackDispatcherTest {
         val result = dispatcher.back()
 
         assertFalse(result)
+    }
+
+    @Test
+    fun GIVEN_callback_not_registered_WHEN_startPredictiveBack_THEN_returns_null() {
+        val predictiveBackDispatcher = dispatcher.startPredictiveBack(BackEvent())
+
+        assertNull(predictiveBackDispatcher)
+    }
+
+    @Test
+    fun WHEN_progress_with_finish_THEN_callbacks_called() {
+        val startEvent = BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F)
+        val progressEvent1 = BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 2F, touchY = 3F)
+        val progressEvent2 = BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F)
+        val receivedEvents = ArrayList<Any?>()
+
+        dispatcher.register(
+            BackCallback(
+                onBackStarted = { receivedEvents += it },
+                onBackProgressed = { receivedEvents += it },
+                onBackCancelled = { receivedEvents += "Cancel" },
+                onBack = { receivedEvents += "Back" },
+            )
+        )
+
+        val predictiveBackDispatcher = assertNotNull(dispatcher.startPredictiveBack(startEvent))
+        predictiveBackDispatcher.progress(progressEvent1)
+        predictiveBackDispatcher.progress(progressEvent2)
+        predictiveBackDispatcher.finish()
+
+        assertContentEquals(listOf(startEvent, progressEvent1, progressEvent2, "Back"), receivedEvents)
+    }
+
+    @Test
+    fun WHEN_progress_with_cancel_THEN_callbacks_called() {
+        val startEvent = BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F)
+        val progressEvent1 = BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 2F, touchY = 3F)
+        val progressEvent2 = BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F)
+        val receivedEvents = ArrayList<Any?>()
+
+        dispatcher.register(
+            BackCallback(
+                onBackStarted = { receivedEvents += it },
+                onBackProgressed = { receivedEvents += it },
+                onBackCancelled = { receivedEvents += "Cancel" },
+                onBack = { receivedEvents += "Back" },
+            )
+        )
+
+        val predictiveBackDispatcher = assertNotNull(dispatcher.startPredictiveBack(startEvent))
+        predictiveBackDispatcher.progress(progressEvent1)
+        predictiveBackDispatcher.progress(progressEvent2)
+        predictiveBackDispatcher.cancel()
+
+        assertContentEquals(listOf(startEvent, progressEvent1, progressEvent2, "Cancel"), receivedEvents)
     }
 
     private fun callback(

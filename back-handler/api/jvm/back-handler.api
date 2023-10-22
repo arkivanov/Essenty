@@ -24,9 +24,11 @@ public final class com/arkivanov/essenty/backhandler/BackCallback$Companion {
 }
 
 public final class com/arkivanov/essenty/backhandler/BackCallbackKt {
-	public static final fun BackCallback (ZILkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/backhandler/BackCallback;
+	public static final synthetic fun BackCallback (ZILkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/backhandler/BackCallback;
+	public static final fun BackCallback (ZILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/backhandler/BackCallback;
 	public static final synthetic fun BackCallback (ZLkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/backhandler/BackCallback;
 	public static synthetic fun BackCallback$default (ZILkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/backhandler/BackCallback;
+	public static synthetic fun BackCallback$default (ZILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/backhandler/BackCallback;
 	public static synthetic fun BackCallback$default (ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/backhandler/BackCallback;
 }
 
