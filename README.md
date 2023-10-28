@@ -17,7 +17,7 @@ Supported targets:
 - `macos`
 - `linuxX64`
 
-## Lifecyle
+## Lifecycle
 
 When writing Kotlin Multiplatform (common) code we often need to handle lifecycle events of a screen. For example, to stop background operations when the screen is destroyed, or to reload some data when the screen is activated. Essenty provides the `Lifecycle` API to help with lifecycle handling in the common code. It is very similar to [Android Activity lifecycle](https://developer.android.com/guide/components/activities/activity-lifecycle).
 
