@@ -13,6 +13,10 @@ public final class com/arkivanov/essenty/statekeeper/DefaultStateKeeperDispatche
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
+public final class com/arkivanov/essenty/statekeeper/PolymorphicSerializerKt {
+	public static final fun polymorphicSerializer (Lkotlin/reflect/KClass;Lkotlinx/serialization/modules/SerializersModule;)Lkotlinx/serialization/KSerializer;
+}
+
 public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeper {
 	public abstract fun consume (Ljava/lang/String;Lkotlin/reflect/KClass;)Landroid/os/Parcelable;
 	public abstract fun consume (Ljava/lang/String;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;

@@ -128,7 +128,7 @@ lifecycleRegistry.destroy()
 
 ## Parcelable and Parcelize (deprecated since v1.3.0-alpha01)
 
-> ⚠️  Unfortunatelly, the new K2 compiler will not support Parcelable/Parcelize with Kotlin Multiplatform (see [#102](https://github.com/arkivanov/Essenty/issues/102)). This module is mostly deprecated since `v1.3.0-alpha01` and will be removed in `v2.0`. As a replacement, Essenty supports [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization) since `v1.3.0-alpha01`.
+> ⚠️  Unfortunately, the new K2 compiler will not support Parcelable/Parcelize with Kotlin Multiplatform (see [#102](https://github.com/arkivanov/Essenty/issues/102)). This module is mostly deprecated since `v1.3.0-alpha01` and will be removed in `v2.0`. As a replacement, Essenty supports [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization) since `v1.3.0-alpha01`.
 
 Essenty brings both [Android Parcelable](https://developer.android.com/reference/android/os/Parcelable) interface and the `@Parcelize` annotation from [kotlin-parcelize](https://developer.android.com/kotlin/parcelize) compiler plugin to Kotlin Multiplatform, so they both can be used in common code. This is typically used for state/data preservation over [Android configuration changes](https://developer.android.com/guide/topics/resources/runtime-changes), when writing common code targeting Android.
 
@@ -350,6 +350,41 @@ class SomeLogic(stateKeeper: StateKeeper) {
         val someValue: Int = 0
     ) : Parcelable
 }
+```
+
+##### Polymorphic serialization (experimental)
+
+Sometimes it might be necessary to serialize an interface or an abstract class that you don't own but have implemented. For this purpose Essenty provides `polymorphicSerializer` function that can be used to create custom polymorphic serializers for unowned base types.
+
+For example a third-party library may have the following interface.
+
+```kotlin
+interface Filter {
+    // Omitted code
+}
+```
+
+Then we can have multiple implementations of `Filter`.
+
+```kotlin
+@Serializable
+class TextFilter(val text: String) : Filter { /* Omitted code */ }
+
+@Serializable
+class RatingFilter(val stars: Int) : Filter { /* Omitted code */ }
+```
+
+Now we can create a polymorphic serializer for `Filter` as follows. It can be used to save and restore `Filter` directly via StateKeeper, or to have `Filter` as part of another `Serializable` class.
+
+```kotlin
+object FilterSerializer : KSerializer<Filter> by polymorphicSerializer(
+    SerializersModule {
+        polymorphic(Filter::class) {
+            subclass(TextFilter::class, TextFilter.serializer())
+            subclass(RatingFilter::class, RatingFilter.serializer())
+        }
+    }
+)
 ```
 
 #### Using StateKeeper (the deprecated Parcelable way before v1.3.0-alpha01)
