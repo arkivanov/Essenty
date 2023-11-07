@@ -4,7 +4,6 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.ParcelableContainer
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.arkivanov.essenty.parcelable.consume
-import com.arkivanov.essenty.utils.internal.ensureNeverFrozen
 import kotlin.reflect.KClass
 
 internal class DefaultStateKeeperDispatcher internal constructor(
@@ -16,10 +15,6 @@ internal class DefaultStateKeeperDispatcher internal constructor(
         savedState = savedState,
         parcelableContainerFactory = { ParcelableContainer(it) } // Lambda because of https://youtrack.jetbrains.com/issue/KT-49186
     )
-
-    init {
-        ensureNeverFrozen()
-    }
 
     private val savedState: MutableMap<String, ParcelableContainer>? = savedState?.consume<SavedState>()?.map
     private val suppliers = HashMap<String, () -> Parcelable?>()

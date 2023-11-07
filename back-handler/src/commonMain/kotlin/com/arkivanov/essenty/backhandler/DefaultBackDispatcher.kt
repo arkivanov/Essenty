@@ -1,13 +1,8 @@
 package com.arkivanov.essenty.backhandler
 
 import com.arkivanov.essenty.backhandler.BackDispatcher.PredictiveBackDispatcher
-import com.arkivanov.essenty.utils.internal.ensureNeverFrozen
 
 internal class DefaultBackDispatcher : BackDispatcher {
-
-    init {
-        ensureNeverFrozen()
-    }
 
     private var set = emptySet<BackCallback>()
     override val isEnabled: Boolean get() = set.any(BackCallback::isEnabled)

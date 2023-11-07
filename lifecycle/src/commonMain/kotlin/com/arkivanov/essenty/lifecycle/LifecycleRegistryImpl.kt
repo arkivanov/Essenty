@@ -2,13 +2,8 @@ package com.arkivanov.essenty.lifecycle
 
 import com.arkivanov.essenty.lifecycle.Lifecycle.Callbacks
 import com.arkivanov.essenty.lifecycle.Lifecycle.State
-import com.arkivanov.essenty.utils.internal.ensureNeverFrozen
 
 internal class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
-
-    init {
-        ensureNeverFrozen()
-    }
 
     private var callbacks = emptySet<Callbacks>()
     private var _state = initialState
