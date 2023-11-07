@@ -1,13 +1,8 @@
 package com.arkivanov.essenty.instancekeeper
 
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper.Instance
-import com.arkivanov.essenty.utils.internal.ensureNeverFrozen
 
 internal class DefaultInstanceKeeperDispatcher : InstanceKeeperDispatcher {
-
-    init {
-        ensureNeverFrozen()
-    }
 
     private val map = HashMap<Any, Instance>()
     private var isDestroyed = false
