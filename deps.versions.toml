@@ -2,6 +2,7 @@
 
 essenty = "1.3.0-alpha04"
 kotlin = "1.9.20"
+kotlinxCoroutines = "1.7.3"
 kotlinxBinaryCompatibilityValidator = "0.13.2"
 detektGradlePlugin = "1.23.3"
 junit = "4.13.2"
@@ -17,6 +18,8 @@ parcelizeDarwin = "0.2.3"
 [libraries]
 
 kotlin-kotlinGradlePlug = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+kotlinx-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 
 kotlinx-binaryCompatibilityValidator = { group = "org.jetbrains.kotlinx", name = "binary-compatibility-validator", version.ref = "kotlinxBinaryCompatibilityValidator" }
 
