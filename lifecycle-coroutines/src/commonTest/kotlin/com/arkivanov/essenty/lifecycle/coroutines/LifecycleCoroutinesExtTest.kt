@@ -38,10 +38,10 @@ class LifecycleCoroutinesExtTest {
 
     @Test
     fun test_passed_state_CREATED_must_be_trigger_block_once() = runTest {
-        val testState = Lifecycle.State.CREATED
-        val expected = listOf(testState.name)
+        val state = Lifecycle.State.CREATED
+        val expected = listOf(state)
 
-        val actual = executeRepeatOnEssentyLifecycleTest(testState)
+        val actual = executeRepeatOnEssentyLifecycleTest(state)
         advanceUntilIdle()
 
         assertEquals(expected, actual)
@@ -49,10 +49,10 @@ class LifecycleCoroutinesExtTest {
 
     @Test
     fun test_passed_state_STARTED_must_be_trigger_block_twice() = runTest {
-        val testState = Lifecycle.State.STARTED
-        val expected = listOf(testState.name, testState.name)
+        val state = Lifecycle.State.STARTED
+        val expected = listOf(state, state)
 
-        val actual = executeRepeatOnEssentyLifecycleTest(testState)
+        val actual = executeRepeatOnEssentyLifecycleTest(state)
         advanceUntilIdle()
 
         assertEquals(expected, actual)
@@ -60,10 +60,10 @@ class LifecycleCoroutinesExtTest {
 
     @Test
     fun test_passed_state_RESUMED_must_be_trigger_block_twice() = runTest {
-        val testState = Lifecycle.State.RESUMED
-        val expected = listOf(testState.name, testState.name)
+        val state = Lifecycle.State.RESUMED
+        val expected = listOf(state, state)
 
-        val actual = executeRepeatOnEssentyLifecycleTest(testState)
+        val actual = executeRepeatOnEssentyLifecycleTest(state)
         advanceUntilIdle()
 
         assertEquals(expected, actual)
@@ -71,10 +71,10 @@ class LifecycleCoroutinesExtTest {
 
     @Test
     fun test_passed_state_DESTROYED_must_not_be_trigger_block() = runTest {
-        val testState = Lifecycle.State.DESTROYED
-        val expected = emptyList<String>()
+        val state = Lifecycle.State.DESTROYED
+        val expected = emptyList<Lifecycle.State>()
 
-        val actual = executeRepeatOnEssentyLifecycleTest(testState)
+        val actual = executeRepeatOnEssentyLifecycleTest(state)
         advanceUntilIdle()
 
         assertEquals(expected, actual)
@@ -83,7 +83,7 @@ class LifecycleCoroutinesExtTest {
     @Test
     fun test_flow_passed_state_CREATED_must_be_trigger_block_once() = runTest {
         val state = Lifecycle.State.CREATED
-        val expect = listOf(state.name, state.name)
+        val expect = listOf(state, state)
 
         val actual = executeFlowWithEssentyLifecycleTest(state)
         advanceUntilIdle()
@@ -94,7 +94,7 @@ class LifecycleCoroutinesExtTest {
     @Test
     fun test_flow_passed_state_STARTED_must_be_trigger_block_twice() = runTest {
         val state = Lifecycle.State.STARTED
-        val expect = listOf(state.name, state.name, state.name, state.name)
+        val expect = listOf(state, state, state, state)
 
         val actual = executeFlowWithEssentyLifecycleTest(state)
         advanceUntilIdle()
@@ -105,7 +105,7 @@ class LifecycleCoroutinesExtTest {
     @Test
     fun test_flow_passed_state_RESUMED_must_be_trigger_block_twice() = runTest {
         val state = Lifecycle.State.RESUMED
-        val expect = listOf(state.name, state.name, state.name, state.name)
+        val expect = listOf(state, state, state, state)
 
         val actual = executeFlowWithEssentyLifecycleTest(state)
         advanceUntilIdle()
@@ -116,7 +116,7 @@ class LifecycleCoroutinesExtTest {
     @Test
     fun test_flow_passed_state_DESTROYED_must_not_be_trigger_block() = runTest {
         val state = Lifecycle.State.DESTROYED
-        val expect = emptyList<String>()
+        val expect = emptyList<Lifecycle.State>()
 
         val actual = executeFlowWithEssentyLifecycleTest(state)
         advanceUntilIdle()
@@ -125,16 +125,15 @@ class LifecycleCoroutinesExtTest {
     }
 
     private suspend fun executeRepeatOnEssentyLifecycleTest(
-        lifecycleState: Lifecycle.State,
-        onEventAppears: () -> String = { lifecycleState.name }
-    ): List<String> = coroutineScope {
-        val events = ArrayList<String>()
+        lifecycleState: Lifecycle.State
+    ): List<Lifecycle.State> = coroutineScope {
+        val events = ArrayList<Lifecycle.State>()
 
         launch {
-            registry.repeatOnEssentyLifecycle(
+            registry.repeatOnLifecycle(
                 state = lifecycleState
             ) {
-                events.add(onEventAppears())
+                events.add(lifecycleState)
             }
         }
 
@@ -162,16 +161,15 @@ class LifecycleCoroutinesExtTest {
     }
 
     private suspend fun executeFlowWithEssentyLifecycleTest(
-        lifecycleState: Lifecycle.State,
-        onEventAppears: () -> String = { lifecycleState.name }
-    ): List<String> = coroutineScope {
-        val actual = ArrayList<String>()
+        lifecycleState: Lifecycle.State
+    ): List<Lifecycle.State> = coroutineScope {
+        val actual = ArrayList<Lifecycle.State>()
 
         launch {
             flow {
-                repeat(2) { emit(onEventAppears()) }
+                repeat(2) { emit(lifecycleState) }
             }
-                .flowWithEssentyLifecycle(registry, lifecycleState)
+                .flowWithLifecycle(registry, lifecycleState)
                 .onEach { actual.add(it) }
                 .launchIn(this)
         }

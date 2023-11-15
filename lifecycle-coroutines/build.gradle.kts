@@ -31,10 +31,5 @@ kotlin {
         common.test.dependencies {
             implementation(deps.kotlinx.coroutinesTest)
         }
-
-        android.main.dependencies {
-            implementation(deps.androidx.lifecycle.lifecycleCommonJava8)
-            implementation(deps.androidx.lifecycle.lifecycleRuntime)
-        }
     }
 }

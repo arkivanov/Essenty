@@ -6,8 +6,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
@@ -21,7 +19,7 @@ import kotlin.coroutines.resume
  *
  * Note: This function works like a terminal operator and must be called in assembly coroutine.
  */
-suspend fun Lifecycle.repeatOnEssentyLifecycle(
+suspend fun Lifecycle.repeatOnLifecycle(
     state: Lifecycle.State,
     block: suspend CoroutineScope.() -> Unit
 ) {
@@ -29,10 +27,14 @@ suspend fun Lifecycle.repeatOnEssentyLifecycle(
         "repeatOnEssentyLifecycle cannot start work with the INITIALIZED lifecycle state."
     }
 
-    if (this.state == Lifecycle.State.DESTROYED) return
+    if (this.state == Lifecycle.State.DESTROYED) {
+        return
+    }
 
     withCoroutineScope {
-        if (this@repeatOnEssentyLifecycle.state == Lifecycle.State.DESTROYED) return@withCoroutineScope
+        if (this@repeatOnLifecycle.state == Lifecycle.State.DESTROYED) {
+            return@withCoroutineScope
+        }
 
         var callback: Lifecycle.Callbacks? = null
         var job: Job? = null
@@ -49,35 +51,21 @@ suspend fun Lifecycle.repeatOnEssentyLifecycle(
                         job?.cancel()
                         job = null
                     },
-                    onDestroy = { cont.resume(Unit) },
+                    onDestroy = {
+                        cont.resume(Unit)
+                    },
                 )
 
-                this@repeatOnEssentyLifecycle.subscribe(callback as Lifecycle.Callbacks)
+                this@repeatOnLifecycle.subscribe(callback as Lifecycle.Callbacks)
             }
         } finally {
             job?.cancel()
             job = null
             callback?.let {
-                this@repeatOnEssentyLifecycle.unsubscribe(it)
+                this@repeatOnLifecycle.unsubscribe(it)
             }
         }
     }
-}
-
-/**
- * Start [Flow] collecting when [Lifecycle.State] is at least as [minActiveState].
- * It stopped collecting if "opposite" [Lifecycle.State] will appear.
- */
-fun <T> Flow<T>.flowWithEssentyLifecycle(
-    lifecycle: Lifecycle,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
-): Flow<T> = callbackFlow {
-    lifecycle.repeatOnEssentyLifecycle(minActiveState) {
-        this@flowWithEssentyLifecycle.collect {
-            send(it)
-        }
-    }
-    close()
 }
 
 /**
@@ -109,27 +97,31 @@ private fun createLifecycleAwareCallback(
     onDestroy: () -> Unit,
 ): Lifecycle.Callbacks = object : Lifecycle.Callbacks {
 
-    override fun onCreate(): Unit = launchWithState(Lifecycle.State.CREATED)
+    override fun onCreate(): Unit = launchIfState(Lifecycle.State.CREATED)
 
-    override fun onStart(): Unit = launchWithState(Lifecycle.State.STARTED)
+    override fun onStart(): Unit = launchIfState(Lifecycle.State.STARTED)
 
-    override fun onResume(): Unit = launchWithState(Lifecycle.State.RESUMED)
+    override fun onResume(): Unit = launchIfState(Lifecycle.State.RESUMED)
 
-    override fun onPause(): Unit = closeWithState(Lifecycle.State.RESUMED)
+    override fun onPause(): Unit = closeIfState(Lifecycle.State.RESUMED)
 
-    override fun onStop(): Unit = closeWithState(Lifecycle.State.STARTED)
+    override fun onStop(): Unit = closeIfState(Lifecycle.State.STARTED)
 
     override fun onDestroy() {
-        closeWithState(Lifecycle.State.CREATED)
+        closeIfState(Lifecycle.State.CREATED)
         onDestroy()
     }
 
-    private fun launchWithState(launchState: Lifecycle.State) {
-        if (startState == launchState) onStateAppear()
+    private fun launchIfState(state: Lifecycle.State) {
+        if (startState == state) {
+            onStateAppear()
+        }
     }
 
-    private fun closeWithState(launchState: Lifecycle.State) {
-        if (startState == launchState) onStateDisappear()
+    private fun closeIfState(state: Lifecycle.State) {
+        if (startState == state) {
+            onStateDisappear()
+        }
     }
 }
 
