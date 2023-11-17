@@ -13,9 +13,9 @@ import kotlin.coroutines.CoroutineContext
 fun <T> Flow<T>.withLifecycle(
     lifecycle: Lifecycle,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    coroutineContext: CoroutineContext = Dispatchers.Main
+    context: CoroutineContext = Dispatchers.Main
 ): Flow<T> = callbackFlow {
-    lifecycle.repeatOnLifecycle(minActiveState, coroutineContext) {
+    lifecycle.repeatOnLifecycle(minActiveState, context) {
         this@withLifecycle.collect {
             send(it)
         }
@@ -31,7 +31,7 @@ fun <T> Flow<T>.withLifecycle(
 fun <T> Flow<T>.flowWithLifecycle(
     lifecycle: Lifecycle,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    coroutineContext: CoroutineContext = Dispatchers.Main
+    context: CoroutineContext = Dispatchers.Main
 ): Flow<T> {
-    return withLifecycle(lifecycle, minActiveState, coroutineContext)
+    return withLifecycle(lifecycle, minActiveState, context)
 }

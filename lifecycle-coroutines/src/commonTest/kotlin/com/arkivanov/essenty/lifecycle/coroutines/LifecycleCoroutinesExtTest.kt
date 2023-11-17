@@ -130,7 +130,7 @@ class LifecycleCoroutinesExtTest {
         launch {
             registry.repeatOnLifecycle(
                 minActiveState = lifecycleState,
-                coroutineContext = testDispatcher
+                context = testDispatcher
             ) {
                 events.add(lifecycleState)
             }

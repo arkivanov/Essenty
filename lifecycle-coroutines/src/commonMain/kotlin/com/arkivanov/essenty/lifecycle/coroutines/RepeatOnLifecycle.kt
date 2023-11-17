@@ -21,7 +21,7 @@ import kotlin.coroutines.resume
  */
 suspend fun Lifecycle.repeatOnLifecycle(
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    coroutineContext: CoroutineContext = Dispatchers.Main,
+    context: CoroutineContext = Dispatchers.Main,
     block: suspend CoroutineScope.() -> Unit
 ) {
     require(minActiveState != Lifecycle.State.INITIALIZED) {
@@ -33,7 +33,7 @@ suspend fun Lifecycle.repeatOnLifecycle(
     }
 
     coroutineScope {
-        withContext(coroutineContext) {
+        withContext(context) {
             if (this@repeatOnLifecycle.state == Lifecycle.State.DESTROYED) {
                 return@withContext
             }
