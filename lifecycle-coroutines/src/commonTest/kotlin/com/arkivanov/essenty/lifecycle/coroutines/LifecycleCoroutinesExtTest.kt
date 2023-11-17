@@ -5,16 +5,14 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.yield
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -131,30 +129,31 @@ class LifecycleCoroutinesExtTest {
 
         launch {
             registry.repeatOnLifecycle(
-                state = lifecycleState
+                minActiveState = lifecycleState,
+                coroutineDispatcher = testDispatcher
             ) {
                 events.add(lifecycleState)
             }
         }
 
         registry.onCreate()
-        delay(10)
+        yield()
         registry.onStart()
-        delay(10)
+        yield()
         registry.onResume()
-        delay(10)
+        yield()
         registry.onPause()
-        delay(10)
+        yield()
         registry.onStop()
-        delay(10)
+        yield()
         registry.onStart()
-        delay(10)
+        yield()
         registry.onResume()
-        delay(10)
+        yield()
         registry.onPause()
-        delay(10)
+        yield()
         registry.onStop()
-        delay(10)
+        yield()
         registry.onDestroy()
 
         return@coroutineScope events
@@ -169,30 +168,30 @@ class LifecycleCoroutinesExtTest {
             flow {
                 repeat(2) { emit(lifecycleState) }
             }
-                .flowWithLifecycle(registry, lifecycleState)
-                .onEach { actual.add(it) }
-                .launchIn(this)
+                .withLifecycle(registry, lifecycleState)
+                .collect { actual.add(it) }
         }
 
 
         registry.onCreate()
-        delay(10)
+        yield()
         registry.onStart()
-        delay(10)
+        yield()
         registry.onResume()
-        delay(10)
+        yield()
+        yield()
         registry.onPause()
-        delay(10)
+        yield()
         registry.onStop()
-        delay(10)
+        yield()
         registry.onStart()
-        delay(10)
+        yield()
         registry.onResume()
-        delay(10)
+        yield()
         registry.onPause()
-        delay(10)
+        yield()
         registry.onStop()
-        delay(10)
+        yield()
         registry.onDestroy()
 
         return@coroutineScope actual

@@ -14,16 +14,17 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 
 /**
- * Repeat invocation [block] every time that passed [state] appears.
+ * Repeat invocation [block] every time that passed [minActiveState] appears.
  * Work of passed [block] finished when "opposite" [Lifecycle.State] will appear.
  *
  * Note: This function works like a terminal operator and must be called in assembly coroutine.
  */
 suspend fun Lifecycle.repeatOnLifecycle(
-    state: Lifecycle.State,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    coroutineDispatcher: CoroutineDispatcher = Dispatchers.Main,
     block: suspend CoroutineScope.() -> Unit
 ) {
-    require(state != Lifecycle.State.INITIALIZED) {
+    require(minActiveState != Lifecycle.State.INITIALIZED) {
         "repeatOnEssentyLifecycle cannot start work with the INITIALIZED lifecycle state."
     }
 
@@ -31,52 +32,47 @@ suspend fun Lifecycle.repeatOnLifecycle(
         return
     }
 
-    withCoroutineScope {
-        if (this@repeatOnLifecycle.state == Lifecycle.State.DESTROYED) {
-            return@withCoroutineScope
-        }
-
-        var callback: Lifecycle.Callbacks? = null
-        var job: Job? = null
-        val mutex = Mutex()
-
-        try {
-            suspendCancellableCoroutine { cont ->
-                callback = createLifecycleAwareCallback(
-                    startState = state,
-                    onStateAppear = {
-                        job = startJob(mutex, block)
-                    },
-                    onStateDisappear = {
-                        job?.cancel()
-                        job = null
-                    },
-                    onDestroy = {
-                        cont.resume(Unit)
-                    },
-                )
-
-                this@repeatOnLifecycle.subscribe(callback as Lifecycle.Callbacks)
+    coroutineScope {
+        withContext(coroutineDispatcher) {
+            if (this@repeatOnLifecycle.state == Lifecycle.State.DESTROYED) {
+                return@withContext
             }
-        } finally {
-            job?.cancel()
-            job = null
-            callback?.let {
-                this@repeatOnLifecycle.unsubscribe(it)
+
+            var callback: Lifecycle.Callbacks? = null
+            var job: Job? = null
+            val mutex = Mutex()
+
+            try {
+                suspendCancellableCoroutine { cont ->
+                    callback = createLifecycleAwareCallback(
+                        startState = minActiveState,
+                        onStateAppear = {
+                            job = launch {
+                                mutex.withLock {
+                                    block()
+                                }
+                            }
+                        },
+                        onStateDisappear = {
+                            job?.cancel()
+                            job = null
+                        },
+                        onDestroy = {
+                            cont.resume(Unit)
+                        },
+                    )
+
+                    this@repeatOnLifecycle.subscribe(requireNotNull(callback))
+                }
+            } finally {
+                job?.cancel()
+                job = null
+                callback?.let {
+                    this@repeatOnLifecycle.unsubscribe(it)
+                }
+                callback = null
             }
         }
-    }
-}
-
-/**
- * Function for executing [block] on the [CoroutineScope] with passed specific [dispatcher].
- */
-private suspend fun withCoroutineScope(
-    dispatcher: CoroutineDispatcher = Dispatchers.Main.immediate,
-    block: suspend CoroutineScope.() -> Unit
-): Unit = coroutineScope {
-    withContext(dispatcher) {
-        block()
     }
 }
 
@@ -97,15 +93,25 @@ private fun createLifecycleAwareCallback(
     onDestroy: () -> Unit,
 ): Lifecycle.Callbacks = object : Lifecycle.Callbacks {
 
-    override fun onCreate(): Unit = launchIfState(Lifecycle.State.CREATED)
+    override fun onCreate() {
+        launchIfState(Lifecycle.State.CREATED)
+    }
 
-    override fun onStart(): Unit = launchIfState(Lifecycle.State.STARTED)
+    override fun onStart() {
+        launchIfState(Lifecycle.State.STARTED)
+    }
 
-    override fun onResume(): Unit = launchIfState(Lifecycle.State.RESUMED)
+    override fun onResume() {
+        launchIfState(Lifecycle.State.RESUMED)
+    }
 
-    override fun onPause(): Unit = closeIfState(Lifecycle.State.RESUMED)
+    override fun onPause() {
+        closeIfState(Lifecycle.State.RESUMED)
+    }
 
-    override fun onStop(): Unit = closeIfState(Lifecycle.State.STARTED)
+    override fun onStop() {
+        closeIfState(Lifecycle.State.STARTED)
+    }
 
     override fun onDestroy() {
         closeIfState(Lifecycle.State.CREATED)
@@ -122,18 +128,5 @@ private fun createLifecycleAwareCallback(
         if (startState == state) {
             onStateDisappear()
         }
-    }
-}
-
-/**
- * Start coroutine with passed [block].
- */
-private fun CoroutineScope.startJob(
-    mutex: Mutex,
-    block: suspend CoroutineScope.() -> Unit
-): Job = launch {
-    // Mutex will prevent duplication if the same callback called twice.
-    mutex.withLock {
-        block()
     }
 }
