@@ -1,7 +1,6 @@
 package com.arkivanov.essenty.lifecycle.coroutines
 
 import com.arkivanov.essenty.lifecycle.Lifecycle
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -11,6 +10,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 
 /**
@@ -21,7 +21,7 @@ import kotlin.coroutines.resume
  */
 suspend fun Lifecycle.repeatOnLifecycle(
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    coroutineDispatcher: CoroutineDispatcher = Dispatchers.Main,
+    coroutineContext: CoroutineContext = Dispatchers.Main,
     block: suspend CoroutineScope.() -> Unit
 ) {
     require(minActiveState != Lifecycle.State.INITIALIZED) {
@@ -33,7 +33,7 @@ suspend fun Lifecycle.repeatOnLifecycle(
     }
 
     coroutineScope {
-        withContext(coroutineDispatcher) {
+        withContext(coroutineContext) {
             if (this@repeatOnLifecycle.state == Lifecycle.State.DESTROYED) {
                 return@withContext
             }
