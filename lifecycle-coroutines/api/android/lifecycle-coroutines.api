@@ -1,3 +1,9 @@
+public final class com/arkivanov/essenty/lifecycle/coroutines/CoroutineScopeWithLifecycleKt {
+	public static final fun coroutineScope (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;Lkotlin/coroutines/CoroutineContext;)Lkotlinx/coroutines/CoroutineScope;
+	public static synthetic fun coroutineScope$default (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;Lkotlin/coroutines/CoroutineContext;ILjava/lang/Object;)Lkotlinx/coroutines/CoroutineScope;
+	public static final fun withLifecycle (Lkotlinx/coroutines/CoroutineScope;Lcom/arkivanov/essenty/lifecycle/Lifecycle;)Lkotlinx/coroutines/CoroutineScope;
+}
+
 public final class com/arkivanov/essenty/lifecycle/coroutines/FlowWithLifecycleKt {
 	public static final fun flowWithLifecycle (Lkotlinx/coroutines/flow/Flow;Lcom/arkivanov/essenty/lifecycle/Lifecycle;Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;)Lkotlinx/coroutines/flow/Flow;
 	public static synthetic fun flowWithLifecycle$default (Lkotlinx/coroutines/flow/Flow;Lcom/arkivanov/essenty/lifecycle/Lifecycle;Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
