@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
@@ -19,7 +20,7 @@ import kotlin.coroutines.resume
  */
 suspend fun LifecycleOwner.repeatOnLifecycle(
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    context: CoroutineContext = Dispatchers.Main,
+    context: CoroutineContext = Dispatchers.Main.immediateOrFallback,
     block: suspend CoroutineScope.() -> Unit,
 ) {
     lifecycle.repeatOnLifecycle(minActiveState = minActiveState, context = context, block = block)
@@ -31,12 +32,16 @@ suspend fun LifecycleOwner.repeatOnLifecycle(
  *
  * The [block] will cancel and re-launch as the [Lifecycle] moves in and out of the [minActiveState].
  *
+ * The [block] is called on the specified [context], which defaults to
+ * [Dispatchers.Main.immediate][kotlinx.coroutines.MainCoroutineDispatcher.immediate]
+ * if available on the current platform, or to [Dispatchers.Main] otherwise.
+ *
  * See the [AndroidX documentation](https://developer.android.com/reference/kotlin/androidx/lifecycle/package-summary#(androidx.lifecycle.Lifecycle).repeatOnLifecycle(androidx.lifecycle.Lifecycle.State,kotlin.coroutines.SuspendFunction1))
  * for more information.
  */
 suspend fun Lifecycle.repeatOnLifecycle(
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    context: CoroutineContext = Dispatchers.Main,
+    context: CoroutineContext = Dispatchers.Main.immediateOrFallback,
     block: suspend CoroutineScope.() -> Unit
 ) {
     require(minActiveState != Lifecycle.State.INITIALIZED) {
