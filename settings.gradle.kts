@@ -29,6 +29,7 @@ if (!startParameter.projectProperties.containsKey("check_publication")) {
     include(":utils-internal")
     include(":lifecycle")
     include(":lifecycle-coroutines")
+    include(":lifecycle-reaktive")
     include(":parcelable")
     include(":state-keeper")
     include(":instance-keeper")

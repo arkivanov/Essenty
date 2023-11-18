@@ -1,0 +1,5 @@
+public final class com/arkivanov/essenty/lifecycle/reaktive/DisposableWithLifecycleKt {
+	public static final fun disposableScope (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;)Lcom/badoo/reaktive/disposable/scope/DisposableScope;
+	public static final fun withLifecycle (Lcom/badoo/reaktive/disposable/Disposable;Lcom/arkivanov/essenty/lifecycle/Lifecycle;)Lcom/badoo/reaktive/disposable/Disposable;
+}
+

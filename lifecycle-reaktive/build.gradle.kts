@@ -14,18 +14,14 @@ setupPublication()
 setupBinaryCompatibilityValidator()
 
 android {
-    namespace = "com.arkivanov.essenty.lifecycle.coroutines"
+    namespace = "com.arkivanov.essenty.lifecycle.reaktive"
 }
 
 kotlin {
     setupSourceSets {
         common.main.dependencies {
             implementation(project(":lifecycle"))
-            implementation(deps.kotlinx.coroutinesCore)
-        }
-
-        common.test.dependencies {
-            implementation(deps.kotlinx.coroutinesTest)
+            implementation(deps.reaktive.reaktive)
         }
     }
 }
