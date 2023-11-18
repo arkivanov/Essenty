@@ -7,6 +7,8 @@ public final class com/arkivanov/essenty/lifecycle/coroutines/FlowWithLifecycleK
 
 public final class com/arkivanov/essenty/lifecycle/coroutines/RepeatOnLifecycleKt {
 	public static final fun repeatOnLifecycle (Lcom/arkivanov/essenty/lifecycle/Lifecycle;Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun repeatOnLifecycle (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun repeatOnLifecycle$default (Lcom/arkivanov/essenty/lifecycle/Lifecycle;Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun repeatOnLifecycle$default (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;Lcom/arkivanov/essenty/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 

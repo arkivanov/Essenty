@@ -1,6 +1,7 @@
 package com.arkivanov.essenty.lifecycle.coroutines
 
 import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,10 +15,24 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 
 /**
- * Repeat invocation [block] every time that passed [minActiveState] appears.
- * Work of passed [block] finished when "opposite" [Lifecycle.State] will appear.
+ * Convenience method for [Lifecycle.repeatOnLifecycle].
+ */
+suspend fun LifecycleOwner.repeatOnLifecycle(
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    context: CoroutineContext = Dispatchers.Main,
+    block: suspend CoroutineScope.() -> Unit,
+) {
+    lifecycle.repeatOnLifecycle(minActiveState = minActiveState, context = context, block = block)
+}
+
+/**
+ * Runs the given [block] in a new coroutine when this [Lifecycle] is at least at [minActiveState] and suspends
+ * the execution until this [Lifecycle] is [Lifecycle.State.DESTROYED].
  *
- * Note: This function works like a terminal operator and must be called in assembly coroutine.
+ * The [block] will cancel and re-launch as the [Lifecycle] moves in and out of the [minActiveState].
+ *
+ * See the [AndroidX documentation](https://developer.android.com/reference/kotlin/androidx/lifecycle/package-summary#(androidx.lifecycle.Lifecycle).repeatOnLifecycle(androidx.lifecycle.Lifecycle.State,kotlin.coroutines.SuspendFunction1))
+ * for more information.
  */
 suspend fun Lifecycle.repeatOnLifecycle(
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
