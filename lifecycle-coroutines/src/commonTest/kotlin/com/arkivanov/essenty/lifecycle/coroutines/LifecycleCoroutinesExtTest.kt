@@ -168,7 +168,7 @@ class LifecycleCoroutinesExtTest {
             flow {
                 repeat(2) { emit(lifecycleState) }
             }
-                .withLifecycle(registry, lifecycleState)
+                .withLifecycle(registry, lifecycleState, testDispatcher)
                 .collect { actual.add(it) }
         }
 
