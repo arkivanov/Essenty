@@ -29,6 +29,7 @@ kotlin {
             implementation("com.arkivanov.essenty:back-handler:$version")
             implementation("com.arkivanov.essenty:instance-keeper:$version")
             implementation("com.arkivanov.essenty:lifecycle:$version")
+            implementation("com.arkivanov.essenty:lifecycle-coroutines:$version")
             implementation("com.arkivanov.essenty:parcelable:$version")
             implementation("com.arkivanov.essenty:state-keeper:$version")
         }
