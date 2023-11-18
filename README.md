@@ -51,6 +51,20 @@ The [LifecycleOwner](https://github.com/arkivanov/Essenty/blob/master/lifecycle/
 
 From Android, the `Lifecycle` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/androidMain/kotlin/com/arkivanov/essenty/lifecycle/AndroidExt.kt).
 
+#### Reaktive extensions
+
+There are some useful `Lifecycle` extensions for Reaktive.
+
+- Automatic management of `Disposable` and `DisposableScope` by `Lifecycle`, can be found [here](https://github.com/arkivanov/Essenty/blob/master/lifecycle-reaktive/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/reaktive/DisposableWithLifecycle.kt).
+
+#### Coroutines extensions
+
+There are some useful `Lifecycle` extensions for Coroutines.
+
+- Automatic management of `CoroutineScope` by `Lifecycle`, can be found [here](https://github.com/arkivanov/Essenty/blob/master/lifecycle-coroutines/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/coroutines/CoroutineScopeWithLifecycle.kt)
+- `Flow.withLifecycle(Lifecycle): Flow` - can be found [here](https://github.com/arkivanov/Essenty/blob/master/lifecycle-coroutines/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/coroutines/FlowWithLifecycle.kt).
+- `Lifecycle.repeatOnLifecycle(block)` - can be found [here](https://github.com/arkivanov/Essenty/blob/master/lifecycle-coroutines/src/commonMain/kotlin/com/arkivanov/essenty/lifecycle/coroutines/RepeatOnLifecycle.kt).
+
 ### Usage example
 
 #### Observing the Lifecyle
