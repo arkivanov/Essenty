@@ -40,15 +40,25 @@ public final class com/arkivanov/essenty/lifecycle/Lifecycle$State : java/lang/E
 
 public final class com/arkivanov/essenty/lifecycle/LifecycleExtKt {
 	public static final fun doOnCreate (Lcom/arkivanov/essenty/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;)V
+	public static final fun doOnCreate (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;)V
 	public static final fun doOnDestroy (Lcom/arkivanov/essenty/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;)V
+	public static final fun doOnDestroy (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;)V
 	public static final fun doOnPause (Lcom/arkivanov/essenty/lifecycle/Lifecycle;ZLkotlin/jvm/functions/Function0;)V
+	public static final fun doOnPause (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;ZLkotlin/jvm/functions/Function0;)V
 	public static synthetic fun doOnPause$default (Lcom/arkivanov/essenty/lifecycle/Lifecycle;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public static synthetic fun doOnPause$default (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
 	public static final fun doOnResume (Lcom/arkivanov/essenty/lifecycle/Lifecycle;ZLkotlin/jvm/functions/Function0;)V
+	public static final fun doOnResume (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;ZLkotlin/jvm/functions/Function0;)V
 	public static synthetic fun doOnResume$default (Lcom/arkivanov/essenty/lifecycle/Lifecycle;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public static synthetic fun doOnResume$default (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
 	public static final fun doOnStart (Lcom/arkivanov/essenty/lifecycle/Lifecycle;ZLkotlin/jvm/functions/Function0;)V
+	public static final fun doOnStart (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;ZLkotlin/jvm/functions/Function0;)V
 	public static synthetic fun doOnStart$default (Lcom/arkivanov/essenty/lifecycle/Lifecycle;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public static synthetic fun doOnStart$default (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
 	public static final fun doOnStop (Lcom/arkivanov/essenty/lifecycle/Lifecycle;ZLkotlin/jvm/functions/Function0;)V
+	public static final fun doOnStop (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;ZLkotlin/jvm/functions/Function0;)V
 	public static synthetic fun doOnStop$default (Lcom/arkivanov/essenty/lifecycle/Lifecycle;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public static synthetic fun doOnStop$default (Lcom/arkivanov/essenty/lifecycle/LifecycleOwner;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
 	public static final fun subscribe (Lcom/arkivanov/essenty/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/lifecycle/Lifecycle$Callbacks;
 	public static synthetic fun subscribe$default (Lcom/arkivanov/essenty/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/lifecycle/Lifecycle$Callbacks;
 }
