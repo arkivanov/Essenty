@@ -136,13 +136,17 @@ inline fun Lifecycle.doOnStop(isOneTime: Boolean = false, crossinline block: () 
  * Calls the [block] immediately if the [Lifecycle] is already destroyed.
  */
 inline fun Lifecycle.doOnDestroy(crossinline block: () -> Unit) {
-    subscribe(
-        object : Lifecycle.Callbacks {
-            override fun onDestroy() {
-                block()
+    if (state == Lifecycle.State.DESTROYED) {
+        block()
+    } else {
+        subscribe(
+            object : Lifecycle.Callbacks {
+                override fun onDestroy() {
+                    block()
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 /**

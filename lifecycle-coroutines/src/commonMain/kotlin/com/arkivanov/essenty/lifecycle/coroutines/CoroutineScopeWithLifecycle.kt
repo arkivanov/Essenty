@@ -27,11 +27,7 @@ fun LifecycleOwner.coroutineScope(
  * @return the same (this) [CoroutineScope].
  */
 fun CoroutineScope.withLifecycle(lifecycle: Lifecycle): CoroutineScope {
-    if (lifecycle.state == Lifecycle.State.DESTROYED) {
-        cancel()
-    } else {
-        lifecycle.doOnDestroy(::cancel)
-    }
+    lifecycle.doOnDestroy(::cancel)
 
     return this
 }
