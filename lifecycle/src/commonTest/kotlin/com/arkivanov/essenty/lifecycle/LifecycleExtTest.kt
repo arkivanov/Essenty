@@ -167,6 +167,15 @@ class LifecycleExtTest {
         assertOneEvent()
     }
 
+    @Test
+    fun GIVEN_state_DESTROYED_WHEN_doOnDestroy_THEN_called() {
+        owner.state = State.DESTROYED
+
+        owner.doOnDestroy(callback())
+
+        assertOneEvent()
+    }
+
     private fun assertNoEvents() {
         assertContentEquals(emptyList(), events)
     }

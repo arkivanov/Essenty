@@ -19,11 +19,7 @@ fun LifecycleOwner.disposableScope(): DisposableScope =
  * @return the same (this) [Disposable].
  */
 fun <T : Disposable> T.withLifecycle(lifecycle: Lifecycle): T {
-    if (lifecycle.state == Lifecycle.State.DESTROYED) {
-        dispose()
-    } else {
-        lifecycle.doOnDestroy(::dispose)
-    }
+    lifecycle.doOnDestroy(::dispose)
 
     return this
 }
