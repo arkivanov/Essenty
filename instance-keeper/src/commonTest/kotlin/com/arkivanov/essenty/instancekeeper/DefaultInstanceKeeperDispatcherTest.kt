@@ -2,6 +2,7 @@ package com.arkivanov.essenty.instancekeeper
 
 import kotlin.test.Test
 import kotlin.test.assertFails
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
@@ -74,30 +75,49 @@ class DefaultInstanceKeeperDispatcherTest {
     }
 
     @Test
-    fun GIVEN_instance_destroyed_WHEN_get_THEN_throws_exception() {
+    fun GIVEN_instance_put_and_destroyed_WHEN_get_THEN_returns_instance() {
         val dispatcher = DefaultInstanceKeeperDispatcher()
-        dispatcher.put(key = "key", instance = TestInstance())
+        val instance = TestInstance()
+        dispatcher.put(key = "key", instance = instance)
         dispatcher.destroy()
 
-        assertFails { dispatcher.get(key = "key") }
+        val returnedInstance = dispatcher.get(key = "key")
+
+        assertSame(instance, returnedInstance)
     }
 
     @Test
-    fun GIVEN_instance_destroyed_WHEN_put_THEN_throws_exception() {
+    fun GIVEN_destroyed_WHEN_put_THEN_does_not_throw() {
         val dispatcher = DefaultInstanceKeeperDispatcher()
+        val instance = TestInstance()
         dispatcher.destroy()
-        assertFails {
-            dispatcher.put(key = "key", instance = TestInstance())
-        }
+
+        dispatcher.put(key = "key", instance = instance)
     }
 
     @Test
-    fun GIVEN_instance_destroyed_WHEN_destroy_THEN_throws_exception() {
+    fun GIVEN_destroyed_and_put_WHEN_get_THEN_returns_instance() {
         val dispatcher = DefaultInstanceKeeperDispatcher()
+        val instance = TestInstance()
         dispatcher.destroy()
-        assertFails {
-            dispatcher.destroy()
-        }
+        dispatcher.put(key = "key", instance = instance)
+
+        val returnedInstance = dispatcher.get(key = "key")
+
+        assertSame(instance, returnedInstance)
+    }
+
+    @Test
+    fun GIVEN_not_empty_and_destroyed_WHEN_destroy_THEN_instance_is_not_destroyed_second_time() {
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+        val instance = TestInstance()
+        dispatcher.put(key = "key", instance = instance)
+        dispatcher.destroy()
+        instance.isDestroyed = false
+
+        dispatcher.destroy()
+
+        assertFalse(instance.isDestroyed)
     }
 
     @Test
@@ -133,19 +153,58 @@ class DefaultInstanceKeeperDispatcherTest {
     }
 
     @Test
-    fun GIVEN_instance_destroyed_WHEN_remove_THEN_throws_exception() {
+    fun GIVEN_instance_put_and_destroyed_WHEN_remove_THEN_returns_instance() {
         val dispatcher = DefaultInstanceKeeperDispatcher()
-        dispatcher.put(key = "key", instance = TestInstance())
+        val instance = TestInstance()
+        dispatcher.put(key = "key", instance = instance)
         dispatcher.destroy()
 
-        assertFails { dispatcher.remove(key = "key") }
+        val returnedInstance = dispatcher.remove(key = "key")
+
+        assertSame(instance, returnedInstance)
     }
 
-    private class TestInstance : InstanceKeeper.Instance {
+    @Test
+    fun GIVEN_instance_put_and_destroyed_and_removed_WHEN_remove_THEN_returns_null() {
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+        val instance = TestInstance()
+        dispatcher.put(key = "key", instance = instance)
+        dispatcher.destroy()
+        dispatcher.remove(key = "key")
+
+        val returnedInstance = dispatcher.remove(key = "key")
+
+        assertNull(returnedInstance)
+    }
+
+    @Test
+    fun GIVEN_instance_put_WHEN_destroy_and_instance_calls_get_in_onDestroy_THEN_returns_null() {
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+        var returnedInstance: Any? = Any()
+        dispatcher.put(key = "key", instance = TestInstance(onDestroy = { returnedInstance = null }))
+
+        dispatcher.destroy()
+
+        assertNull(returnedInstance)
+    }
+
+    @Test
+    fun GIVEN_instances_put_WHEN_destroy_and_instance_calls_remove_in_onDestroy_THEN_does_not_throw() {
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+        dispatcher.put(key = "key1", instance = TestInstance(onDestroy = { dispatcher.remove(key = "key1") }))
+        dispatcher.put(key = "key2", instance = TestInstance(onDestroy = { dispatcher.remove(key = "key2") }))
+
+        dispatcher.destroy()
+    }
+
+    private class TestInstance(
+        private val onDestroy: () -> Unit = {},
+    ) : InstanceKeeper.Instance {
         var isDestroyed: Boolean = false
 
         override fun onDestroy() {
             isDestroyed = true
+            onDestroy.invoke()
         }
     }
 }

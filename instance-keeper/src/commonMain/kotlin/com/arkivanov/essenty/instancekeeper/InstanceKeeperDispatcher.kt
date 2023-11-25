@@ -7,6 +7,10 @@ import kotlin.js.JsName
  */
 interface InstanceKeeperDispatcher : InstanceKeeper {
 
+    /**
+     * Destroys all existing instances. Instances are not cleared, so that they can be
+     * accessed later. Any new instances will be immediately destroyed.
+     */
     fun destroy()
 }
 
