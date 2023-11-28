@@ -18,5 +18,4 @@ interface StateKeeperDispatcher : StateKeeper {
  * Creates a default implementation of [StateKeeperDispatcher] with the provided [savedState].
  */
 @JsName("stateKeeperDispatcher")
-@Suppress("FunctionName") // Factory function
 fun StateKeeperDispatcher(savedState: ParcelableContainer? = null): StateKeeperDispatcher = DefaultStateKeeperDispatcher(savedState)
