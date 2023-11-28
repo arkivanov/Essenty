@@ -1,6 +1,6 @@
 public final class com/arkivanov/essenty/statekeeper/AndroidExtKt {
-	public static final fun StateKeeper (Landroidx/savedstate/SavedStateRegistry;Lkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
-	public static synthetic fun StateKeeper$default (Landroidx/savedstate/SavedStateRegistry;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
+	public static final fun StateKeeper (Landroidx/savedstate/SavedStateRegistry;ZLkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
+	public static synthetic fun StateKeeper$default (Landroidx/savedstate/SavedStateRegistry;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
 	public static final fun stateKeeper (Landroidx/savedstate/SavedStateRegistryOwner;Lkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
 	public static synthetic fun stateKeeper$default (Landroidx/savedstate/SavedStateRegistryOwner;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
 }
