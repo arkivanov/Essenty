@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
  */
 @ExperimentalEssentyApi
 @ExperimentalSerializationApi
-inline fun <reified T : Any> polymorphicSerializer(module: SerializersModule) : KSerializer<T> =
+inline fun <reified T : Any> polymorphicSerializer(module: SerializersModule): KSerializer<T> =
     polymorphicSerializer(baseClass = T::class, module = module)
 
 /**
@@ -28,7 +28,7 @@ inline fun <reified T : Any> polymorphicSerializer(module: SerializersModule) : 
  */
 @ExperimentalEssentyApi
 @ExperimentalSerializationApi
-fun <T : Any> polymorphicSerializer(baseClass: KClass<T>, module: SerializersModule) : KSerializer<T> =
+fun <T : Any> polymorphicSerializer(baseClass: KClass<T>, module: SerializersModule): KSerializer<T> =
     PolymorphicSerializer(baseClass = baseClass, module = module)
 
 @ExperimentalSerializationApi

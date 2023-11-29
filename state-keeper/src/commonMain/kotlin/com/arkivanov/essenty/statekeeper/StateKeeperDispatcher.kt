@@ -1,6 +1,5 @@
 package com.arkivanov.essenty.statekeeper
 
-import com.arkivanov.essenty.parcelable.ParcelableContainer
 import kotlin.js.JsName
 
 /**
@@ -9,13 +8,14 @@ import kotlin.js.JsName
 interface StateKeeperDispatcher : StateKeeper {
 
     /**
-     * Calls all registered `suppliers` and saves the data into a [ParcelableContainer].
+     * Calls all registered `suppliers` and saves the data into a [SerializableContainer].
      */
-    fun save(): ParcelableContainer
+    fun save(): SerializableContainer
 }
 
 /**
  * Creates a default implementation of [StateKeeperDispatcher] with the provided [savedState].
  */
 @JsName("stateKeeperDispatcher")
-fun StateKeeperDispatcher(savedState: ParcelableContainer? = null): StateKeeperDispatcher = DefaultStateKeeperDispatcher(savedState)
+fun StateKeeperDispatcher(savedState: SerializableContainer? = null): StateKeeperDispatcher =
+    DefaultStateKeeperDispatcher(savedState)

@@ -30,8 +30,8 @@ if (!startParameter.projectProperties.containsKey("check_publication")) {
     include(":lifecycle")
     include(":lifecycle-coroutines")
     include(":lifecycle-reaktive")
-    include(":parcelable")
     include(":state-keeper")
+    include(":state-keeper-benchmarks")
     include(":instance-keeper")
     include(":back-handler")
 } else {
