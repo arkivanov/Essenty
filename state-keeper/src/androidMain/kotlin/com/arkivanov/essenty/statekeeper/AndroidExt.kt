@@ -1,9 +1,11 @@
 package com.arkivanov.essenty.statekeeper
 
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleRegistry
 import androidx.savedstate.SavedStateRegistry
+import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
-import com.arkivanov.essenty.parcelable.ParcelableContainer
 
 private const val KEY_STATE = "STATE_KEEPER_STATE"
 
@@ -25,14 +27,15 @@ fun StateKeeper(
         StateKeeperDispatcher(
             savedState = savedStateRegistry
                 .consumeRestoredStateForKey(KEY_STATE)
-                ?.getParcelable<ParcelableContainer>(KEY_STATE)
+                ?.getByteArray(KEY_STATE)
+                ?.deserialize(strategy = SerializableContainer.serializer())
                 ?.takeUnless { discardSavedState },
         )
 
     savedStateRegistry.registerSavedStateProvider(KEY_STATE) {
         Bundle().apply {
             if (isSavingAllowed()) {
-                putParcelable(KEY_STATE, dispatcher.save())
+                putByteArray(KEY_STATE, dispatcher.save().serialize(strategy = SerializableContainer.serializer()))
             }
         }
     }

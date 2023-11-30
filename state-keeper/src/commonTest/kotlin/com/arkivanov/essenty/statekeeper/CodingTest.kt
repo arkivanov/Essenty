@@ -59,12 +59,12 @@ class CodingTest {
             enum1 = SomeEnum.A,
             enum2 = SomeEnum.B,
             enum3 = null,
-            notParcelable11 = NotParcelable1(value = 1),
-            notParcelable12 = NotParcelable1(value = 2),
-            notParcelable13 = null,
-            notParcelable21 = NotParcelable2(value = 1),
-            notParcelable22 = NotParcelable2(value = 2),
-            notParcelable23 = null,
+            notSerializable11 = NotSerializable1(value = 1),
+            notSerializable12 = NotSerializable1(value = 2),
+            notSerializable13 = null,
+            notSerializable21 = NotSerializable2(value = 1),
+            notSerializable22 = NotSerializable2(value = 2),
+            notSerializable23 = null,
 
             intList1 = listOf(1, 2),
             intList2 = listOf(3, 4),
@@ -129,12 +129,12 @@ class CodingTest {
             stringList5 = listOf("f", null),
             stringList6 = null,
 
-            parcelableList1 = listOf(Other(a = 1), Other(a = 2)),
-            parcelableList2 = listOf(Other(a = 3), Other(a = 4)),
-            parcelableList3 = null,
-            parcelableList4 = listOf(Other(a = 5), null),
-            parcelableList5 = listOf(Other(a = 6), null),
-            parcelableList6 = null,
+            serialzableList1 = listOf(Other(a = 1), Other(a = 2)),
+            serialzableList2 = listOf(Other(a = 3), Other(a = 4)),
+            serialzableList3 = null,
+            serialzableList4 = listOf(Other(a = 5), null),
+            serialzableList5 = listOf(Other(a = 6), null),
+            serialzableList6 = null,
 
             intSet1 = setOf(1, 2),
             intSet2 = setOf(3, 4),
@@ -199,12 +199,12 @@ class CodingTest {
             stringSet5 = setOf("f", null),
             stringSet6 = null,
 
-            parcelableSet1 = setOf(Other(a = 1), Other(a = 2)),
-            parcelableSet2 = setOf(Other(a = 3), Other(a = 4)),
-            parcelableSet3 = null,
-            parcelableSet4 = setOf(Other(a = 5), null),
-            parcelableSet5 = setOf(Other(a = 6), null),
-            parcelableSet6 = null,
+            serialzableSet1 = setOf(Other(a = 1), Other(a = 2)),
+            serialzableSet2 = setOf(Other(a = 3), Other(a = 4)),
+            serialzableSet3 = null,
+            serialzableSet4 = setOf(Other(a = 5), null),
+            serialzableSet5 = setOf(Other(a = 6), null),
+            serialzableSet6 = null,
 
             intMap1 = mapOf(1 to 11, 2 to 22),
             intMap2 = mapOf(3 to 33, 4 to 44),
@@ -269,12 +269,12 @@ class CodingTest {
             stringMap5 = mapOf("f" to "F", null to null),
             stringMap6 = null,
 
-            parcelableMap1 = mapOf(Other(a = 1) to Other(a = 11), Other(a = 2) to Other(a = 22)),
-            parcelableMap2 = mapOf(Other(a = 3) to Other(a = 33), Other(a = 4) to Other(a = 44)),
-            parcelableMap3 = null,
-            parcelableMap4 = mapOf(Other(a = 5) to Other(a = 55), null to null),
-            parcelableMap5 = mapOf(Other(a = 6) to Other(a = 66), null to null),
-            parcelableMap6 = null,
+            serializableMap1 = mapOf(Other(a = 1) to Other(a = 11), Other(a = 2) to Other(a = 22)),
+            serializableMap2 = mapOf(Other(a = 3) to Other(a = 33), Other(a = 4) to Other(a = 44)),
+            serializableMap3 = null,
+            serializableMap4 = mapOf(Other(a = 5) to Other(a = 55), null to null),
+            serializableMap5 = mapOf(Other(a = 6) to Other(a = 66), null to null),
+            serializableMap6 = null,
         )
 
     @Serializable
@@ -328,12 +328,12 @@ class CodingTest {
         val enum1: SomeEnum,
         val enum2: SomeEnum?,
         val enum3: SomeEnum?,
-        @Serializable(with = NotParcelable1Serializer::class) val notParcelable11: NotParcelable1,
-        @Serializable(with = NotParcelable1Serializer::class) val notParcelable12: NotParcelable1?,
-        @Serializable(with = NotParcelable1Serializer::class) val notParcelable13: NotParcelable1?,
-        @Serializable(with = NotParcelable2Serializer::class) val notParcelable21: NotParcelable2,
-        @Serializable(with = NotParcelable2Serializer::class) val notParcelable22: NotParcelable2?,
-        @Serializable(with = NotParcelable2Serializer::class) val notParcelable23: NotParcelable2?,
+        @Serializable(with = NotSerializable1Serializer::class) val notSerializable11: NotSerializable1,
+        @Serializable(with = NotSerializable1Serializer::class) val notSerializable12: NotSerializable1?,
+        @Serializable(with = NotSerializable1Serializer::class) val notSerializable13: NotSerializable1?,
+        @Serializable(with = NotSerializable2Serializer::class) val notSerializable21: NotSerializable2,
+        @Serializable(with = NotSerializable2Serializer::class) val notSerializable22: NotSerializable2?,
+        @Serializable(with = NotSerializable2Serializer::class) val notSerializable23: NotSerializable2?,
 
         val intList1: List<Int>,
         val intList2: List<Int>?,
@@ -398,12 +398,12 @@ class CodingTest {
         val stringList5: List<String?>?,
         val stringList6: List<String?>?,
 
-        val parcelableList1: List<Other>,
-        val parcelableList2: List<Other>?,
-        val parcelableList3: List<Other>?,
-        val parcelableList4: List<Other?>,
-        val parcelableList5: List<Other?>?,
-        val parcelableList6: List<Other?>?,
+        val serialzableList1: List<Other>,
+        val serialzableList2: List<Other>?,
+        val serialzableList3: List<Other>?,
+        val serialzableList4: List<Other?>,
+        val serialzableList5: List<Other?>?,
+        val serialzableList6: List<Other?>?,
 
         val intSet1: Set<Int>,
         val intSet2: Set<Int>?,
@@ -468,12 +468,12 @@ class CodingTest {
         val stringSet5: Set<String?>?,
         val stringSet6: Set<String?>?,
 
-        val parcelableSet1: Set<Other>,
-        val parcelableSet2: Set<Other>?,
-        val parcelableSet3: Set<Other>?,
-        val parcelableSet4: Set<Other?>,
-        val parcelableSet5: Set<Other?>?,
-        val parcelableSet6: Set<Other?>?,
+        val serialzableSet1: Set<Other>,
+        val serialzableSet2: Set<Other>?,
+        val serialzableSet3: Set<Other>?,
+        val serialzableSet4: Set<Other?>,
+        val serialzableSet5: Set<Other?>?,
+        val serialzableSet6: Set<Other?>?,
 
         val intMap1: Map<Int, Int>,
         val intMap2: Map<Int, Int>?,
@@ -538,45 +538,45 @@ class CodingTest {
         val stringMap5: Map<String?, String?>?,
         val stringMap6: Map<String?, String?>?,
 
-        val parcelableMap1: Map<Other, Other>,
-        val parcelableMap2: Map<Other, Other>?,
-        val parcelableMap3: Map<Other, Other>?,
-        val parcelableMap4: Map<Other?, Other?>,
-        val parcelableMap5: Map<Other?, Other?>?,
-        val parcelableMap6: Map<Other?, Other?>?,
+        val serializableMap1: Map<Other, Other>,
+        val serializableMap2: Map<Other, Other>?,
+        val serializableMap3: Map<Other, Other>?,
+        val serializableMap4: Map<Other?, Other?>,
+        val serializableMap5: Map<Other?, Other?>?,
+        val serializableMap6: Map<Other?, Other?>?,
     ) : SomeInterface
 
     private interface SomeInterface
 
     private abstract class SomeClass
 
-    private data class NotParcelable1(
+    private data class NotSerializable1(
         val value: Int,
     )
 
-    private object NotParcelable1Serializer : KSerializer<NotParcelable1> {
+    private object NotSerializable1Serializer : KSerializer<NotSerializable1> {
         override val descriptor: SerialDescriptor = Int.serializer().descriptor
 
-        override fun serialize(encoder: Encoder, value: NotParcelable1) {
+        override fun serialize(encoder: Encoder, value: NotSerializable1) {
             encoder.encodeInt(value.value)
         }
 
-        override fun deserialize(decoder: Decoder): NotParcelable1 =
-            NotParcelable1(value = decoder.decodeInt())
+        override fun deserialize(decoder: Decoder): NotSerializable1 =
+            NotSerializable1(value = decoder.decodeInt())
     }
 
-    private data class NotParcelable2(
+    private data class NotSerializable2(
         val value: Int,
     )
 
-    private object NotParcelable2Serializer : KSerializer<NotParcelable2> {
+    private object NotSerializable2Serializer : KSerializer<NotSerializable2> {
         override val descriptor: SerialDescriptor = Int.serializer().descriptor
 
-        override fun serialize(encoder: Encoder, value: NotParcelable2) {
+        override fun serialize(encoder: Encoder, value: NotSerializable2) {
             encoder.encodeInt(value.value)
         }
 
-        override fun deserialize(decoder: Decoder): NotParcelable2 =
-            NotParcelable2(value = decoder.decodeInt())
+        override fun deserialize(decoder: Decoder): NotSerializable2 =
+            NotSerializable2(value = decoder.decodeInt())
     }
 }
