@@ -43,11 +43,17 @@ fun StateKeeper(
 /**
  * Creates a new instance of [StateKeeper] and attaches it to the AndroidX [SavedStateRegistry].
  *
+ * @param discardSavedState a flag indicating whether any previously saved state should be discarded or not,
+ * default value is `false`.
  * @param isSavingAllowed called before saving the state.
  * When `true` then the state will be saved, otherwise it won't. Default value is `true`.
  */
-fun SavedStateRegistryOwner.stateKeeper(isSavingAllowed: () -> Boolean = { true }): StateKeeper =
+fun SavedStateRegistryOwner.stateKeeper(
+    discardSavedState: Boolean = false,
+    isSavingAllowed: () -> Boolean = { true },
+): StateKeeper =
     StateKeeper(
         savedStateRegistry = savedStateRegistry,
+        discardSavedState = discardSavedState,
         isSavingAllowed = isSavingAllowed
     )
