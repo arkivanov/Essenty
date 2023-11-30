@@ -31,7 +31,6 @@ kotlin {
             implementation("com.arkivanov.essenty:lifecycle:$version")
             implementation("com.arkivanov.essenty:lifecycle-coroutines:$version")
             implementation("com.arkivanov.essenty:lifecycle-reaktive:$version")
-            implementation("com.arkivanov.essenty:parcelable:$version")
             implementation("com.arkivanov.essenty:state-keeper:$version")
         }
     }
