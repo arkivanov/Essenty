@@ -14,12 +14,13 @@ interface InstanceKeeper {
     fun get(key: Any): Instance?
 
     /**
-     * Stores the given [instance] with the given [key].
+     * Stores the given [instance] with the given [key]. Throws [IllegalStateException] if another
+     * instance is already registered with the given [key].
      */
     fun put(key: Any, instance: Instance)
 
     /**
-     * Removes an instance with the given [key].
+     * Removes an instance with the given [key]. This does not destroy the instance.
      */
     fun remove(key: Any): Instance?
 
