@@ -15,7 +15,7 @@ class PolymorphicSerializerTest {
     @Test
     fun serialize_and_deserialize() {
         val someListSerializer = ListSerializer(SomeSerializer)
-        val originalSome = listOf(Some1(1), Some2("2"))
+        val originalSome = listOf(Some1(data = SerializableData()), Some2(data = SerializableData()))
 
         val newSome = originalSome.serialize(someListSerializer).deserialize(someListSerializer)
 
@@ -25,10 +25,10 @@ class PolymorphicSerializerTest {
     private interface Some
 
     @Serializable
-    private data class Some1(val value: Int) : Some
+    private data class Some1(val data: SerializableData) : Some
 
     @Serializable
-    private data class Some2(val value: String) : Some
+    private data class Some2(val data: SerializableData) : Some
 
     @OptIn(ExperimentalEssentyApi::class, ExperimentalSerializationApi::class)
     private object SomeSerializer : KSerializer<Some> by polymorphicSerializer(
