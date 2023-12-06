@@ -18,5 +18,4 @@ interface InstanceKeeperDispatcher : InstanceKeeper {
  * Creates a default implementation of [InstanceKeeperDispatcher].
  */
 @JsName("instanceKeeperDispatcher")
-@Suppress("FunctionName")
 fun InstanceKeeperDispatcher(): InstanceKeeperDispatcher = DefaultInstanceKeeperDispatcher()
