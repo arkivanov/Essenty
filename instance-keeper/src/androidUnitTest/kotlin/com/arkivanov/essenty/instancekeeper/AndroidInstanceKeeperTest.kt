@@ -46,8 +46,7 @@ class AndroidInstanceKeeperTest {
     }
 
     private class TestOwner : ViewModelStoreOwner {
-        private val _viewModelStore = ViewModelStore()
-        override fun getViewModelStore(): ViewModelStore = _viewModelStore
+        override val viewModelStore: ViewModelStore = ViewModelStore()
     }
 
     private class TestInstance : InstanceKeeper.Instance {

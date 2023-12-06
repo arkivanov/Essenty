@@ -79,9 +79,8 @@ class AndroidStateKeeperTest {
 
     private class TestSavedStateRegistryOwner : SavedStateRegistryOwner {
         val controller: SavedStateRegistryController = SavedStateRegistryController.create(this)
-        private val _lifecycle = LifecycleRegistry(this)
 
-        override fun getLifecycle(): Lifecycle = _lifecycle
-        override fun getSavedStateRegistry(): SavedStateRegistry = controller.savedStateRegistry
+        override val lifecycle: Lifecycle = LifecycleRegistry(this)
+        override val savedStateRegistry: SavedStateRegistry get() = controller.savedStateRegistry
     }
 }

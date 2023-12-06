@@ -7,13 +7,12 @@ kotlinxCoroutines = "1.7.3"
 detektGradlePlugin = "1.23.3"
 junit = "4.13.2"
 androidGradle = "8.0.2"
-androidxCore = "1.6.0"
-androidxLifecycle = "2.2.0"
-androidxSavedstate = "1.1.0"
-androidxActivity = "1.8.0"
+androidxLifecycle = "2.6.2"
+androidxSavedstate = "1.2.1"
+androidxActivity = "1.8.1"
 jetbrainsKotlinxSerialization = "1.6.2"
 robolectric = "4.9.1"
-reaktive = "1.3.0"
+reaktive = "2.0.1"
 
 [libraries]
 
@@ -27,7 +26,6 @@ detekt-gradleDetektPlug = { group = "io.gitlab.arturbosch.detekt", name = "detek
 
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradle" }
 
-androidx-core-coreKtx  = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-lifecycle-lifecycleCommonJava8 = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "androidxLifecycle" }
 androidx-lifecycle-lifecycleRuntime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "androidxLifecycle" }
 androidx-lifecycle-lifecycleViewmodelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
