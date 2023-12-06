@@ -1,6 +1,8 @@
 public final class com/arkivanov/essenty/instancekeeper/AndroidExtKt {
-	public static final fun InstanceKeeper (Landroidx/lifecycle/ViewModelStore;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;
-	public static final fun instanceKeeper (Landroidx/lifecycle/ViewModelStoreOwner;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;
+	public static final fun InstanceKeeper (Landroidx/lifecycle/ViewModelStore;Z)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;
+	public static synthetic fun InstanceKeeper$default (Landroidx/lifecycle/ViewModelStore;ZILjava/lang/Object;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;
+	public static final fun instanceKeeper (Landroidx/lifecycle/ViewModelStoreOwner;Z)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;
+	public static synthetic fun instanceKeeper$default (Landroidx/lifecycle/ViewModelStoreOwner;ZILjava/lang/Object;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;
 }
 
 public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKeeper {
