@@ -10,7 +10,8 @@ Supported targets:
 
 - `android`
 - `jvm`
-- `js` (`IR` and `LEGACY`)
+- `js`
+- `wasmJs` (since version `2.0.0-alpha01`)
 - `ios`
 - `watchos`
 - `tvos`
@@ -140,7 +141,7 @@ lifecycleRegistry.resume()
 lifecycleRegistry.destroy()
 ```
 
-## Parcelable and Parcelize (deprecated since v1.3.0-alpha01)
+## Parcelable and Parcelize (deprecated since v1.3.0-alpha01, removed since v2.0.0-alpha01)
 
 > ⚠️  Unfortunately, the new K2 compiler will not support Parcelable/Parcelize with Kotlin Multiplatform (see [#102](https://github.com/arkivanov/Essenty/issues/102)). This module is mostly deprecated since `v1.3.0-alpha01` and will be removed in `v2.0`. As a replacement, Essenty supports [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization) since `v1.3.0-alpha01`.
 
@@ -312,7 +313,7 @@ data class User(
 
 When writing common code targeting Android, it might be required to preserve some data over Android configuration changes or process death. For this purpose, Essenty provides the `StateKeeper` API, which is inspired by the AndroidX [SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle).
 
-> ⚠️  The `StateKeeper` API is used to rely on the `Parcelable` interface provided by the `parcelable` module described above. As described above, Parcelable/Parcelize support is deprecated since `v1.3.0-alpha01`. As a replacement, the `StateKeeper` API now supports [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization).
+> ⚠️  The `StateKeeper` API is used to rely on the `Parcelable` interface provided by the `parcelable` module described above. As described above, Parcelable/Parcelize support is deprecated since `v1.3.0-alpha01` and removed since `v2.0.0-alpha01`. As a replacement, the `StateKeeper` API now supports [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization).
 
 ### Setup
 
@@ -425,7 +426,7 @@ class SomeLogic(stateKeeper: StateKeeper) {
 }
 ```
 
-#### Using the StateKeeperDisptacher manually
+#### Using the StateKeeperDispatcher manually
 
 > ⚠️  There is no any `kotlinx-serialization` replacement for `ParcelableContainer` currently, please continue using it until v2.0
 
