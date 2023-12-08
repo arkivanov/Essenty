@@ -22,6 +22,9 @@ kotlin {
         common.main.dependencies {
             implementation(project(":lifecycle"))
             implementation(deps.kotlinx.coroutinesCore)
+
+            // Workaround: https://github.com/Kotlin/kotlinx.coroutines/issues/3968
+            implementation("org.jetbrains.kotlinx:atomicfu:0.23.1")
         }
 
         common.test.dependencies {

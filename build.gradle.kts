@@ -39,6 +39,9 @@ setupDefaults(
             browser()
             nodejs()
         }
+        wasmJs {
+            browser()
+        }
         linuxX64()
         iosCompat()
         watchosCompat()
