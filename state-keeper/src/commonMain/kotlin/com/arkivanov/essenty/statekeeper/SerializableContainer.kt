@@ -1,13 +1,12 @@
 package com.arkivanov.essenty.statekeeper
 
+import com.arkivanov.essenty.statekeeper.base64.ByteArrayAsBase64StringSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.builtins.ByteArraySerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
@@ -61,27 +60,18 @@ class SerializableContainer private constructor(
     )
 
     internal object Serializer : KSerializer<SerializableContainer> {
-        private val byteArraySerializer = ByteArraySerializer()
-
-        override val descriptor: SerialDescriptor =
-            buildClassSerialDescriptor(serialName = "SerializableContainer") {
-                element<Boolean>(elementName = "exists")
-                element(elementName = "data", descriptor = byteArraySerializer.descriptor, isOptional = true)
-            }
+        private val serializer = ByteArrayAsBase64StringSerializer.nullable
+        override val descriptor: SerialDescriptor = serializer.descriptor
 
         override fun serialize(encoder: Encoder, value: SerializableContainer) {
-            val data = value.holder?.serialize()
-            encoder.encodeBoolean(data != null)
-            if (data != null) {
-                encoder.encodeSerializableValue(serializer = byteArraySerializer, value = data)
-            }
+            serializer.serialize(encoder, (value.holder?.serialize() ?: value.data))
         }
 
         private fun <T : Any> Holder<T>.serialize(): ByteArray? =
             value?.serialize(strategy)
 
         override fun deserialize(decoder: Decoder): SerializableContainer =
-            SerializableContainer(data = decoder.takeIf(Decoder::decodeBoolean)?.decodeSerializableValue(byteArraySerializer))
+            SerializableContainer(data = serializer.deserialize(decoder))
     }
 }
 
