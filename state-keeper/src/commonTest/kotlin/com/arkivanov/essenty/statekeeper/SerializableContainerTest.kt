@@ -37,7 +37,7 @@ class SerializableContainerTest {
     }
 
     @Test
-    fun serializes_and_deserializes_data() {
+    fun serializes_and_deserializes_initial_data() {
         val data = SerializableData()
         val container = SerializableContainer(value = data, strategy = SerializableData.serializer())
         val newContainer = container.serializeAndDeserialize()
@@ -47,7 +47,18 @@ class SerializableContainerTest {
     }
 
     @Test
-    fun serializes_and_deserializes_data_twice() {
+    fun serializes_and_deserializes_set_data() {
+        val data = SerializableData()
+        val container = SerializableContainer()
+        container.set(value = data, strategy = SerializableData.serializer())
+        val newContainer = container.serializeAndDeserialize()
+        val newData = newContainer.consume(strategy = SerializableData.serializer())
+
+        assertEquals(data, newData)
+    }
+
+    @Test
+    fun serializes_and_deserializes_initial_data_twice() {
         val data = SerializableData()
         val container = SerializableContainer(value = data, strategy = SerializableData.serializer())
         val newContainer = container.serializeAndDeserialize().serializeAndDeserialize()
@@ -57,7 +68,18 @@ class SerializableContainerTest {
     }
 
     @Test
-    fun serializes_and_deserializes_null() {
+    fun serializes_and_deserializes_set_data_twice() {
+        val data = SerializableData()
+        val container = SerializableContainer()
+        container.set(value = data, strategy = SerializableData.serializer())
+        val newContainer = container.serializeAndDeserialize().serializeAndDeserialize()
+        val newData = newContainer.consume(strategy = SerializableData.serializer())
+
+        assertEquals(data, newData)
+    }
+
+    @Test
+    fun serializes_and_deserializes_initial_null() {
         val container = SerializableContainer()
         val newContainer = container.serializeAndDeserialize()
         val newData = newContainer.consume(strategy = SerializableData.serializer())
@@ -66,8 +88,28 @@ class SerializableContainerTest {
     }
 
     @Test
-    fun serializes_and_deserializes_null_twice() {
+    fun serializes_and_deserializes_set_null() {
         val container = SerializableContainer()
+        container.set(null, SerializableData.serializer())
+        val newContainer = container.serializeAndDeserialize()
+        val newData = newContainer.consume(strategy = SerializableData.serializer())
+
+        assertNull(newData)
+    }
+
+    @Test
+    fun serializes_and_deserializes_initial_null_twice() {
+        val container = SerializableContainer()
+        val newContainer = container.serializeAndDeserialize().serializeAndDeserialize()
+        val newData = newContainer.consume(strategy = SerializableData.serializer())
+
+        assertNull(newData)
+    }
+
+    @Test
+    fun serializes_and_deserializes_set_null_twice() {
+        val container = SerializableContainer()
+        container.set(null, SerializableData.serializer())
         val newContainer = container.serializeAndDeserialize().serializeAndDeserialize()
         val newData = newContainer.consume(strategy = SerializableData.serializer())
 
