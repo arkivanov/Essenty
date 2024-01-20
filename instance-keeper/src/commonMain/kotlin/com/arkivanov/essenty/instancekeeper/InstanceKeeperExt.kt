@@ -6,7 +6,8 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper.SimpleInstance
  * Returns a previously stored [InstanceKeeper.Instance] of type [T] with the given key,
  * or creates and stores a new one if it doesn't exist.
  */
-inline fun <reified T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(key: Any, factory: () -> T): T {
+inline fun <T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(key: Any, factory: () -> T): T {
+    @Suppress("UNCHECKED_CAST") // Assuming the type per key is always the same
     var instance: T? = get(key) as T?
     if (instance == null) {
         instance = factory()
@@ -29,7 +30,7 @@ inline fun <reified T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(fact
  *
  * This overload is for simple cases when instance destroying is not required.
  */
-inline fun <reified T> InstanceKeeper.getOrCreateSimple(key: Any, factory: () -> T): T =
+inline fun <T> InstanceKeeper.getOrCreateSimple(key: Any, factory: () -> T): T =
     getOrCreate(key = key) { SimpleInstance(factory()) }
         .instance
 
