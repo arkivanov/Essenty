@@ -1,7 +1,9 @@
 package com.arkivanov.essenty.statekeeper
 
+import kotlinx.serialization.Serializable
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 @Suppress("TestFunctionName")
@@ -115,4 +117,59 @@ class SerializableContainerTest {
 
         assertNull(newData)
     }
+
+    @Test
+    fun serializes_and_deserializes_list() {
+        val data = SerializableData()
+
+        val containers =
+            Containers(
+                listOf(
+                    SerializableContainer(data, SerializableData.serializer()),
+                    SerializableContainer(),
+                    null,
+                )
+            )
+
+        val newContainers = containers.serializeAndDeserialize(Containers.serializer())
+
+        val (container1, container2, container3) = newContainers.list
+        assertNotNull(container1)
+        assertNotNull(container2)
+        assertNull(container3)
+        val newData1 = container1.consume(SerializableData.serializer())
+        val newData2 = container2.consume(SerializableData.serializer())
+        assertEquals(newData1, data)
+        assertNull(newData2)
+    }
+
+    @Test
+    fun serializes_and_deserializes_list_twice() {
+        val data = SerializableData()
+
+        val containers =
+            Containers(
+                listOf(
+                    SerializableContainer(data, SerializableData.serializer()),
+                    SerializableContainer(),
+                    null,
+                )
+            )
+
+        val newContainers = containers.serializeAndDeserialize(Containers.serializer()).serializeAndDeserialize(Containers.serializer())
+
+        val (container1, container2, container3) = newContainers.list
+        assertNotNull(container1)
+        assertNotNull(container2)
+        assertNull(container3)
+        val newData1 = container1.consume(SerializableData.serializer())
+        val newData2 = container2.consume(SerializableData.serializer())
+        assertEquals(newData1, data)
+        assertNull(newData2)
+    }
+
+    @Serializable
+    private class Containers(
+        val list: List<SerializableContainer?>,
+    )
 }

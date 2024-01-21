@@ -1,5 +1,8 @@
 package com.arkivanov.essenty.statekeeper.base64
 
+internal fun ByteArray.toBase64(): String =
+    encode(this)
+
 internal fun encode(array: ByteArray): String = buildString(capacity = (array.size / 3) * 4 + 1) {
     var index = 0
 

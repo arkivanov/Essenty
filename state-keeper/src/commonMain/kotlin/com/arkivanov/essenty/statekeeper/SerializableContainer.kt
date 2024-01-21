@@ -1,11 +1,13 @@
 package com.arkivanov.essenty.statekeeper
 
-import com.arkivanov.essenty.statekeeper.base64.ByteArrayAsBase64StringSerializer
+import com.arkivanov.essenty.statekeeper.base64.base64ToByteArray
+import com.arkivanov.essenty.statekeeper.base64.toBase64
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -60,18 +62,19 @@ class SerializableContainer private constructor(
     )
 
     internal object Serializer : KSerializer<SerializableContainer> {
-        private val serializer = ByteArrayAsBase64StringSerializer.nullable
-        override val descriptor: SerialDescriptor = serializer.descriptor
+        private const val NULL_MARKER = "."
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("SerializableContainer", PrimitiveKind.STRING)
 
         override fun serialize(encoder: Encoder, value: SerializableContainer) {
-            serializer.serialize(encoder, (value.holder?.serialize() ?: value.data))
+            val bytes = value.holder?.serialize() ?: value.data
+            encoder.encodeString(bytes?.toBase64() ?: NULL_MARKER)
         }
 
         private fun <T : Any> Holder<T>.serialize(): ByteArray? =
             value?.serialize(strategy)
 
         override fun deserialize(decoder: Decoder): SerializableContainer =
-            SerializableContainer(data = serializer.deserialize(decoder))
+            SerializableContainer(data = decoder.decodeString().takeUnless { it == NULL_MARKER }?.base64ToByteArray())
     }
 }
 

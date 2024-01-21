@@ -1,5 +1,8 @@
 package com.arkivanov.essenty.statekeeper.base64
 
+internal fun String.base64ToByteArray(): ByteArray =
+    decode(this)
+
 @Suppress("CognitiveComplexMethod", "LoopWithTooManyJumpStatements") // Keep the original
 internal fun decode(encoded: String): ByteArray {
     if (encoded.isBlank()) return ByteArray(0)
