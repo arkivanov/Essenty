@@ -33,6 +33,11 @@ public final class com/arkivanov/essenty/instancekeeper/InstanceKeeperDispatcher
 	public static final fun InstanceKeeperDispatcher ()Lcom/arkivanov/essenty/instancekeeper/InstanceKeeperDispatcher;
 }
 
+public final class com/arkivanov/essenty/instancekeeper/InstanceKeeperExtKt {
+	public static final fun getOrCreate (Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;
+	public static final fun getOrCreateSimple (Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+}
+
 public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKeeperOwner {
 	public abstract fun getInstanceKeeper ()Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;
 }
