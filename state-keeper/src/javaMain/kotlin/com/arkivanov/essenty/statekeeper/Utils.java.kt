@@ -15,7 +15,7 @@ internal actual fun <T : Any> T.serialize(strategy: SerializationStrategy<T>): B
     ByteArrayOutputStream().use { output ->
         ZipOutputStream(output).use { zip ->
             zip.setLevel(7)
-            zip.putNextEntry(ZipEntry(""))
+            zip.putNextEntry(ZipEntry("Entry"))
 
             zip.buffered().use { bufferedOutput ->
                 @OptIn(ExperimentalSerializationApi::class)
