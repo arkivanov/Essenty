@@ -35,19 +35,11 @@ public final class com/arkivanov/essenty/backhandler/BackCallbackKt {
 public abstract interface class com/arkivanov/essenty/backhandler/BackDispatcher : com/arkivanov/essenty/backhandler/BackHandler {
 	public abstract fun addEnabledChangedListener (Lkotlin/jvm/functions/Function1;)V
 	public abstract fun back ()Z
+	public abstract fun cancelPredictiveBack ()V
 	public abstract fun isEnabled ()Z
+	public abstract fun progressPredictiveBack (Lcom/arkivanov/essenty/backhandler/BackEvent;)V
 	public abstract fun removeEnabledChangedListener (Lkotlin/jvm/functions/Function1;)V
-	public abstract fun startPredictiveBack (Lcom/arkivanov/essenty/backhandler/BackEvent;)Lcom/arkivanov/essenty/backhandler/BackDispatcher$PredictiveBackDispatcher;
-}
-
-public final class com/arkivanov/essenty/backhandler/BackDispatcher$DefaultImpls {
-	public static fun startPredictiveBack (Lcom/arkivanov/essenty/backhandler/BackDispatcher;Lcom/arkivanov/essenty/backhandler/BackEvent;)Lcom/arkivanov/essenty/backhandler/BackDispatcher$PredictiveBackDispatcher;
-}
-
-public abstract interface class com/arkivanov/essenty/backhandler/BackDispatcher$PredictiveBackDispatcher {
-	public abstract fun cancel ()V
-	public abstract fun finish ()V
-	public abstract fun progress (Lcom/arkivanov/essenty/backhandler/BackEvent;)V
+	public abstract fun startPredictiveBack (Lcom/arkivanov/essenty/backhandler/BackEvent;)Z
 }
 
 public final class com/arkivanov/essenty/backhandler/BackDispatcherKt {
@@ -58,10 +50,19 @@ public final class com/arkivanov/essenty/backhandler/BackEvent {
 	public fun <init> ()V
 	public fun <init> (FLcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;FF)V
 	public synthetic fun <init> (FLcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;FFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()F
+	public final fun component2 ()Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
+	public final fun component3 ()F
+	public final fun component4 ()F
+	public final fun copy (FLcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;FF)Lcom/arkivanov/essenty/backhandler/BackEvent;
+	public static synthetic fun copy$default (Lcom/arkivanov/essenty/backhandler/BackEvent;FLcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;FFILjava/lang/Object;)Lcom/arkivanov/essenty/backhandler/BackEvent;
+	public fun equals (Ljava/lang/Object;)Z
 	public final fun getProgress ()F
 	public final fun getSwipeEdge ()Lcom/arkivanov/essenty/backhandler/BackEvent$SwipeEdge;
 	public final fun getTouchX ()F
 	public final fun getTouchY ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/arkivanov/essenty/backhandler/BackEvent$SwipeEdge : java/lang/Enum {

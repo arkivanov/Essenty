@@ -12,43 +12,45 @@ interface BackDispatcher : BackHandler {
      */
     val isEnabled: Boolean
 
+    /**
+     * Adds the provided [listener], which will be called every time the enabled state of
+     * this [BackDispatcher] changes.
+     */
     fun addEnabledChangedListener(listener: (isEnabled: Boolean) -> Unit)
 
+    /**
+     * Removes the provided enabled state changed [listener].
+     */
     fun removeEnabledChangedListener(listener: (isEnabled: Boolean) -> Unit)
 
     /**
-     * Iterates through all registered callbacks in reverse order and triggers the first one enabled.
+     * If no predictive back gesture is currently in progress, finds the last enabled
+     * callback with the highest priority and calls [BackCallback.onBack].
      *
-     * @return `true` if any handler was triggered, `false` otherwise.
+     * If the predictive back gesture is currently in progress, calls [BackCallback.onBack] on
+     * the previously selected callback.
+     *
+     * @return `true` if any callback was triggered, `false` otherwise.
      */
     fun back(): Boolean
 
     /**
      * Starts handling the predictive back gesture. Picks one of the enabled callback (if any)
      * that will be handling the gesture and calls [BackCallback.onBackStarted].
+     *
+     * @return `true` if any callback was triggered, `false` otherwise.
      */
-    fun startPredictiveBack(backEvent: BackEvent): PredictiveBackDispatcher? = null
+    fun startPredictiveBack(backEvent: BackEvent): Boolean
 
     /**
-     * Dispatches predictive back gesture events to the callback selected by [startPredictiveBack].
+     * Calls [BackCallback.onBackProgressed] on the previously selected callback.
      */
-    interface PredictiveBackDispatcher {
+    fun progressPredictiveBack(backEvent: BackEvent)
 
-        /**
-         * Calls [BackCallback.onBackProgressed] on the selected callback.
-         */
-        fun progress(backEvent: BackEvent)
-
-        /**
-         * Calls [BackCallback.onBack] on the selected callback.
-         */
-        fun finish()
-
-        /**
-         * Calls [BackCallback.onBackCancelled] on the selected callback.
-         */
-        fun cancel()
-    }
+    /**
+     * Calls [BackCallback.onBackCancelled] on the previously selected callback.
+     */
+    fun cancelPredictiveBack()
 }
 
 /**

@@ -8,7 +8,7 @@ package com.arkivanov.essenty.backhandler
  * @param touchX absolute X location of the touch point of this event.
  * @param touchY absolute Y location of the touch point of this event.
  */
-class BackEvent(
+data class BackEvent(
     val progress: Float = 0F,
     val swipeEdge: SwipeEdge = SwipeEdge.UNKNOWN,
     val touchX: Float = 0F,

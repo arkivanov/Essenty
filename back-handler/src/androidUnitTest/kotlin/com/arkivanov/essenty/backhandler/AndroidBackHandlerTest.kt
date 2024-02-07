@@ -1,5 +1,8 @@
 package com.arkivanov.essenty.backhandler
 
+import androidx.activity.BackEventCompat
+import androidx.activity.BackEventCompat.Companion.EDGE_LEFT
+import androidx.activity.BackEventCompat.Companion.EDGE_RIGHT
 import androidx.activity.OnBackPressedDispatcher
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
@@ -171,6 +174,64 @@ class AndroidBackHandlerTest {
         dispatcher.onBackPressed()
 
         assertContentEquals(listOf(2), list)
+    }
+
+    @Test
+    fun WHEN_progress_with_back_THEN_callbacks_called() {
+        val receivedEvents = ArrayList<Any?>()
+
+        handler.register(
+            BackCallback(
+                onBackStarted = { receivedEvents += it },
+                onBackProgressed = { receivedEvents += it },
+                onBackCancelled = { receivedEvents += "Cancel" },
+                onBack = { receivedEvents += "Back" },
+            )
+        )
+
+        dispatcher.dispatchOnBackStarted(BackEventCompat(progress = 0.1F, swipeEdge = EDGE_LEFT, touchX = 1F, touchY = 2F))
+        dispatcher.dispatchOnBackProgressed(BackEventCompat(progress = 0.2F, swipeEdge = EDGE_RIGHT, touchX = 2F, touchY = 3F))
+        dispatcher.dispatchOnBackProgressed(BackEventCompat(progress = 0.3F, swipeEdge = EDGE_LEFT, touchX = 3F, touchY = 4F))
+        dispatcher.onBackPressed()
+
+        assertContentEquals(
+            listOf(
+                BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F),
+                BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 2F, touchY = 3F),
+                BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F),
+                "Back",
+            ),
+            receivedEvents,
+        )
+    }
+
+    @Test
+    fun WHEN_progress_with_cancel_THEN_callbacks_called() {
+        val receivedEvents = ArrayList<Any?>()
+
+        handler.register(
+            BackCallback(
+                onBackStarted = { receivedEvents += it },
+                onBackProgressed = { receivedEvents += it },
+                onBackCancelled = { receivedEvents += "Cancel" },
+                onBack = { receivedEvents += "Back" },
+            )
+        )
+
+        dispatcher.dispatchOnBackStarted(BackEventCompat(progress = 0.1F, swipeEdge = EDGE_LEFT, touchX = 1F, touchY = 2F))
+        dispatcher.dispatchOnBackProgressed(BackEventCompat(progress = 0.2F, swipeEdge = EDGE_RIGHT, touchX = 2F, touchY = 3F))
+        dispatcher.dispatchOnBackProgressed(BackEventCompat(progress = 0.3F, swipeEdge = EDGE_LEFT, touchX = 3F, touchY = 4F))
+        dispatcher.dispatchOnBackCancelled()
+
+        assertContentEquals(
+            listOf(
+                BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F),
+                BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 2F, touchY = 3F),
+                BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F),
+                "Cancel",
+            ),
+            receivedEvents,
+        )
     }
 
     private fun callback(
