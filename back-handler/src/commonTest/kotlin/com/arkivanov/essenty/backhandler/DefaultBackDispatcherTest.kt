@@ -301,6 +301,262 @@ class DefaultBackDispatcherTest {
         assertContentEquals(listOf(startEvent, progressEvent1, progressEvent2, "Cancel"), receivedEvents)
     }
 
+    @Test
+    fun GIVEN_EnabledChanged_listener_added_WHEN_enabled_callback_registered_THEN_listener_called_with_true() {
+        val events = ArrayList<Boolean>()
+        dispatcher.addEnabledChangedListener { events += it }
+
+        dispatcher.register(callback(isEnabled = true, onBack = {}))
+
+        assertContentEquals(listOf(true), events)
+    }
+
+    @Test
+    fun GIVEN_EnabledChanged_listener_added_WHEN_disabled_callback_registered_THEN_listener_not_called() {
+        val events = ArrayList<Boolean>()
+        dispatcher.addEnabledChangedListener { events += it }
+
+        dispatcher.register(callback(isEnabled = false, onBack = {}))
+
+        assertContentEquals(emptyList(), events)
+    }
+
+    @Test
+    fun GIVEN_enabled_callback_registered_and_EnabledChanged_listener_added_WHEN_callback_unregistered_THEN_listener_called_with_false() {
+        val events = ArrayList<Boolean>()
+        val callback = callback(isEnabled = true, onBack = {})
+        dispatcher.register(callback)
+        dispatcher.addEnabledChangedListener { events += it }
+
+        dispatcher.unregister(callback)
+
+        assertContentEquals(listOf(false), events)
+    }
+
+    @Test
+    fun GIVEN_disabled_callback_registered_and_EnabledChanged_listener_added_WHEN_callback_unregistered_THEN_listener_not_called() {
+        val events = ArrayList<Boolean>()
+        val callback = callback(isEnabled = false, onBack = {})
+        dispatcher.register(callback)
+        dispatcher.addEnabledChangedListener { events += it }
+
+        dispatcher.unregister(callback)
+
+        assertContentEquals(emptyList(), events)
+    }
+
+    @Test
+    fun GIVEN_disabled_callback_registered_and_EnabledChanged_listener_added_WHEN_callback_enabled_THEN_listener_called_with_true() {
+        val events = ArrayList<Boolean>()
+        val callback = callback(isEnabled = false, onBack = {})
+        dispatcher.register(callback)
+        dispatcher.addEnabledChangedListener { events += it }
+
+        callback.isEnabled = true
+
+        assertContentEquals(listOf(true), events)
+    }
+
+    @Test
+    fun GIVEN_enabled_callback_registered_and_EnabledChanged_listener_added_WHEN_callback_disabled_THEN_listener_called_with_false() {
+        val events = ArrayList<Boolean>()
+        val callback = callback(isEnabled = true, onBack = {})
+        dispatcher.register(callback)
+        dispatcher.addEnabledChangedListener { events += it }
+
+        callback.isEnabled = false
+
+        assertContentEquals(listOf(false), events)
+    }
+
+    @Test
+    fun GIVEN_two_disabled_callback_registered_and_EnabledChanged_listener_added_WHEN_one_callback_enabled_THEN_listener_called_with_true() {
+        val events = ArrayList<Boolean>()
+        val callback1 = callback(isEnabled = false, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(callback(isEnabled = false, onBack = {}))
+        dispatcher.addEnabledChangedListener { events += it }
+
+        callback1.isEnabled = true
+
+        assertContentEquals(listOf(true), events)
+    }
+
+    @Test
+    fun GIVEN_two_enabled_callback_registered_and_EnabledChanged_listener_added_WHEN_one_callback_disabled_THEN_listener_not_called() {
+        val events = ArrayList<Boolean>()
+        val callback1 = callback(isEnabled = true, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(callback(isEnabled = true, onBack = {}))
+        dispatcher.addEnabledChangedListener { events += it }
+
+        callback1.isEnabled = false
+
+        assertContentEquals(emptyList(), events)
+    }
+
+    @Test
+    fun GIVEN_one_disabled_and_one_enabled_callback_registered_and_EnabledChanged_listener_added_WHEN_callback_enabled_THEN_listener_not_called() {
+        val events = ArrayList<Boolean>()
+        val callback1 = callback(isEnabled = false, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(BackCallback(isEnabled = true, onBack = {}))
+        dispatcher.addEnabledChangedListener { events += it }
+
+        callback1.isEnabled = true
+
+        assertContentEquals(emptyList(), events)
+    }
+
+    @Test
+    fun GIVEN_one_disabled_and_one_enabled_callback_registered_and_EnabledChanged_listener_added_WHEN_callback_disabled_THEN_listener_called_with_false() {
+        val events = ArrayList<Boolean>()
+        val callback1 = callback(isEnabled = true, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(BackCallback(isEnabled = false, onBack = {}))
+        dispatcher.addEnabledChangedListener { events += it }
+
+        callback1.isEnabled = false
+
+        assertContentEquals(listOf(false), events)
+    }
+
+    @Test
+    fun GIVEN_one_disabled_and_one_enabled_callback_registered_and_EnabledChanged_listener_added_WHEN_enabled_callback_unregistered_THEN_listener_called_with_false() {
+        val events = ArrayList<Boolean>()
+        val callback1 = callback(isEnabled = true, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(BackCallback(isEnabled = false, onBack = {}))
+        dispatcher.addEnabledChangedListener { events += it }
+
+        dispatcher.unregister(callback1)
+
+        assertContentEquals(listOf(false), events)
+    }
+
+    @Test
+    fun GIVEN_one_disabled_and_one_enabled_callback_registered_and_EnabledChanged_listener_added_WHEN_disabled_callback_unregistered_THEN_listener_not_called() {
+        val events = ArrayList<Boolean>()
+        val callback1 = callback(isEnabled = false, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(BackCallback(isEnabled = true, onBack = {}))
+        dispatcher.addEnabledChangedListener { events += it }
+
+        dispatcher.unregister(callback1)
+
+        assertContentEquals(emptyList(), events)
+    }
+
+    @Test
+    fun GIVEN_EnabledChanged_listener_added_and_disabled_callback_registered_WHEN_callback_enabled_THEN_listener_called_with_true() {
+        val events = ArrayList<Boolean>()
+        dispatcher.addEnabledChangedListener { events += it }
+        val callback = callback(isEnabled = false, onBack = {})
+        dispatcher.register(callback)
+        events.clear()
+
+        callback.isEnabled = true
+
+        assertContentEquals(listOf(true), events)
+    }
+
+    @Test
+    fun GIVEN_EnabledChanged_listener_added_and_enabled_callback_registered_WHEN_callback_disabled_THEN_listener_called_with_false() {
+        val events = ArrayList<Boolean>()
+        dispatcher.addEnabledChangedListener { events += it }
+        val callback = callback(isEnabled = true, onBack = {})
+        dispatcher.register(callback)
+        events.clear()
+
+        callback.isEnabled = false
+
+        assertContentEquals(listOf(false), events)
+    }
+
+    @Test
+    fun GIVEN_EnabledChanged_listener_added_and_two_disabled_callback_registered_WHEN_one_callback_enabled_THEN_listener_called_with_true() {
+        val events = ArrayList<Boolean>()
+        dispatcher.addEnabledChangedListener { events += it }
+        val callback1 = callback(isEnabled = false, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(callback(isEnabled = false, onBack = {}))
+        events.clear()
+
+        callback1.isEnabled = true
+
+        assertContentEquals(listOf(true), events)
+    }
+
+    @Test
+    fun GIVEN_EnabledChanged_listener_added_and_two_enabled_callback_registered_WHEN_one_callback_disabled_THEN_listener_not_called() {
+        val events = ArrayList<Boolean>()
+        dispatcher.addEnabledChangedListener { events += it }
+        val callback1 = callback(isEnabled = true, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(callback(isEnabled = true, onBack = {}))
+        events.clear()
+
+        callback1.isEnabled = false
+
+        assertContentEquals(emptyList(), events)
+    }
+
+    @Test
+    fun GIVEN_EnabledChanged_listener_added_and_one_disabled_and_one_enabled_callback_registered_WHEN_callback_enabled_THEN_listener_not_called() {
+        val events = ArrayList<Boolean>()
+        dispatcher.addEnabledChangedListener { events += it }
+        val callback1 = callback(isEnabled = false, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(BackCallback(isEnabled = true, onBack = {}))
+        events.clear()
+
+        callback1.isEnabled = true
+
+        assertContentEquals(emptyList(), events)
+    }
+
+    @Test
+    fun GIVEN_EnabledChanged_listener_added_and_one_disabled_and_one_enabled_callback_registered_WHEN_callback_disabled_THEN_listener_called_with_false() {
+        val events = ArrayList<Boolean>()
+        dispatcher.addEnabledChangedListener { events += it }
+        val callback1 = callback(isEnabled = true, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(BackCallback(isEnabled = false, onBack = {}))
+        events.clear()
+
+        callback1.isEnabled = false
+
+        assertContentEquals(listOf(false), events)
+    }
+
+    @Test
+    fun GIVEN_EnabledChanged_listener_added_and_one_disabled_and_one_enabled_callback_registered_WHEN_enabled_callback_unregistered_THEN_listener_called_with_false() {
+        val events = ArrayList<Boolean>()
+        dispatcher.addEnabledChangedListener { events += it }
+        val callback1 = callback(isEnabled = true, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(BackCallback(isEnabled = false, onBack = {}))
+        events.clear()
+
+        dispatcher.unregister(callback1)
+
+        assertContentEquals(listOf(false), events)
+    }
+
+    @Test
+    fun GIVEN_EnabledChanged_listener_added_and_one_disabled_and_one_enabled_callback_registered_WHEN_disabled_callback_unregistered_THEN_listener_not_called() {
+        val events = ArrayList<Boolean>()
+        dispatcher.addEnabledChangedListener { events += it }
+        val callback1 = callback(isEnabled = false, onBack = {})
+        dispatcher.register(callback1)
+        dispatcher.register(BackCallback(isEnabled = true, onBack = {}))
+        events.clear()
+
+        dispatcher.unregister(callback1)
+
+        assertContentEquals(emptyList(), events)
+    }
+
     private fun callback(
         isEnabled: Boolean = true,
         priority: Int = 0,

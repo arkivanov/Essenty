@@ -10,9 +10,9 @@ import androidx.lifecycle.LifecycleOwner
  * Creates a new instance of [BackHandler] and attaches it to the provided AndroidX [OnBackPressedDispatcher].
  */
 fun BackHandler(onBackPressedDispatcher: OnBackPressedDispatcher): BackHandler =
-    AndroidBackHandler(
-        addCallback = onBackPressedDispatcher::addCallback,
-    )
+    AndroidBackHandler().also {
+        onBackPressedDispatcher.addCallback(it.onBackPressedCallback)
+    }
 
 /**
  * Creates a new instance of [BackHandler] and attaches it to the provided AndroidX [OnBackPressedDispatcher]
@@ -22,9 +22,9 @@ fun BackHandler(
     onBackPressedDispatcher: OnBackPressedDispatcher,
     lifecycleOwner: LifecycleOwner,
 ): BackHandler =
-    AndroidBackHandler(
-        addCallback = { callback -> onBackPressedDispatcher.addCallback(lifecycleOwner, callback) },
-    )
+    AndroidBackHandler().also {
+        onBackPressedDispatcher.addCallback(lifecycleOwner, it.onBackPressedCallback)
+    }
 
 /**
  * Creates a new instance of [BackHandler] and attaches it to the AndroidX [OnBackPressedDispatcher].
@@ -33,54 +33,34 @@ fun OnBackPressedDispatcherOwner.backHandler(): BackHandler =
     BackHandler(onBackPressedDispatcher = onBackPressedDispatcher)
 
 private class AndroidBackHandler(
-    addCallback: (OnBackPressedCallback) -> Unit,
-) : BackHandler {
+    private val dispatcher: BackDispatcher = BackDispatcher()
+) : BackHandler by dispatcher {
 
-    private var set = emptySet<BackCallback>()
+    val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(enabled = dispatcher.isEnabled) {
+            private var predictiveBackDispatcher: BackDispatcher.PredictiveBackDispatcher? = null
 
-    private val delegateCallback =
-        object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
-                set.findMostImportant()?.onBack()
+                dispatcher.back()
+                predictiveBackDispatcher = null
             }
 
             override fun handleOnBackStarted(backEvent: BackEventCompat) {
-                set.findMostImportant()?.onBackStarted(backEvent.toEssentyBackEvent())
+                predictiveBackDispatcher = dispatcher.startPredictiveBack(backEvent.toEssentyBackEvent())
             }
 
             override fun handleOnBackProgressed(backEvent: BackEventCompat) {
-                set.findMostImportant()?.onBackProgressed(backEvent.toEssentyBackEvent())
+                predictiveBackDispatcher?.progress(backEvent.toEssentyBackEvent())
             }
 
             override fun handleOnBackCancelled() {
-                set.findMostImportant()?.onBackCancelled()
+                predictiveBackDispatcher?.cancel()
+                predictiveBackDispatcher = null
             }
         }
 
-    private val enabledChangedListener: (Boolean) -> Unit = { onEnabledChanged() }
-
     init {
-        addCallback(delegateCallback)
-    }
-
-    override fun register(callback: BackCallback) {
-        check(callback !in set) { "Callback is already registered" }
-
-        this.set += callback
-        callback.addEnabledChangedListener(enabledChangedListener)
-        onEnabledChanged()
-    }
-
-    override fun unregister(callback: BackCallback) {
-        check(callback in set) { "Callback is not registered" }
-
-        callback.removeEnabledChangedListener(enabledChangedListener)
-        this.set -= callback
-        onEnabledChanged()
-    }
-
-    private fun onEnabledChanged() {
-        delegateCallback.isEnabled = set.any(BackCallback::isEnabled)
+        dispatcher.addEnabledChangedListener { onBackPressedCallback.isEnabled = it }
     }
 
     private fun BackEventCompat.toEssentyBackEvent(): BackEvent =

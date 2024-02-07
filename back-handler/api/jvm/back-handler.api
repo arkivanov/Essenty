@@ -33,8 +33,10 @@ public final class com/arkivanov/essenty/backhandler/BackCallbackKt {
 }
 
 public abstract interface class com/arkivanov/essenty/backhandler/BackDispatcher : com/arkivanov/essenty/backhandler/BackHandler {
+	public abstract fun addEnabledChangedListener (Lkotlin/jvm/functions/Function1;)V
 	public abstract fun back ()Z
 	public abstract fun isEnabled ()Z
+	public abstract fun removeEnabledChangedListener (Lkotlin/jvm/functions/Function1;)V
 	public abstract fun startPredictiveBack (Lcom/arkivanov/essenty/backhandler/BackEvent;)Lcom/arkivanov/essenty/backhandler/BackDispatcher$PredictiveBackDispatcher;
 }
 
