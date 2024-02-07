@@ -12,6 +12,10 @@ interface BackDispatcher : BackHandler {
      */
     val isEnabled: Boolean
 
+    fun addEnabledChangedListener(listener: (isEnabled: Boolean) -> Unit)
+
+    fun removeEnabledChangedListener(listener: (isEnabled: Boolean) -> Unit)
+
     /**
      * Iterates through all registered callbacks in reverse order and triggers the first one enabled.
      *
@@ -51,4 +55,5 @@ interface BackDispatcher : BackHandler {
  * Creates and returns a default implementation of [BackDispatcher].
  */
 @JsName("backDispatcher")
-fun BackDispatcher(): BackDispatcher = DefaultBackDispatcher()
+fun BackDispatcher(): BackDispatcher =
+    DefaultBackDispatcher()
