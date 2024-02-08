@@ -10,8 +10,8 @@ import androidx.lifecycle.LifecycleOwner
  * Creates a new instance of [BackHandler] and attaches it to the provided AndroidX [OnBackPressedDispatcher].
  */
 fun BackHandler(onBackPressedDispatcher: OnBackPressedDispatcher): BackHandler =
-    AndroidBackHandler().also {
-        onBackPressedDispatcher.addCallback(it.onBackPressedCallback)
+    BackDispatcher().also { dispatcher ->
+        onBackPressedDispatcher.addCallback(dispatcher.connectOnBackPressedCallback())
     }
 
 /**
@@ -22,8 +22,8 @@ fun BackHandler(
     onBackPressedDispatcher: OnBackPressedDispatcher,
     lifecycleOwner: LifecycleOwner,
 ): BackHandler =
-    AndroidBackHandler().also {
-        onBackPressedDispatcher.addCallback(lifecycleOwner, it.onBackPressedCallback)
+    BackDispatcher().also { dispatcher ->
+        onBackPressedDispatcher.addCallback(lifecycleOwner, dispatcher.connectOnBackPressedCallback())
     }
 
 /**
@@ -32,31 +32,36 @@ fun BackHandler(
 fun OnBackPressedDispatcherOwner.backHandler(): BackHandler =
     BackHandler(onBackPressedDispatcher = onBackPressedDispatcher)
 
-private class AndroidBackHandler(
-    private val dispatcher: BackDispatcher = BackDispatcher()
-) : BackHandler by dispatcher {
+/**
+ * Creates a new instance of [OnBackPressedCallback] and connects it with this [BackDispatcher].
+ * All events from the returned [OnBackPressedCallback] are forwarded to this [BackDispatcher].
+ * The enabled state from this [BackDispatcher] is forwarded to the returned [OnBackPressedCallback].
+ */
+fun BackDispatcher.connectOnBackPressedCallback(): OnBackPressedCallback =
+    OnBackPressedCallbackAdapter(dispatcher = this)
 
-    val onBackPressedCallback: OnBackPressedCallback =
-        object : OnBackPressedCallback(enabled = dispatcher.isEnabled) {
-            override fun handleOnBackPressed() {
-                dispatcher.back()
-            }
-
-            override fun handleOnBackStarted(backEvent: BackEventCompat) {
-                dispatcher.startPredictiveBack(backEvent.toEssentyBackEvent())
-            }
-
-            override fun handleOnBackProgressed(backEvent: BackEventCompat) {
-                dispatcher.progressPredictiveBack(backEvent.toEssentyBackEvent())
-            }
-
-            override fun handleOnBackCancelled() {
-                dispatcher.cancelPredictiveBack()
-            }
-        }
+private class OnBackPressedCallbackAdapter(
+    private val dispatcher: BackDispatcher,
+) : OnBackPressedCallback(enabled = dispatcher.isEnabled) {
 
     init {
-        dispatcher.addEnabledChangedListener { onBackPressedCallback.isEnabled = it }
+        dispatcher.addEnabledChangedListener { isEnabled = it }
+    }
+
+    override fun handleOnBackPressed() {
+        dispatcher.back()
+    }
+
+    override fun handleOnBackStarted(backEvent: BackEventCompat) {
+        dispatcher.startPredictiveBack(backEvent.toEssentyBackEvent())
+    }
+
+    override fun handleOnBackProgressed(backEvent: BackEventCompat) {
+        dispatcher.progressPredictiveBack(backEvent.toEssentyBackEvent())
+    }
+
+    override fun handleOnBackCancelled() {
+        dispatcher.cancelPredictiveBack()
     }
 
     private fun BackEventCompat.toEssentyBackEvent(): BackEvent =
