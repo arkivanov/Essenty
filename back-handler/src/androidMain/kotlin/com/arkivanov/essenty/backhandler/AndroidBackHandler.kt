@@ -38,24 +38,20 @@ private class AndroidBackHandler(
 
     val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(enabled = dispatcher.isEnabled) {
-            private var predictiveBackDispatcher: BackDispatcher.PredictiveBackDispatcher? = null
-
             override fun handleOnBackPressed() {
                 dispatcher.back()
-                predictiveBackDispatcher = null
             }
 
             override fun handleOnBackStarted(backEvent: BackEventCompat) {
-                predictiveBackDispatcher = dispatcher.startPredictiveBack(backEvent.toEssentyBackEvent())
+                dispatcher.startPredictiveBack(backEvent.toEssentyBackEvent())
             }
 
             override fun handleOnBackProgressed(backEvent: BackEventCompat) {
-                predictiveBackDispatcher?.progress(backEvent.toEssentyBackEvent())
+                dispatcher.progressPredictiveBack(backEvent.toEssentyBackEvent())
             }
 
             override fun handleOnBackCancelled() {
-                predictiveBackDispatcher?.cancel()
-                predictiveBackDispatcher = null
+                dispatcher.cancelPredictiveBack()
             }
         }
 

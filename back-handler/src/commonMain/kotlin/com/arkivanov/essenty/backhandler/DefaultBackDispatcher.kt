@@ -1,10 +1,9 @@
 package com.arkivanov.essenty.backhandler
 
-import com.arkivanov.essenty.backhandler.BackDispatcher.PredictiveBackDispatcher
-
 internal class DefaultBackDispatcher : BackDispatcher {
 
     private var set = emptySet<BackCallback>()
+    private var progressCallback: BackCallback? = null
     override val isEnabled: Boolean get() = set.any(BackCallback::isEnabled)
     private var enabledChangedListeners = emptySet<(Boolean) -> Unit>()
     private var hasEnabledCallback: Boolean = false
@@ -31,6 +30,11 @@ internal class DefaultBackDispatcher : BackDispatcher {
 
         this.set -= callback
         callback.removeEnabledChangedListener(onCallbackEnabledChanged)
+
+        if (callback == progressCallback) {
+            progressCallback = null
+        }
+
         onCallbackEnabledChanged()
     }
 
@@ -42,25 +46,28 @@ internal class DefaultBackDispatcher : BackDispatcher {
         enabledChangedListeners -= listener
     }
 
-    override fun back(): Boolean = set.call()
+    override fun back(): Boolean {
+        val callback = progressCallback ?: set.findMostImportant()
+        progressCallback = null
+        callback?.onBack()
 
-    override fun startPredictiveBack(backEvent: BackEvent): PredictiveBackDispatcher? {
-        val callback = set.findMostImportant() ?: return null
+        return callback != null
+    }
 
+    override fun startPredictiveBack(backEvent: BackEvent): Boolean {
+        val callback = set.findMostImportant() ?: return false
+        progressCallback = callback
         callback.onBackStarted(backEvent)
 
-        return object : PredictiveBackDispatcher {
-            override fun progress(backEvent: BackEvent) {
-                callback.onBackProgressed(backEvent)
-            }
+        return true
+    }
 
-            override fun finish() {
-                callback.onBack()
-            }
+    override fun progressPredictiveBack(backEvent: BackEvent) {
+        progressCallback?.onBackProgressed(backEvent)
+    }
 
-            override fun cancel() {
-                callback.onBackCancelled()
-            }
-        }
+    override fun cancelPredictiveBack() {
+        progressCallback?.onBackCancelled()
+        progressCallback = null
     }
 }
