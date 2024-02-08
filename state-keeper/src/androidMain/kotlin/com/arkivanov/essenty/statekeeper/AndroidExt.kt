@@ -1,10 +1,7 @@
 package com.arkivanov.essenty.statekeeper
 
 import android.os.Bundle
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleRegistry
 import androidx.savedstate.SavedStateRegistry
-import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 
 private const val KEY_STATE = "STATE_KEEPER_STATE"
@@ -27,15 +24,14 @@ fun StateKeeper(
         StateKeeperDispatcher(
             savedState = savedStateRegistry
                 .consumeRestoredStateForKey(KEY_STATE)
-                ?.getByteArray(KEY_STATE)
-                ?.deserialize(strategy = SerializableContainer.serializer())
+                ?.getSerializableContainer(key = KEY_STATE)
                 ?.takeUnless { discardSavedState },
         )
 
     savedStateRegistry.registerSavedStateProvider(KEY_STATE) {
         Bundle().apply {
             if (isSavingAllowed()) {
-                putByteArray(KEY_STATE, dispatcher.save().serialize(strategy = SerializableContainer.serializer()))
+                putSerializableContainer(key = KEY_STATE, value = dispatcher.save())
             }
         }
     }

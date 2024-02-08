@@ -5,6 +5,11 @@ public final class com/arkivanov/essenty/statekeeper/AndroidExtKt {
 	public static synthetic fun stateKeeper$default (Landroidx/savedstate/SavedStateRegistryOwner;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/arkivanov/essenty/statekeeper/StateKeeper;
 }
 
+public final class com/arkivanov/essenty/statekeeper/BundleExtKt {
+	public static final fun getSerializableContainer (Landroid/os/Bundle;Ljava/lang/String;)Lcom/arkivanov/essenty/statekeeper/SerializableContainer;
+	public static final fun putSerializableContainer (Landroid/os/Bundle;Ljava/lang/String;Lcom/arkivanov/essenty/statekeeper/SerializableContainer;)V
+}
+
 public final class com/arkivanov/essenty/statekeeper/PolymorphicSerializerKt {
 	public static final fun polymorphicSerializer (Lkotlin/reflect/KClass;Lkotlinx/serialization/modules/SerializersModule;)Lkotlinx/serialization/KSerializer;
 }

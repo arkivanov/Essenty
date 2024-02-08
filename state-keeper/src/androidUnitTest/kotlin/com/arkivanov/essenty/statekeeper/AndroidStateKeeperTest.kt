@@ -19,7 +19,24 @@ import kotlin.test.assertNull
 class AndroidStateKeeperTest {
 
     @Test
-    fun saves_and_restores_state() {
+    fun saves_and_restores_state_without_parcelling() {
+        var savedStateRegistryOwner = TestSavedStateRegistryOwner()
+        savedStateRegistryOwner.controller.performRestore(null)
+        var stateKeeper = savedStateRegistryOwner.stateKeeper()
+        stateKeeper.register(key = "key", strategy = String.serializer()) { "data" }
+        val bundle = Bundle()
+        savedStateRegistryOwner.controller.performSave(bundle)
+
+        savedStateRegistryOwner = TestSavedStateRegistryOwner()
+        savedStateRegistryOwner.controller.performRestore(bundle)
+        stateKeeper = StateKeeper(savedStateRegistry = savedStateRegistryOwner.savedStateRegistry)
+        val restoredData = stateKeeper.consume(key = "key", strategy = String.serializer())
+
+        assertEquals("data", restoredData)
+    }
+
+    @Test
+    fun saves_and_restores_state_with_parcelling() {
         var savedStateRegistryOwner = TestSavedStateRegistryOwner()
         savedStateRegistryOwner.controller.performRestore(null)
         var stateKeeper = savedStateRegistryOwner.stateKeeper()

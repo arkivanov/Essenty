@@ -9,6 +9,6 @@ internal val essentyJson: Json =
         allowStructuredMapKeys = true
     }
 
-internal expect fun <T : Any> T.serialize(strategy: SerializationStrategy<T>): ByteArray
+internal expect fun <T> T.serialize(strategy: SerializationStrategy<T>): ByteArray
 
-internal expect fun <T : Any> ByteArray.deserialize(strategy: DeserializationStrategy<T>): T
+internal expect fun <T> ByteArray.deserialize(strategy: DeserializationStrategy<T>): T

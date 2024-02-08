@@ -11,7 +11,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
-internal actual fun <T : Any> T.serialize(strategy: SerializationStrategy<T>): ByteArray =
+internal actual fun <T> T.serialize(strategy: SerializationStrategy<T>): ByteArray =
     ByteArrayOutputStream().use { output ->
         ZipOutputStream(output).use { zip ->
             zip.setLevel(7)
@@ -26,7 +26,7 @@ internal actual fun <T : Any> T.serialize(strategy: SerializationStrategy<T>): B
         output.toByteArray()
     }
 
-internal actual fun <T : Any> ByteArray.deserialize(strategy: DeserializationStrategy<T>): T =
+internal actual fun <T> ByteArray.deserialize(strategy: DeserializationStrategy<T>): T =
     ZipInputStream(ByteArrayInputStream(this)).use { zip ->
         zip.nextEntry
 
