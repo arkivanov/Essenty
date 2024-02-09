@@ -17,6 +17,9 @@ internal class DefaultBackDispatcher : BackDispatcher {
         }
     }
 
+    override fun isRegistered(callback: BackCallback): Boolean =
+        callback in set
+
     override fun register(callback: BackCallback) {
         check(callback !in set) { "Callback is already registered" }
 

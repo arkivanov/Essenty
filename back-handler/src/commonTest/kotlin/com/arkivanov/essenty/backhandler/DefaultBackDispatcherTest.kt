@@ -573,6 +573,32 @@ class DefaultBackDispatcherTest {
         assertContentEquals(emptyList(), events)
     }
 
+    @Test
+    fun GIVEN_callback_not_registered_WHEN_isRegistered_THEN_returns_false() {
+        val isRegistered = dispatcher.isRegistered(callback())
+
+        assertFalse(isRegistered)
+    }
+
+    @Test
+    fun GIVEN_callback_registered_WHEN_isRegistered_for_another_callback_THEN_returns_false() {
+        dispatcher.register(callback())
+
+        val isRegistered = dispatcher.isRegistered(callback())
+
+        assertFalse(isRegistered)
+    }
+
+    @Test
+    fun GIVEN_callback_registered_WHEN_isRegistered_for_same_callback_THEN_returns_true() {
+        val callback = callback()
+        dispatcher.register(callback)
+
+        val isRegistered = dispatcher.isRegistered(callback)
+
+        assertTrue(isRegistered)
+    }
+
     private fun callback(
         isEnabled: Boolean = true,
         priority: Int = 0,
