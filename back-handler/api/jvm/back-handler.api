@@ -75,6 +75,7 @@ public final class com/arkivanov/essenty/backhandler/BackEvent$SwipeEdge : java/
 }
 
 public abstract interface class com/arkivanov/essenty/backhandler/BackHandler {
+	public abstract fun isRegistered (Lcom/arkivanov/essenty/backhandler/BackCallback;)Z
 	public abstract fun register (Lcom/arkivanov/essenty/backhandler/BackCallback;)V
 	public abstract fun unregister (Lcom/arkivanov/essenty/backhandler/BackCallback;)V
 }

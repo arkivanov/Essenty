@@ -6,6 +6,11 @@ package com.arkivanov.essenty.backhandler
 interface BackHandler {
 
     /**
+     * Checks whether the provided [BackCallback] is registered or not.
+     */
+    fun isRegistered(callback: BackCallback): Boolean
+
+    /**
      * Registers the specified [callback] to be called when the back button is invoked.
      */
     fun register(callback: BackCallback)
