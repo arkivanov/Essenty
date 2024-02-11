@@ -274,23 +274,20 @@ class DefaultBackDispatcherTest {
         val startEvent = BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F)
         val progressEvent1 = BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 2F, touchY = 3F)
         val progressEvent2 = BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F)
-        val receivedEvents = ArrayList<Any?>()
-
-        dispatcher.register(
-            BackCallback(
-                onBackStarted = { receivedEvents += it },
-                onBackProgressed = { receivedEvents += it },
-                onBackCancelled = { receivedEvents += "Cancel" },
-                onBack = { receivedEvents += "Back" },
-            )
-        )
+        val callback = LoggingCallback()
+        dispatcher.register(callback)
 
         dispatcher.startPredictiveBack(startEvent)
         dispatcher.progressPredictiveBack(progressEvent1)
         dispatcher.progressPredictiveBack(progressEvent2)
         dispatcher.back()
 
-        assertContentEquals(listOf(startEvent, progressEvent1, progressEvent2, "Back"), receivedEvents)
+        callback.assertEvents(
+            "start" to startEvent,
+            "progress" to progressEvent1,
+            "progress" to progressEvent2,
+            "back" to null,
+        )
     }
 
     @Test
@@ -298,23 +295,116 @@ class DefaultBackDispatcherTest {
         val startEvent = BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F)
         val progressEvent1 = BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 2F, touchY = 3F)
         val progressEvent2 = BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F)
-        val receivedEvents = ArrayList<Any?>()
-
-        dispatcher.register(
-            BackCallback(
-                onBackStarted = { receivedEvents += it },
-                onBackProgressed = { receivedEvents += it },
-                onBackCancelled = { receivedEvents += "Cancel" },
-                onBack = { receivedEvents += "Back" },
-            )
-        )
+        val callback = LoggingCallback()
+        dispatcher.register(callback)
 
         dispatcher.startPredictiveBack(startEvent)
         dispatcher.progressPredictiveBack(progressEvent1)
         dispatcher.progressPredictiveBack(progressEvent2)
         dispatcher.cancelPredictiveBack()
 
-        assertContentEquals(listOf(startEvent, progressEvent1, progressEvent2, "Cancel"), receivedEvents)
+        callback.assertEvents(
+            "start" to startEvent,
+            "progress" to progressEvent1,
+            "progress" to progressEvent2,
+            "cancel" to null,
+        )
+    }
+
+    @Test
+    fun GIVEN_callback_registered_and_gesture_started_WHEN_unregister_THEN_callback_cancelled() {
+        val callback = LoggingCallback()
+        dispatcher.register(callback)
+        dispatcher.startPredictiveBack(BackEvent())
+        callback.clear()
+
+        dispatcher.unregister(callback)
+
+        callback.assertEvents("cancel" to null)
+    }
+
+    @Test
+    fun GIVEN_two_callbacks_registered_and_gesture_started_and_progress_callback_unregistered_WHEN_progress_THEN_another_callback_started_and_progressed() {
+        val callback1 = LoggingCallback()
+        val callback2 = LoggingCallback()
+        dispatcher.register(callback1)
+        dispatcher.register(callback2)
+        dispatcher.startPredictiveBack(BackEvent(progress = 0F))
+        dispatcher.progressPredictiveBack(BackEvent(progress = 0.1F))
+        dispatcher.unregister(callback2)
+
+        dispatcher.progressPredictiveBack(BackEvent(progress = 0.2F))
+
+        callback1.assertEvents("start" to BackEvent(progress = 0F), "progress" to BackEvent(progress = 0.2F))
+    }
+
+    @Test
+    fun GIVEN_two_callbacks_registered_and_gesture_started_and_progress_callback_unregistered_WHEN_back_THEN_another_callback_back() {
+        val callback1 = LoggingCallback()
+        val callback2 = LoggingCallback()
+        dispatcher.register(callback1)
+        dispatcher.register(callback2)
+        dispatcher.startPredictiveBack(BackEvent(progress = 0F))
+        dispatcher.progressPredictiveBack(BackEvent(progress = 0.1F))
+        dispatcher.unregister(callback2)
+
+        dispatcher.back()
+
+        callback1.assertEvents("back" to null)
+    }
+
+    @Test
+    fun GIVEN_two_callbacks_registered_and_gesture_started_and_progress_callback_unregistered_WHEN_cancel_THEN_another_callback_not_called() {
+        val callback1 = LoggingCallback()
+        val callback2 = LoggingCallback()
+        dispatcher.register(callback1)
+        dispatcher.register(callback2)
+        dispatcher.startPredictiveBack(BackEvent(progress = 0F))
+        dispatcher.progressPredictiveBack(BackEvent(progress = 0.1F))
+        dispatcher.unregister(callback2)
+
+        dispatcher.cancelPredictiveBack()
+
+        callback1.assertEvents()
+    }
+
+    @Test
+    fun WHEN_another_callback_registered_while_in_progress_THEN_old_callback_called() {
+        val startEvent = BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F)
+        val progressEvent1 = BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 2F, touchY = 3F)
+        val progressEvent2 = BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F)
+        val callback = LoggingCallback()
+        dispatcher.register(callback)
+
+        dispatcher.startPredictiveBack(startEvent)
+        dispatcher.progressPredictiveBack(progressEvent1)
+        dispatcher.register(LoggingCallback())
+        dispatcher.progressPredictiveBack(progressEvent2)
+        dispatcher.cancelPredictiveBack()
+
+        callback.assertEvents(
+            "start" to startEvent,
+            "progress" to progressEvent1,
+            "progress" to progressEvent2,
+            "cancel" to null,
+        )
+    }
+
+    @Test
+    fun WHEN_another_callback_registered_while_in_progress_THEN_new_callback_not_called() {
+        val startEvent = BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F)
+        val progressEvent1 = BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 2F, touchY = 3F)
+        val progressEvent2 = BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F)
+        val callback = LoggingCallback()
+        dispatcher.register(LoggingCallback())
+
+        dispatcher.startPredictiveBack(startEvent)
+        dispatcher.progressPredictiveBack(progressEvent1)
+        dispatcher.register(callback)
+        dispatcher.progressPredictiveBack(progressEvent2)
+        dispatcher.cancelPredictiveBack()
+
+        callback.assertEvents()
     }
 
     @Test
@@ -605,4 +695,32 @@ class DefaultBackDispatcherTest {
         onBack: () -> Unit = {},
     ): BackCallback =
         BackCallback(isEnabled = isEnabled, priority = priority, onBack = onBack)
+
+    private class LoggingCallback : BackCallback() {
+        private val events: MutableList<Pair<String, BackEvent?>> = ArrayList()
+
+        override fun onBackStarted(backEvent: BackEvent) {
+            events += "start" to backEvent
+        }
+
+        override fun onBackProgressed(backEvent: BackEvent) {
+            events += "progress" to backEvent
+        }
+
+        override fun onBack() {
+            events += "back" to null
+        }
+
+        override fun onBackCancelled() {
+            events += "cancel" to null
+        }
+
+        fun clear() {
+            events.clear()
+        }
+
+        fun assertEvents(vararg events: Pair<String, BackEvent?>) {
+            assertContentEquals(events.toList(), this.events)
+        }
+    }
 }
