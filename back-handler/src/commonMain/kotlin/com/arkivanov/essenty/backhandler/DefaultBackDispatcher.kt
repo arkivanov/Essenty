@@ -3,7 +3,7 @@ package com.arkivanov.essenty.backhandler
 internal class DefaultBackDispatcher : BackDispatcher {
 
     private var set = emptySet<BackCallback>()
-    private var progressCallback: BackCallback? = null
+    private var progressData: ProgressData? = null
     override val isEnabled: Boolean get() = set.any(BackCallback::isEnabled)
     private var enabledChangedListeners = emptySet<(Boolean) -> Unit>()
     private var hasEnabledCallback: Boolean = false
@@ -34,8 +34,9 @@ internal class DefaultBackDispatcher : BackDispatcher {
         this.set -= callback
         callback.removeEnabledChangedListener(onCallbackEnabledChanged)
 
-        if (callback == progressCallback) {
-            progressCallback = null
+        if (callback == progressData?.callback) {
+            progressData?.callback = null
+            callback.onBackCancelled()
         }
 
         onCallbackEnabledChanged()
@@ -50,8 +51,8 @@ internal class DefaultBackDispatcher : BackDispatcher {
     }
 
     override fun back(): Boolean {
-        val callback = progressCallback ?: set.findMostImportant()
-        progressCallback = null
+        val callback = progressData?.callback ?: set.findMostImportant()
+        progressData = null
         callback?.onBack()
 
         return callback != null
@@ -59,18 +60,30 @@ internal class DefaultBackDispatcher : BackDispatcher {
 
     override fun startPredictiveBack(backEvent: BackEvent): Boolean {
         val callback = set.findMostImportant() ?: return false
-        progressCallback = callback
+        progressData = ProgressData(startEvent = backEvent, callback = callback)
         callback.onBackStarted(backEvent)
 
         return true
     }
 
     override fun progressPredictiveBack(backEvent: BackEvent) {
-        progressCallback?.onBackProgressed(backEvent)
+        val progressData = progressData ?: return
+
+        if (progressData.callback == null) {
+            progressData.callback = set.findMostImportant()
+            progressData.callback?.onBackStarted(progressData.startEvent)
+        }
+
+        progressData.callback?.onBackProgressed(backEvent)
     }
 
     override fun cancelPredictiveBack() {
-        progressCallback?.onBackCancelled()
-        progressCallback = null
+        progressData?.callback?.onBackCancelled()
+        progressData = null
     }
+
+    private class ProgressData(
+        val startEvent: BackEvent,
+        var callback: BackCallback?,
+    )
 }
