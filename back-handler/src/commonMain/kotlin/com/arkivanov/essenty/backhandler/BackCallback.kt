@@ -14,10 +14,6 @@ abstract class BackCallback(
     isEnabled: Boolean = true,
     var priority: Int = PRIORITY_DEFAULT,
 ) {
-
-    @Deprecated(message = "For binary compatibility", level = DeprecationLevel.HIDDEN)
-    constructor(isEnabled: Boolean = true) : this(isEnabled = isEnabled)
-
     private var enabledListeners = emptySet<(Boolean) -> Unit>()
 
     /**
@@ -96,18 +92,3 @@ fun BackCallback(
             onBack.invoke()
         }
     }
-
-@Deprecated(message = "For binary compatibility", level = DeprecationLevel.HIDDEN)
-fun BackCallback(
-    isEnabled: Boolean = true,
-    priority: Int = 0,
-    onBack: () -> Unit,
-): BackCallback =
-    BackCallback(isEnabled = isEnabled, priority, onBack = onBack)
-
-@Deprecated(message = "For binary compatibility", level = DeprecationLevel.HIDDEN)
-fun BackCallback(
-    isEnabled: Boolean = true,
-    onBack: () -> Unit,
-): BackCallback =
-    BackCallback(isEnabled = isEnabled, onBack = onBack)
