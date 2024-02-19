@@ -1,4 +1,5 @@
 import com.arkivanov.gradle.bundle
+import com.arkivanov.gradle.dependsOn
 import com.arkivanov.gradle.setupBinaryCompatibilityValidator
 import com.arkivanov.gradle.setupMultiplatform
 import com.arkivanov.gradle.setupPublication
@@ -21,6 +22,10 @@ android {
 kotlin {
     setupSourceSets {
         val android by bundle()
+        val itvos by bundle()
+
+        (iosSet + tvosSet) dependsOn itvos
+        itvos dependsOn common
 
         common.main.dependencies {
             implementation(project(":utils-internal"))
