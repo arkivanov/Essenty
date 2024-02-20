@@ -52,6 +52,12 @@ The [LifecycleOwner](https://github.com/arkivanov/Essenty/blob/master/lifecycle/
 
 From Android, the `Lifecycle` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/androidMain/kotlin/com/arkivanov/essenty/lifecycle/AndroidExt.kt).
 
+#### iOS and tvOS extensions (since v2.0.0-alpha07)
+
+There is [ApplicationLifecycle](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/itvosMain/kotlin/com/arkivanov/essenty/lifecycle/ApplicationLifecycle.kt) awailable for `ios` and `tvos` targets. It follows the `UIApplication` lifecycle notifications.
+
+> ⚠️  Since this implementation subscribes to `UIApplication` global lifecycle events, the instance and all its registered callbacks (and whatever they capture) will stay in memory until the application is destroyed. It's ok to use it in a global scope like `UIApplicationDelegate`, but it may cause memory leaks when used in a narrower scope like `UIViewController` if it gets destroyed earlier.
+
 #### Reaktive extensions
 
 There are some useful `Lifecycle` extensions for Reaktive.
