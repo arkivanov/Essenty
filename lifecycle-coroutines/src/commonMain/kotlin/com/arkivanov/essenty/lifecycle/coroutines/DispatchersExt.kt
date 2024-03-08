@@ -1,18 +1,16 @@
 package com.arkivanov.essenty.lifecycle.coroutines
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlin.concurrent.Volatile
 
 @Volatile
 private var isImmediateSupported: Boolean = true
 
-@Suppress("UnusedReceiverParameter")
 internal val MainCoroutineDispatcher.immediateOrFallback: MainCoroutineDispatcher
     get() {
         if (isImmediateSupported) {
             try {
-                return Dispatchers.Main.immediate
+                return immediate
             } catch (ignored: UnsupportedOperationException) {
             } catch (ignored: NotImplementedError) {
             }
@@ -20,5 +18,5 @@ internal val MainCoroutineDispatcher.immediateOrFallback: MainCoroutineDispatche
             isImmediateSupported = false
         }
 
-        return Dispatchers.Main
+        return this
     }
