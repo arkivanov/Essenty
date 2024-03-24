@@ -29,6 +29,10 @@ public final class com/arkivanov/essenty/instancekeeper/InstanceKeeperDispatcher
 public final class com/arkivanov/essenty/instancekeeper/InstanceKeeperExtKt {
 	public static final fun getOrCreate (Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;
 	public static final fun getOrCreateSimple (Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public static final fun provide (Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;
+	public static final fun provideSimple (Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public static final fun providing (Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Lkotlin/Lazy;
+	public static final fun providingSimple (Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper;Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Lkotlin/Lazy;
 }
 
 public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKeeperOwner {
