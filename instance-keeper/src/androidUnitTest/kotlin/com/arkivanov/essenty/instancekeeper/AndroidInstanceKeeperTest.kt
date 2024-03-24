@@ -14,10 +14,10 @@ class AndroidInstanceKeeperTest {
     fun retains_instances() {
         val owner = TestOwner()
         var instanceKeeper = owner.instanceKeeper()
-        val instance1 = instanceKeeper.getOrCreate(key = "key", factory = ::TestInstance)
+        val instance1 = instanceKeeper.provide(key = "key", factory = ::TestInstance)
 
         instanceKeeper = owner.instanceKeeper()
-        val instance2 = instanceKeeper.getOrCreate(key = "key", factory = ::TestInstance)
+        val instance2 = instanceKeeper.provide(key = "key", factory = ::TestInstance)
 
         assertSame(instance1, instance2)
     }
@@ -26,10 +26,10 @@ class AndroidInstanceKeeperTest {
     fun GIVEN_discardRetainedInstances_is_true_on_restore_THEN_instances_not_retained() {
         val owner = TestOwner()
         var instanceKeeper = owner.instanceKeeper()
-        val instance1 = instanceKeeper.getOrCreate(key = "key", factory = ::TestInstance)
+        val instance1 = instanceKeeper.provide(key = "key", factory = ::TestInstance)
 
         instanceKeeper = owner.instanceKeeper(discardRetainedInstances = true)
-        val instance2 = instanceKeeper.getOrCreate(key = "key", factory = ::TestInstance)
+        val instance2 = instanceKeeper.provide(key = "key", factory = ::TestInstance)
 
         assertNotSame(instance1, instance2)
     }
@@ -38,7 +38,7 @@ class AndroidInstanceKeeperTest {
     fun GIVEN_discardRetainedInstances_is_true_on_restore_THEN_old_instances_destroyed() {
         val owner = TestOwner()
         val instanceKeeper = owner.instanceKeeper()
-        val instance1 = instanceKeeper.getOrCreate(key = "key", factory = ::TestInstance)
+        val instance1 = instanceKeeper.provide(key = "key", factory = ::TestInstance)
 
         owner.instanceKeeper(discardRetainedInstances = true)
 
