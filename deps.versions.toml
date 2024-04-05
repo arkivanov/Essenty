@@ -1,6 +1,6 @@
 [versions]
 
-essenty = "2.0.0-alpha07"
+essenty = "2.0.0-beta01"
 kotlin = "1.9.21"
 kotlinxBinaryCompatibilityValidator = "0.13.2"
 kotlinxCoroutines = "1.8.0-RC" # Remove workaround from lifecycle-coroutines
