@@ -3,7 +3,7 @@
 essenty = "2.0.0-beta01"
 kotlin = "1.9.21"
 kotlinxBinaryCompatibilityValidator = "0.13.2"
-kotlinxCoroutines = "1.8.0-RC" # Remove workaround from lifecycle-coroutines
+kotlinxCoroutines = "1.8.0"
 detektGradlePlugin = "1.23.3"
 junit = "4.13.2"
 androidGradle = "8.0.2"
@@ -12,7 +12,7 @@ androidxSavedstate = "1.2.1"
 androidxActivity = "1.8.1"
 jetbrainsKotlinxSerialization = "1.6.2"
 robolectric = "4.9.1"
-reaktive = "2.0.1" # Remove all workarounds when WASM is supported
+reaktive = "2.1.0"
 
 [libraries]
 
