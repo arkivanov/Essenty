@@ -30,10 +30,7 @@ kotlin {
             implementation("com.arkivanov.essenty:instance-keeper:$version")
             implementation("com.arkivanov.essenty:lifecycle:$version")
             implementation("com.arkivanov.essenty:lifecycle-coroutines:$version")
-
-            // Reaktive doesn't support WASM yet, exclude it from publication checks for now
-//            implementation("com.arkivanov.essenty:lifecycle-reaktive:$version")
-
+            implementation("com.arkivanov.essenty:lifecycle-reaktive:$version")
             implementation("com.arkivanov.essenty:state-keeper:$version")
         }
     }

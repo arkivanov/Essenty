@@ -1,11 +1,7 @@
-import com.arkivanov.gradle.iosCompat
-import com.arkivanov.gradle.macosCompat
 import com.arkivanov.gradle.setupBinaryCompatibilityValidator
 import com.arkivanov.gradle.setupMultiplatform
 import com.arkivanov.gradle.setupPublication
 import com.arkivanov.gradle.setupSourceSets
-import com.arkivanov.gradle.tvosCompat
-import com.arkivanov.gradle.watchosCompat
 
 plugins {
     id("kotlin-multiplatform")
@@ -13,21 +9,7 @@ plugins {
     id("com.arkivanov.gradle.setup")
 }
 
-// Reaktive doesn't support wasm yet
-setupMultiplatform {
-    androidTarget()
-    jvm()
-    js {
-        browser()
-        nodejs()
-    }
-    linuxX64()
-    iosCompat()
-    watchosCompat()
-    tvosCompat()
-    macosCompat()
-}
-
+setupMultiplatform()
 setupPublication()
 setupBinaryCompatibilityValidator()
 
