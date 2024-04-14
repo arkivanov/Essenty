@@ -6,7 +6,9 @@ public final class com/arkivanov/essenty/statekeeper/AndroidExtKt {
 }
 
 public final class com/arkivanov/essenty/statekeeper/BundleExtKt {
+	public static final fun getSerializable (Landroid/os/Bundle;Ljava/lang/String;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
 	public static final fun getSerializableContainer (Landroid/os/Bundle;Ljava/lang/String;)Lcom/arkivanov/essenty/statekeeper/SerializableContainer;
+	public static final fun putSerializable (Landroid/os/Bundle;Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/SerializationStrategy;)V
 	public static final fun putSerializableContainer (Landroid/os/Bundle;Ljava/lang/String;Lcom/arkivanov/essenty/statekeeper/SerializableContainer;)V
 }
 
