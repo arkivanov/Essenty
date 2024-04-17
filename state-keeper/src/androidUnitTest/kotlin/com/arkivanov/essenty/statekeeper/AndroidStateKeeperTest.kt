@@ -80,20 +80,6 @@ class AndroidStateKeeperTest {
         assertNull(restoredData)
     }
 
-    private fun Bundle.parcelize(): ByteArray {
-        val parcel = Parcel.obtain()
-        parcel.writeBundle(this)
-        return parcel.marshall()
-    }
-
-    private fun ByteArray.deparcelize(): Bundle {
-        val parcel = Parcel.obtain()
-        parcel.unmarshall(this, 0, size)
-        parcel.setDataPosition(0)
-
-        return requireNotNull(parcel.readBundle())
-    }
-
     private class TestSavedStateRegistryOwner : SavedStateRegistryOwner {
         val controller: SavedStateRegistryController = SavedStateRegistryController.create(this)
 
