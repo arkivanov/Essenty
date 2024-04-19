@@ -1,7 +1,7 @@
 [versions]
 
 essenty = "2.0.0"
-kotlin = "1.9.21"
+kotlin = "1.9.23"
 kotlinxBinaryCompatibilityValidator = "0.13.2"
 kotlinxCoroutines = "1.8.0"
 detektGradlePlugin = "1.23.3"
@@ -10,7 +10,7 @@ androidGradle = "8.0.2"
 androidxLifecycle = "2.6.2"
 androidxSavedstate = "1.2.1"
 androidxActivity = "1.8.1"
-jetbrainsKotlinxSerialization = "1.6.2"
+jetbrainsKotlinxSerialization = "1.6.3"
 robolectric = "4.9.1"
 reaktive = "2.1.0"
 
