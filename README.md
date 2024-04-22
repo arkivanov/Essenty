@@ -11,7 +11,7 @@ Supported targets:
 - `android`
 - `jvm`
 - `js`
-- `wasmJs` (since version `2.0.0-alpha01`)
+- `wasmJs`
 - `ios`
 - `watchos`
 - `tvos`
@@ -52,11 +52,11 @@ The [LifecycleOwner](https://github.com/arkivanov/Essenty/blob/master/lifecycle/
 
 From Android, the `Lifecycle` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/androidMain/kotlin/com/arkivanov/essenty/lifecycle/AndroidExt.kt).
 
-#### iOS and tvOS extensions (since v2.0.0-alpha07)
+#### iOS and tvOS extensions
 
 There is [ApplicationLifecycle](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/itvosMain/kotlin/com/arkivanov/essenty/lifecycle/ApplicationLifecycle.kt) awailable for `ios` and `tvos` targets. It follows the `UIApplication` lifecycle notifications.
 
-> ⚠️  Since this implementation subscribes to `UIApplication` global lifecycle events, the instance and all its registered callbacks (and whatever they capture) will stay in memory until the application is destroyed. It's ok to use it in a global scope like `UIApplicationDelegate`, but it may cause memory leaks when used in a narrower scope like `UIViewController` if it gets destroyed earlier.
+> ⚠️  Since this implementation subscribes to `UIApplication` global lifecycle events, the instance and all its registered callbacks (and whatever they capture) will stay in memory until the application is destroyed or until `ApplicationLifecycle#destroy` method is called. It's ok to use it in a global scope like `UIApplicationDelegate`, but it may cause memory leaks when used in a narrower scope like `UIViewController` if it gets destroyed earlier. Use the `destroy` method to destroy the lifecycle manually and prevent memory leaks.
 
 #### Reaktive extensions
 
@@ -147,179 +147,9 @@ lifecycleRegistry.resume()
 lifecycleRegistry.destroy()
 ```
 
-## Parcelable and Parcelize (deprecated since v1.3.0-alpha01, removed since v2.0.0-alpha01)
-
-> ⚠️  Unfortunately, the new K2 compiler will not support Parcelable/Parcelize with Kotlin Multiplatform (see [#102](https://github.com/arkivanov/Essenty/issues/102)). This module is mostly deprecated since `v1.3.0-alpha01` and will be removed in `v2.0`. As a replacement, Essenty supports [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization) since `v1.3.0-alpha01`.
-
-Essenty brings both [Android Parcelable](https://developer.android.com/reference/android/os/Parcelable) interface and the `@Parcelize` annotation from [kotlin-parcelize](https://developer.android.com/kotlin/parcelize) compiler plugin to Kotlin Multiplatform, so they both can be used in common code. This is typically used for state/data preservation over [Android configuration changes](https://developer.android.com/guide/topics/resources/runtime-changes), when writing common code targeting Android.
-
-### Parcelable for Darwin (Apple) targets (experimental)
-
-Additionally, Essenty provides an experimental support of `Parcelable` and `@Parcelize` for all Darwin (Apple) targets via [parcelize-darwin](https://github.com/arkivanov/parcelize-darwin) compiler plugin. This only affects your project's runtime if you explicitly enable the `parcelize-darwin` compiler plugin in your project. Otherwise, it's just no-op.
-
-> ⚠️  If you experience any issues with the `parcelize-darwin` plugin, please report them [here](https://github.com/arkivanov/Essenty/issues).
-
-### Parcelable for JVM targets (experimental)
-
-`Parcelable` interface extends `java.io.Serializable` on JVM. This makes it possible to serialize and deserialize `Parcelable` classes as `ByteArray` using [ObjectOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html) and [ObjectInputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectInputStream.html).
-
-### Setup
-
-Groovy:
-```groovy
-plugins {
-    id "kotlin-parcelize" // Apply the plugin for Android
-    id "com.arkivanov.parcelize.darwin" // Optional, only if you need support for Darwin targets
-}
-
-// Add the dependency, typically under the commonMain source set
-implementation "com.arkivanov.essenty:parcelable:<essenty_version>"
-```
-
-Kotlin:
-```kotlin
-plugins {
-    id("kotlin-parcelize") // Apply the plugin for Android
-    id("com.arkivanov.parcelize.darwin") // Optional, only if you need support for Darwin targets
-}
-
-// Add the dependency, typically under the commonMain source set
-implementation("com.arkivanov.essenty:parcelable:<essenty_version>")
-```
-
-The `parcelize-darwin` is published on Maven Central, you may need to add `mavenCentral()` repository to your project. You can find more information about `parcelize-darwin` plugin setup [here](https://github.com/arkivanov/parcelize-darwin).
-
-### Usage example
-
-Once the dependency is added and the plugin is applied, we can use it as follows:
-
-```kotlin
-// In commonMain
-
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
-
-@Parcelize
-data class User(
-    val id: Long,
-    val name: String
-) : Parcelable
-```
-
-When compiled for Android, the `Parcelable` implementation will be generated automatically. When compiled for other targets, it will be just a regular class without any extra generated code.
-
-### Custom Parcelers
-
-> ⚠️  Supported only on Android and Darwin (Apple) targets. For Darwin (Apple) targets the support was added in version `1.2.0-alpha-06`.
-
-If you don't own the type that you need to `@Parcelize`, you can write a custom `Parceler` for it (similar to [kotlin-parcelize](https://developer.android.com/kotlin/parcelize#custom_parcelers)).
-
-#### Simple option in commonMain
-
-```kotlin
-import com.arkivanov.essenty.parcelable.CommonParceler
-import com.arkivanov.essenty.parcelable.ParcelReader
-import com.arkivanov.essenty.parcelable.ParcelWriter
-import com.arkivanov.essenty.parcelable.readLong
-import com.arkivanov.essenty.parcelable.writeLong
-import kotlinx.datetime.Instant
-
-internal object InstantParceler : CommonParceler<Instant> {
-    override fun create(reader: ParcelReader): Instant =
-        Instant.fromEpochSeconds(reader.readLong())
-
-    override fun Instant.write(writer: ParcelWriter) {
-        writer.writeLong(epochSeconds)
-    }
-}
-```
-
-#### Full-featured parcelers with platform-specific serialization
-
-```kotlin
-// In commonMain
-
-import com.arkivanov.essenty.parcelable.Parceler
-import kotlinx.datetime.Instant
-
-internal expect object InstantParceler : Parceler<Instant>
-```
-
-```kotlin
-// In androidMain
-
-import com.arkivanov.essenty.parcelable.Parceler
-import kotlinx.datetime.Instant
-
-internal actual object InstantParceler : Parceler<Instant> {
-    override fun create(parcel: Parcel): Instant = 
-        Instant.fromEpochSeconds(parcel.readLong())
-
-    override fun Instant.write(parcel: Parcel, flags: Int) {
-        parcel.writeLong(epochSeconds) 
-    }
-}
-```
-
-```kotlin
-// In iosMain or darwinMain
-
-import com.arkivanov.essenty.parcelable.Parceler
-import kotlinx.datetime.Instant
-import platform.Foundation.NSCoder
-import platform.Foundation.decodeInt64ForKey
-import platform.Foundation.encodeInt64
-
-internal actual object InstantParceler : Parceler<Instant> {
-    override fun create(coder: NSCoder): Instant =
-        Instant.fromEpochSeconds(coder.decodeInt64ForKey(key = "epochSeconds"))
-
-    override fun Instant.write(coder: NSCoder) {
-        coder.encodeInt64(value = epochSeconds, forKey = "epochSeconds")
-    }
-}
-```
-
-```kotlin
-// In all other sources (or in a custom nonAndroidMain source set)
-
-internal actual object InstantParceler : Parceler<Instant>
-```
-
-#### Applying the parceler
-
-```kotlin
-// In commonMain
-
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
-import com.arkivanov.essenty.parcelable.TypeParceler
-import com.arkivanov.essenty.parcelable.WriteWith
-import kotlinx.datetime.Instant
-
-// Class-local parceler
-@Parcelize
-@TypeParceler<Instant, InstantParceler>()
-data class User(
-    val id: Long,
-    val name: String,
-    val dateOfBirth: Instant,
-) : Parcelable
-
-// Type-local parceler
-@Parcelize
-data class User(
-    val id: Long,
-    val name: String,
-    val dateOfBirth: @WriteWith<InstantParceler> Instant,
-) : Parcelable
-```
-
 ## StateKeeper
 
 When writing common code targeting Android, it might be required to preserve some data over Android configuration changes or process death. For this purpose, Essenty provides the `StateKeeper` API, which is inspired by the AndroidX [SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle).
-
-> ⚠️  The `StateKeeper` API is used to rely on the `Parcelable` interface provided by the `parcelable` module described above. As described above, Parcelable/Parcelize support is deprecated since `v1.3.0-alpha01` and removed since `v2.0.0-alpha01`. As a replacement, the `StateKeeper` API now supports [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization).
 
 ### Setup
 
@@ -347,9 +177,16 @@ The [StateKeeperOwner](https://github.com/arkivanov/Essenty/blob/master/state-ke
 
 From Android side, `StateKeeper` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/androidMain/kotlin/com/arkivanov/essenty/statekeeper/AndroidExt.kt).
 
+There are also some handy [extension functions](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/androidMain/kotlin/com/arkivanov/essenty/statekeeper/BundleExt.kt) for serializing/deserializing `KSerializable` objects to/from [Bundle](https://developer.android.com/reference/android/os/Bundle):
+
+- `fun <T : Any> Bundle.putSerializable(key: String?, value: T?, strategy: SerializationStrategy<T>)`
+- `fun <T : Any> Bundle.getSerializable(key: String?, strategy: DeserializationStrategy<T>): T?`
+- `fun Bundle.putSerializableContainer(key: String?, value: SerializableContainer?)`
+- `fun Bundle.getSerializableContainer(key: String?): SerializableContainer?`
+
 ### Usage example
 
-#### Using StateKeeper (the recommended way since v1.3.0-alpha01)
+#### Using StateKeeper
 
 > ⚠️  Make sure you [setup](https://github.com/Kotlin/kotlinx.serialization#setup) `kotlinx-serialization` properly. 
 
@@ -408,46 +245,22 @@ object FilterSerializer : KSerializer<Filter> by polymorphicSerializer(
 )
 ```
 
-#### Using StateKeeper (the deprecated Parcelable way before v1.3.0-alpha01)
-
-```kotlin
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
-import com.arkivanov.essenty.statekeeper.StateKeeper
-import com.arkivanov.essenty.statekeeper.consume
-
-class SomeLogic(stateKeeper: StateKeeper) {
-    // Use the saved State if any, otherwise create a new State
-    private var state: State = stateKeeper.consume("SAVED_STATE") ?: State()
-
-    init {
-        // Register the State supplier
-        stateKeeper.register("SAVED_STATE") { state }
-    }
-
-    @Parcelize
-    private class State(
-        val someValue: Int = 0
-    ) : Parcelable
-}
-```
-
 #### Using the StateKeeperDispatcher manually
 
-> ⚠️  There is no any `kotlinx-serialization` replacement for `ParcelableContainer` currently, please continue using it until v2.0
-
-A default implementation of the `StateKeeperDisptacher` interface can be instantiated using the corresponding builder function:
+On Android, the `StateKeeper` obtained via one of the extensions described above automatically saves and restores the state. On other platforms (if needed) the state can be saved and restored manually. A default implementation of `StateKeeperDisptacher` interface can be instantiated using the corresponding builder function. The state can be encoded as a JSON string and saved using the corresponding platform-specific API.
 
 ```kotlin
-import com.arkivanov.essenty.parcelable.ParcelableContainer
+import com.arkivanov.essenty.statekeeper.SerializableContainer
 import com.arkivanov.essenty.statekeeper.StateKeeper
 import com.arkivanov.essenty.statekeeper.StateKeeperDispatcher
 
 val stateKeeperDispatcher = StateKeeperDispatcher(/*Previously saved state, or null*/)
 val someLogic = SomeLogic(stateKeeperDispatcher)
 
-// At some point later
-val savedState: ParcelableContainer = stateKeeperDispatcher.save()
+// At some point later when it's time to save the state
+val savedState: SerializableContainer = stateKeeperDispatcher.save()
+
+// The returned SerializableContainer can now be saved using the corresponding platform-specific API
 ```
 
 ## InstanceKeeper
@@ -552,7 +365,7 @@ The [BackDispatcher](https://github.com/arkivanov/Essenty/blob/master/back-handl
 
 From Android side, `BackHandler` can be obtained by using special functions, can be found [here](https://github.com/arkivanov/Essenty/blob/master/back-handler/src/androidMain/kotlin/com/arkivanov/essenty/backhandler/AndroidBackHandler.kt).
 
-### Predictive Back Gesture (starting from v1.2.x)
+### Predictive Back Gesture
 
 Both `BackHandler` and `BackDispatcher` bring the new [Android Predictive Back Gesture](https://developer.android.com/guide/navigation/custom-back/predictive-back-gesture) to Kotlin Multiplatform. 
 
