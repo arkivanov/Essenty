@@ -1,10 +1,10 @@
 [versions]
 
 essenty = "2.0.0"
-kotlin = "1.9.23"
-kotlinxBinaryCompatibilityValidator = "0.13.2"
-kotlinxCoroutines = "1.8.0"
-detektGradlePlugin = "1.23.3"
+kotlin = "2.0.0"
+kotlinxBinaryCompatibilityValidator = "0.15.0-Beta.2"
+kotlinxCoroutines = "1.8.1"
+detektGradlePlugin = "1.23.6"
 junit = "4.13.2"
 androidGradle = "8.0.2"
 androidxLifecycle = "2.6.2"

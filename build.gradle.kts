@@ -1,4 +1,5 @@
 import com.arkivanov.gradle.AndroidConfig
+import com.arkivanov.gradle.BinaryCompatibilityValidatorConfig
 import com.arkivanov.gradle.PublicationConfig
 import com.arkivanov.gradle.ensureUnreachableTasksDisabled
 import com.arkivanov.gradle.iosCompat
@@ -71,6 +72,7 @@ setupDefaults(
         repositoryUserName = "arkivanov",
         repositoryPassword = System.getenv("SONATYPE_PASSWORD"),
     ),
+    binaryCompatibilityValidatorConfig = BinaryCompatibilityValidatorConfig(klib = true),
 )
 
 setupDetekt()
