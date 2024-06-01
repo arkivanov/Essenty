@@ -1,0 +1,35 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxX64, macosArm64, macosX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, watchosArm32, watchosArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.arkivanov.essenty:state-keeper>
+abstract interface com.arkivanov.essenty.statekeeper/StateKeeper { // com.arkivanov.essenty.statekeeper/StateKeeper|null[0]
+    abstract fun <#A1: kotlin/Any> consume(kotlin/String, kotlinx.serialization/DeserializationStrategy<#A1>): #A1? // com.arkivanov.essenty.statekeeper/StateKeeper.consume|consume(kotlin.String;kotlinx.serialization.DeserializationStrategy<0:0>){0§<kotlin.Any>}[0]
+    abstract fun <#A1: kotlin/Any> register(kotlin/String, kotlinx.serialization/SerializationStrategy<#A1>, kotlin/Function0<#A1?>) // com.arkivanov.essenty.statekeeper/StateKeeper.register|register(kotlin.String;kotlinx.serialization.SerializationStrategy<0:0>;kotlin.Function0<0:0?>){0§<kotlin.Any>}[0]
+    abstract fun isRegistered(kotlin/String): kotlin/Boolean // com.arkivanov.essenty.statekeeper/StateKeeper.isRegistered|isRegistered(kotlin.String){}[0]
+    abstract fun unregister(kotlin/String) // com.arkivanov.essenty.statekeeper/StateKeeper.unregister|unregister(kotlin.String){}[0]
+}
+abstract interface com.arkivanov.essenty.statekeeper/StateKeeperDispatcher : com.arkivanov.essenty.statekeeper/StateKeeper { // com.arkivanov.essenty.statekeeper/StateKeeperDispatcher|null[0]
+    abstract fun save(): com.arkivanov.essenty.statekeeper/SerializableContainer // com.arkivanov.essenty.statekeeper/StateKeeperDispatcher.save|save(){}[0]
+}
+abstract interface com.arkivanov.essenty.statekeeper/StateKeeperOwner { // com.arkivanov.essenty.statekeeper/StateKeeperOwner|null[0]
+    abstract val stateKeeper // com.arkivanov.essenty.statekeeper/StateKeeperOwner.stateKeeper|{}stateKeeper[0]
+        abstract fun <get-stateKeeper>(): com.arkivanov.essenty.statekeeper/StateKeeper // com.arkivanov.essenty.statekeeper/StateKeeperOwner.stateKeeper.<get-stateKeeper>|<get-stateKeeper>(){}[0]
+}
+final class com.arkivanov.essenty.statekeeper/SerializableContainer { // com.arkivanov.essenty.statekeeper/SerializableContainer|null[0]
+    constructor <init>() // com.arkivanov.essenty.statekeeper/SerializableContainer.<init>|<init>(){}[0]
+    final fun <#A1: kotlin/Any> consume(kotlinx.serialization/DeserializationStrategy<#A1>): #A1? // com.arkivanov.essenty.statekeeper/SerializableContainer.consume|consume(kotlinx.serialization.DeserializationStrategy<0:0>){0§<kotlin.Any>}[0]
+    final fun <#A1: kotlin/Any> set(#A1?, kotlinx.serialization/SerializationStrategy<#A1>) // com.arkivanov.essenty.statekeeper/SerializableContainer.set|set(0:0?;kotlinx.serialization.SerializationStrategy<0:0>){0§<kotlin.Any>}[0]
+    final fun clear() // com.arkivanov.essenty.statekeeper/SerializableContainer.clear|clear(){}[0]
+    final object Companion { // com.arkivanov.essenty.statekeeper/SerializableContainer.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<com.arkivanov.essenty.statekeeper/SerializableContainer> // com.arkivanov.essenty.statekeeper/SerializableContainer.Companion.serializer|serializer(){}[0]
+    }
+}
+final fun <#A: kotlin/Any> (com.arkivanov.essenty.statekeeper/SerializableContainer).com.arkivanov.essenty.statekeeper/consumeRequired(kotlinx.serialization/DeserializationStrategy<#A>): #A // com.arkivanov.essenty.statekeeper/consumeRequired|consumeRequired@com.arkivanov.essenty.statekeeper.SerializableContainer(kotlinx.serialization.DeserializationStrategy<0:0>){0§<kotlin.Any>}[0]
+final fun <#A: kotlin/Any> com.arkivanov.essenty.statekeeper/SerializableContainer(#A?, kotlinx.serialization/SerializationStrategy<#A>): com.arkivanov.essenty.statekeeper/SerializableContainer // com.arkivanov.essenty.statekeeper/SerializableContainer|SerializableContainer(0:0?;kotlinx.serialization.SerializationStrategy<0:0>){0§<kotlin.Any>}[0]
+final fun <#A: kotlin/Any> com.arkivanov.essenty.statekeeper/polymorphicSerializer(kotlin.reflect/KClass<#A>, kotlinx.serialization.modules/SerializersModule): kotlinx.serialization/KSerializer<#A> // com.arkivanov.essenty.statekeeper/polymorphicSerializer|polymorphicSerializer(kotlin.reflect.KClass<0:0>;kotlinx.serialization.modules.SerializersModule){0§<kotlin.Any>}[0]
+final fun com.arkivanov.essenty.statekeeper/StateKeeperDispatcher(com.arkivanov.essenty.statekeeper/SerializableContainer? = ...): com.arkivanov.essenty.statekeeper/StateKeeperDispatcher // com.arkivanov.essenty.statekeeper/StateKeeperDispatcher|StateKeeperDispatcher(com.arkivanov.essenty.statekeeper.SerializableContainer?){}[0]
+final inline fun <#A: reified kotlin/Any> com.arkivanov.essenty.statekeeper/polymorphicSerializer(kotlinx.serialization.modules/SerializersModule): kotlinx.serialization/KSerializer<#A> // com.arkivanov.essenty.statekeeper/polymorphicSerializer|polymorphicSerializer(kotlinx.serialization.modules.SerializersModule){0§<kotlin.Any>}[0]

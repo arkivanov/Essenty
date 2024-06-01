@@ -1,0 +1,10 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, linuxX64, macosArm64, macosX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, watchosArm32, watchosArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.arkivanov.essenty:lifecycle-reaktive>
+final fun (com.arkivanov.essenty.lifecycle/LifecycleOwner).com.arkivanov.essenty.lifecycle.reaktive/disposableScope(): com.badoo.reaktive.disposable.scope/DisposableScope // com.arkivanov.essenty.lifecycle.reaktive/disposableScope|disposableScope@com.arkivanov.essenty.lifecycle.LifecycleOwner(){}[0]
+final fun <#A: com.badoo.reaktive.disposable/Disposable> (#A).com.arkivanov.essenty.lifecycle.reaktive/withLifecycle(com.arkivanov.essenty.lifecycle/Lifecycle): #A // com.arkivanov.essenty.lifecycle.reaktive/withLifecycle|withLifecycle@0:0(com.arkivanov.essenty.lifecycle.Lifecycle){0§<com.badoo.reaktive.disposable.Disposable>}[0]
