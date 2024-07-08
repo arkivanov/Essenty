@@ -1,6 +1,5 @@
 package com.arkivanov.essenty.statekeeper
 
-import com.arkivanov.essenty.utils.internal.ExperimentalEssentyApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -18,7 +17,7 @@ import kotlin.reflect.KClass
 /**
  * Creates a polymorphic [KSerializer] for the specified class of type [T] using the specified [module].
  */
-@ExperimentalEssentyApi
+@ExperimentalStateKeeperApi
 @ExperimentalSerializationApi
 inline fun <reified T : Any> polymorphicSerializer(module: SerializersModule): KSerializer<T> =
     polymorphicSerializer(baseClass = T::class, module = module)
@@ -26,7 +25,7 @@ inline fun <reified T : Any> polymorphicSerializer(module: SerializersModule): K
 /**
  * Creates a polymorphic [KSerializer] for the specified [baseClass] class using the specified [module].
  */
-@ExperimentalEssentyApi
+@ExperimentalStateKeeperApi
 @ExperimentalSerializationApi
 fun <T : Any> polymorphicSerializer(baseClass: KClass<T>, module: SerializersModule): KSerializer<T> =
     PolymorphicSerializer(baseClass = baseClass, module = module)

@@ -1,6 +1,5 @@
 package com.arkivanov.essenty.statekeeper
 
-import com.arkivanov.essenty.utils.internal.ExperimentalEssentyApi
 import kotlinx.serialization.KSerializer
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadOnlyProperty
@@ -21,7 +20,7 @@ import kotlin.reflect.KProperty
  * returns an object of type [T].
  * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
  */
-@ExperimentalEssentyApi
+@ExperimentalStateKeeperApi
 inline fun <T, S : Any> StateKeeper.saveable(
     serializer: KSerializer<S>,
     crossinline state: (T) -> S,
@@ -49,7 +48,7 @@ inline fun <T, S : Any> StateKeeper.saveable(
  * returns an object of type [T].
  * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
  */
-@ExperimentalEssentyApi
+@ExperimentalStateKeeperApi
 inline fun <T, S : Any> StateKeeperOwner.saveable(
     serializer: KSerializer<S>,
     crossinline state: (T) -> S,
@@ -74,7 +73,7 @@ inline fun <T, S : Any> StateKeeperOwner.saveable(
  * @param init a function returning the initial value of type [T].
  * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
  */
-@ExperimentalEssentyApi
+@ExperimentalStateKeeperApi
 inline fun <T : Any> StateKeeper.saveable(
     serializer: KSerializer<T>,
     key: String? = null,
@@ -106,7 +105,7 @@ inline fun <T : Any> StateKeeper.saveable(
  * @param init a function returning the initial value of type [T].
  * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
  */
-@ExperimentalEssentyApi
+@ExperimentalStateKeeperApi
 inline fun <T : Any> StateKeeperOwner.saveable(
     serializer: KSerializer<T>,
     key: String? = null,

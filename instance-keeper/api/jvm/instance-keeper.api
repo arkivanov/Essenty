@@ -1,3 +1,6 @@
+public abstract interface annotation class com/arkivanov/essenty/instancekeeper/ExperimentalInstanceKeeperApi : java/lang/annotation/Annotation {
+}
+
 public abstract interface class com/arkivanov/essenty/instancekeeper/InstanceKeeper {
 	public abstract fun get (Ljava/lang/Object;)Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;
 	public abstract fun put (Ljava/lang/Object;Lcom/arkivanov/essenty/instancekeeper/InstanceKeeper$Instance;)V
