@@ -337,17 +337,26 @@ import com.arkivanov.essenty.instancekeeper.getOrCreate
 
 class SomeLogic(instanceKeeper: InstanceKeeper) {
     // Get the existing instance or create a new one
-    private val thing: RetainedThing = instanceKeeper.getOrCreate { RetainedThing() }
+    private val viewModel = instanceKeeper.getOrCreate { ViewModel() }
 }
 
 /*
  * Survives Android configuration changes.
  * ⚠️ Pay attention to not leak any dependencies.
  */
-class RetainedThing : InstanceKeeper.Instance {
+class ViewModel : InstanceKeeper.Instance {
     override fun onDestroy() {
         // Called when the screen is finished
     }
+}
+```
+
+##### Alternative way (experimental since version 2.2.0-alpha01)
+
+```kotlin
+class SomeLogic(instanceKeeperOwner: InstanceKeeperOwner) : InstanceKeeperOwner by instanceKeeperOwner {
+    // Get the existing instance or create a new one
+    private val viewModel = retainedInstance { ViewModel() }
 }
 ```
 
