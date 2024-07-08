@@ -69,7 +69,7 @@ setupDefaults(
         signingKey = System.getenv("SIGNING_KEY"),
         signingPassword = System.getenv("SIGNING_PASSWORD"),
         repositoryUrl = "https://s01.oss.sonatype.org/service/local/staging/deployByRepositoryId/${System.getenv("SONATYPE_REPOSITORY_ID")}",
-        repositoryUserName = "arkivanov",
+        repositoryUserName = System.getenv("SONATYPE_USER_NAME"),
         repositoryPassword = System.getenv("SONATYPE_PASSWORD"),
     ),
     binaryCompatibilityValidatorConfig = BinaryCompatibilityValidatorConfig(klib = true),
