@@ -37,8 +37,14 @@ public final class com/arkivanov/essenty/statekeeper/StateKeeperDispatcherKt {
 }
 
 public final class com/arkivanov/essenty/statekeeper/StateKeeperExtKt {
-	public static final fun withSavedState (Lcom/arkivanov/essenty/statekeeper/StateKeeper;Ljava/lang/String;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public static final fun withSavedState (Lcom/arkivanov/essenty/statekeeper/StateKeeperOwner;Ljava/lang/String;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public static final fun saveable (Lcom/arkivanov/essenty/statekeeper/StateKeeper;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun saveable (Lcom/arkivanov/essenty/statekeeper/StateKeeper;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun saveable (Lcom/arkivanov/essenty/statekeeper/StateKeeperOwner;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun saveable (Lcom/arkivanov/essenty/statekeeper/StateKeeperOwner;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun saveable$default (Lcom/arkivanov/essenty/statekeeper/StateKeeper;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun saveable$default (Lcom/arkivanov/essenty/statekeeper/StateKeeper;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun saveable$default (Lcom/arkivanov/essenty/statekeeper/StateKeeperOwner;Lkotlinx/serialization/KSerializer;Ljava/lang/String;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun saveable$default (Lcom/arkivanov/essenty/statekeeper/StateKeeperOwner;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
 }
 
 public abstract interface class com/arkivanov/essenty/statekeeper/StateKeeperOwner {
