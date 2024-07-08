@@ -1,6 +1,5 @@
 package com.arkivanov.essenty.statekeeper
 
-import com.arkivanov.essenty.utils.internal.ExperimentalEssentyApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -30,7 +29,7 @@ class PolymorphicSerializerTest {
     @Serializable
     private data class Some2(val data: SerializableData) : Some
 
-    @OptIn(ExperimentalEssentyApi::class, ExperimentalSerializationApi::class)
+    @OptIn(ExperimentalStateKeeperApi::class, ExperimentalSerializationApi::class)
     private object SomeSerializer : KSerializer<Some> by polymorphicSerializer(
         SerializersModule {
             polymorphic(Some::class) {

@@ -1,3 +1,6 @@
+public abstract interface annotation class com/arkivanov/essenty/statekeeper/ExperimentalStateKeeperApi : java/lang/annotation/Annotation {
+}
+
 public final class com/arkivanov/essenty/statekeeper/PolymorphicSerializerKt {
 	public static final fun polymorphicSerializer (Lkotlin/reflect/KClass;Lkotlinx/serialization/modules/SerializersModule;)Lkotlinx/serialization/KSerializer;
 }

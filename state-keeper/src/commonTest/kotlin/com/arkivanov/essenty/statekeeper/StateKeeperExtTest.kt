@@ -1,11 +1,10 @@
 package com.arkivanov.essenty.statekeeper
 
-import com.arkivanov.essenty.utils.internal.ExperimentalEssentyApi
 import kotlinx.serialization.builtins.serializer
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalEssentyApi::class)
+@OptIn(ExperimentalStateKeeperApi::class)
 class StateKeeperExtTest {
 
     @Test
