@@ -149,7 +149,7 @@ lifecycleRegistry.destroy()
 
 ## StateKeeper
 
-When writing common code targeting Android, it might be required to preserve some data over Android configuration changes or process death. For this purpose, Essenty provides the `StateKeeper` API, which is inspired by the AndroidX [SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle).
+When writing common code targeting Android, it might be required to preserve some data over process death or Android configuration changes. For this purpose, Essenty provides the `StateKeeper` API, which is inspired by the AndroidX [SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle).
 
 ### Setup
 
@@ -167,7 +167,7 @@ implementation("com.arkivanov.essenty:state-keeper:<essenty_version>")
 
 ### Content
 
-The main [StateKeeper](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/commonMain/kotlin/com/arkivanov/essenty/statekeeper/StateKeeper.kt) interface provides ability to register/unregister state suppliers, and also to consume any previously saved state. You can also find some handy [extension functions](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/commonMain/kotlin/com/arkivanov/essenty/statekeeper/StateKeeperExt.kt).
+The main [StateKeeper](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/commonMain/kotlin/com/arkivanov/essenty/statekeeper/StateKeeper.kt) interface provides ability to register/unregister state suppliers, and also to consume any previously saved state. You can also find some handy [extension functions](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/commonMain/kotlin/com/arkivanov/essenty/statekeeper/StateKeeperExt.kt). You can also find some handy [extension functions](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/commonMain/kotlin/com/arkivanov/essenty/statekeeper/StateKeeperExt.kt).
 
 The [StateKeeperDispatcher](https://github.com/arkivanov/Essenty/blob/master/state-keeper/src/commonMain/kotlin/com/arkivanov/essenty/statekeeper/StateKeeperDispatcher.kt) interface extends `StateKeeper` and  allows state saving, by calling all registered state providers.
 
@@ -191,7 +191,7 @@ There are also some handy [extension functions](https://github.com/arkivanov/Ess
 > ⚠️  Make sure you [setup](https://github.com/Kotlin/kotlinx.serialization#setup) `kotlinx-serialization` properly. 
 
 ```kotlin
-import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.statekeeper.StateKeeper
 import kotlinx.serialization.Serializable
 
 class SomeLogic(stateKeeper: StateKeeper) {
@@ -206,7 +206,41 @@ class SomeLogic(stateKeeper: StateKeeper) {
     @Serializable
     private class State(
         val someValue: Int = 0
-    ) : Parcelable
+    )
+}
+```
+
+#### Saveable properties (experimental since version `2.2.0-alpha01`)
+
+```kotlin
+import com.arkivanov.essenty.statekeeper.StateKeeper
+import com.arkivanov.essenty.statekeeper.saveable
+import kotlinx.serialization.Serializable
+
+class SomeLogic(stateKeeper: StateKeeper) {
+    private var state: State by stateKeeper.saveable(serializer = State.serializer(), init = ::State)
+
+    @Serializable
+    private class State(val someValue: Int = 0)
+}
+```
+
+#### Saveable state holders (experimental since version `2.2.0-alpha01`)
+
+```kotlin
+import com.arkivanov.essenty.statekeeper.StateKeeper
+import com.arkivanov.essenty.statekeeper.saveable
+import kotlinx.serialization.Serializable
+
+class SomeLogic(stateKeeper: StateKeeper) {
+    private val viewModel by stateKeeper.saveable(serializer = State.serializer(), state = ViewModel::state) { savedState ->
+        ViewModel(state = savedState ?: State())
+    }
+
+    private class ViewModel(var state: State)
+
+    @Serializable
+    private class State(val someValue: Int = 0)
 }
 ```
 
