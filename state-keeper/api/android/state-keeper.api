@@ -15,6 +15,13 @@ public final class com/arkivanov/essenty/statekeeper/BundleExtKt {
 public abstract interface annotation class com/arkivanov/essenty/statekeeper/ExperimentalStateKeeperApi : java/lang/annotation/Annotation {
 }
 
+public final class com/arkivanov/essenty/statekeeper/PersistableBundleExtKt {
+	public static final fun getSerializable (Landroid/os/PersistableBundle;Ljava/lang/String;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
+	public static final fun getSerializableContainer (Landroid/os/PersistableBundle;Ljava/lang/String;)Lcom/arkivanov/essenty/statekeeper/SerializableContainer;
+	public static final fun putSerializable (Landroid/os/PersistableBundle;Ljava/lang/String;Ljava/lang/Object;Lkotlinx/serialization/SerializationStrategy;)V
+	public static final fun putSerializableContainer (Landroid/os/PersistableBundle;Ljava/lang/String;Lcom/arkivanov/essenty/statekeeper/SerializableContainer;)V
+}
+
 public final class com/arkivanov/essenty/statekeeper/PolymorphicSerializerKt {
 	public static final fun polymorphicSerializer (Lkotlin/reflect/KClass;Lkotlinx/serialization/modules/SerializersModule;)Lkotlinx/serialization/KSerializer;
 }
