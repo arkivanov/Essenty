@@ -184,6 +184,8 @@ There are also some handy [extension functions](https://github.com/arkivanov/Ess
 - `fun Bundle.putSerializableContainer(key: String?, value: SerializableContainer?)`
 - `fun Bundle.getSerializableContainer(key: String?): SerializableContainer?`
 
+Similar extensions are also available for [PersistableBundle](https://developer.android.com/reference/android/os/PersistableBundle).
+
 ### Usage example
 
 #### Using StateKeeper
