@@ -6,11 +6,46 @@
 // - Show declarations: true
 
 // Library unique name: <com.arkivanov.essenty:back-handler>
+abstract interface com.arkivanov.essenty.backhandler/BackDispatcher : com.arkivanov.essenty.backhandler/BackHandler { // com.arkivanov.essenty.backhandler/BackDispatcher|null[0]
+    abstract val isEnabled // com.arkivanov.essenty.backhandler/BackDispatcher.isEnabled|{}isEnabled[0]
+        abstract fun <get-isEnabled>(): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackDispatcher.isEnabled.<get-isEnabled>|<get-isEnabled>(){}[0]
+
+    abstract fun addEnabledChangedListener(kotlin/Function1<kotlin/Boolean, kotlin/Unit>) // com.arkivanov.essenty.backhandler/BackDispatcher.addEnabledChangedListener|addEnabledChangedListener(kotlin.Function1<kotlin.Boolean,kotlin.Unit>){}[0]
+    abstract fun back(): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackDispatcher.back|back(){}[0]
+    abstract fun cancelPredictiveBack() // com.arkivanov.essenty.backhandler/BackDispatcher.cancelPredictiveBack|cancelPredictiveBack(){}[0]
+    abstract fun progressPredictiveBack(com.arkivanov.essenty.backhandler/BackEvent) // com.arkivanov.essenty.backhandler/BackDispatcher.progressPredictiveBack|progressPredictiveBack(com.arkivanov.essenty.backhandler.BackEvent){}[0]
+    abstract fun removeEnabledChangedListener(kotlin/Function1<kotlin/Boolean, kotlin/Unit>) // com.arkivanov.essenty.backhandler/BackDispatcher.removeEnabledChangedListener|removeEnabledChangedListener(kotlin.Function1<kotlin.Boolean,kotlin.Unit>){}[0]
+    abstract fun startPredictiveBack(com.arkivanov.essenty.backhandler/BackEvent): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackDispatcher.startPredictiveBack|startPredictiveBack(com.arkivanov.essenty.backhandler.BackEvent){}[0]
+}
+
+abstract interface com.arkivanov.essenty.backhandler/BackHandler { // com.arkivanov.essenty.backhandler/BackHandler|null[0]
+    abstract fun isRegistered(com.arkivanov.essenty.backhandler/BackCallback): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackHandler.isRegistered|isRegistered(com.arkivanov.essenty.backhandler.BackCallback){}[0]
+    abstract fun register(com.arkivanov.essenty.backhandler/BackCallback) // com.arkivanov.essenty.backhandler/BackHandler.register|register(com.arkivanov.essenty.backhandler.BackCallback){}[0]
+    abstract fun unregister(com.arkivanov.essenty.backhandler/BackCallback) // com.arkivanov.essenty.backhandler/BackHandler.unregister|unregister(com.arkivanov.essenty.backhandler.BackCallback){}[0]
+}
+
+abstract interface com.arkivanov.essenty.backhandler/BackHandlerOwner { // com.arkivanov.essenty.backhandler/BackHandlerOwner|null[0]
+    abstract val backHandler // com.arkivanov.essenty.backhandler/BackHandlerOwner.backHandler|{}backHandler[0]
+        abstract fun <get-backHandler>(): com.arkivanov.essenty.backhandler/BackHandler // com.arkivanov.essenty.backhandler/BackHandlerOwner.backHandler.<get-backHandler>|<get-backHandler>(){}[0]
+}
+
 abstract class com.arkivanov.essenty.backhandler/BackCallback { // com.arkivanov.essenty.backhandler/BackCallback|null[0]
-    abstract fun onBack() // com.arkivanov.essenty.backhandler/BackCallback.onBack|onBack(){}[0]
     constructor <init>(kotlin/Boolean = ..., kotlin/Int = ...) // com.arkivanov.essenty.backhandler/BackCallback.<init>|<init>(kotlin.Boolean;kotlin.Int){}[0]
+
+    final var isEnabled // com.arkivanov.essenty.backhandler/BackCallback.isEnabled|{}isEnabled[0]
+        final fun <get-isEnabled>(): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackCallback.isEnabled.<get-isEnabled>|<get-isEnabled>(){}[0]
+        final fun <set-isEnabled>(kotlin/Boolean) // com.arkivanov.essenty.backhandler/BackCallback.isEnabled.<set-isEnabled>|<set-isEnabled>(kotlin.Boolean){}[0]
+    final var priority // com.arkivanov.essenty.backhandler/BackCallback.priority|{}priority[0]
+        final fun <get-priority>(): kotlin/Int // com.arkivanov.essenty.backhandler/BackCallback.priority.<get-priority>|<get-priority>(){}[0]
+        final fun <set-priority>(kotlin/Int) // com.arkivanov.essenty.backhandler/BackCallback.priority.<set-priority>|<set-priority>(kotlin.Int){}[0]
+
+    abstract fun onBack() // com.arkivanov.essenty.backhandler/BackCallback.onBack|onBack(){}[0]
     final fun addEnabledChangedListener(kotlin/Function1<kotlin/Boolean, kotlin/Unit>) // com.arkivanov.essenty.backhandler/BackCallback.addEnabledChangedListener|addEnabledChangedListener(kotlin.Function1<kotlin.Boolean,kotlin.Unit>){}[0]
     final fun removeEnabledChangedListener(kotlin/Function1<kotlin/Boolean, kotlin/Unit>) // com.arkivanov.essenty.backhandler/BackCallback.removeEnabledChangedListener|removeEnabledChangedListener(kotlin.Function1<kotlin.Boolean,kotlin.Unit>){}[0]
+    open fun onBackCancelled() // com.arkivanov.essenty.backhandler/BackCallback.onBackCancelled|onBackCancelled(){}[0]
+    open fun onBackProgressed(com.arkivanov.essenty.backhandler/BackEvent) // com.arkivanov.essenty.backhandler/BackCallback.onBackProgressed|onBackProgressed(com.arkivanov.essenty.backhandler.BackEvent){}[0]
+    open fun onBackStarted(com.arkivanov.essenty.backhandler/BackEvent) // com.arkivanov.essenty.backhandler/BackCallback.onBackStarted|onBackStarted(com.arkivanov.essenty.backhandler.BackEvent){}[0]
+
     final object Companion { // com.arkivanov.essenty.backhandler/BackCallback.Companion|null[0]
         final const val PRIORITY_DEFAULT // com.arkivanov.essenty.backhandler/BackCallback.Companion.PRIORITY_DEFAULT|{}PRIORITY_DEFAULT[0]
             final fun <get-PRIORITY_DEFAULT>(): kotlin/Int // com.arkivanov.essenty.backhandler/BackCallback.Companion.PRIORITY_DEFAULT.<get-PRIORITY_DEFAULT>|<get-PRIORITY_DEFAULT>(){}[0]
@@ -19,54 +54,11 @@ abstract class com.arkivanov.essenty.backhandler/BackCallback { // com.arkivanov
         final const val PRIORITY_MIN // com.arkivanov.essenty.backhandler/BackCallback.Companion.PRIORITY_MIN|{}PRIORITY_MIN[0]
             final fun <get-PRIORITY_MIN>(): kotlin/Int // com.arkivanov.essenty.backhandler/BackCallback.Companion.PRIORITY_MIN.<get-PRIORITY_MIN>|<get-PRIORITY_MIN>(){}[0]
     }
-    final var isEnabled // com.arkivanov.essenty.backhandler/BackCallback.isEnabled|{}isEnabled[0]
-        final fun <get-isEnabled>(): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackCallback.isEnabled.<get-isEnabled>|<get-isEnabled>(){}[0]
-        final fun <set-isEnabled>(kotlin/Boolean) // com.arkivanov.essenty.backhandler/BackCallback.isEnabled.<set-isEnabled>|<set-isEnabled>(kotlin.Boolean){}[0]
-    final var priority // com.arkivanov.essenty.backhandler/BackCallback.priority|{}priority[0]
-        final fun <get-priority>(): kotlin/Int // com.arkivanov.essenty.backhandler/BackCallback.priority.<get-priority>|<get-priority>(){}[0]
-        final fun <set-priority>(kotlin/Int) // com.arkivanov.essenty.backhandler/BackCallback.priority.<set-priority>|<set-priority>(kotlin.Int){}[0]
-    open fun onBackCancelled() // com.arkivanov.essenty.backhandler/BackCallback.onBackCancelled|onBackCancelled(){}[0]
-    open fun onBackProgressed(com.arkivanov.essenty.backhandler/BackEvent) // com.arkivanov.essenty.backhandler/BackCallback.onBackProgressed|onBackProgressed(com.arkivanov.essenty.backhandler.BackEvent){}[0]
-    open fun onBackStarted(com.arkivanov.essenty.backhandler/BackEvent) // com.arkivanov.essenty.backhandler/BackCallback.onBackStarted|onBackStarted(com.arkivanov.essenty.backhandler.BackEvent){}[0]
 }
-abstract interface com.arkivanov.essenty.backhandler/BackDispatcher : com.arkivanov.essenty.backhandler/BackHandler { // com.arkivanov.essenty.backhandler/BackDispatcher|null[0]
-    abstract fun addEnabledChangedListener(kotlin/Function1<kotlin/Boolean, kotlin/Unit>) // com.arkivanov.essenty.backhandler/BackDispatcher.addEnabledChangedListener|addEnabledChangedListener(kotlin.Function1<kotlin.Boolean,kotlin.Unit>){}[0]
-    abstract fun back(): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackDispatcher.back|back(){}[0]
-    abstract fun cancelPredictiveBack() // com.arkivanov.essenty.backhandler/BackDispatcher.cancelPredictiveBack|cancelPredictiveBack(){}[0]
-    abstract fun progressPredictiveBack(com.arkivanov.essenty.backhandler/BackEvent) // com.arkivanov.essenty.backhandler/BackDispatcher.progressPredictiveBack|progressPredictiveBack(com.arkivanov.essenty.backhandler.BackEvent){}[0]
-    abstract fun removeEnabledChangedListener(kotlin/Function1<kotlin/Boolean, kotlin/Unit>) // com.arkivanov.essenty.backhandler/BackDispatcher.removeEnabledChangedListener|removeEnabledChangedListener(kotlin.Function1<kotlin.Boolean,kotlin.Unit>){}[0]
-    abstract fun startPredictiveBack(com.arkivanov.essenty.backhandler/BackEvent): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackDispatcher.startPredictiveBack|startPredictiveBack(com.arkivanov.essenty.backhandler.BackEvent){}[0]
-    abstract val isEnabled // com.arkivanov.essenty.backhandler/BackDispatcher.isEnabled|{}isEnabled[0]
-        abstract fun <get-isEnabled>(): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackDispatcher.isEnabled.<get-isEnabled>|<get-isEnabled>(){}[0]
-}
-abstract interface com.arkivanov.essenty.backhandler/BackHandler { // com.arkivanov.essenty.backhandler/BackHandler|null[0]
-    abstract fun isRegistered(com.arkivanov.essenty.backhandler/BackCallback): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackHandler.isRegistered|isRegistered(com.arkivanov.essenty.backhandler.BackCallback){}[0]
-    abstract fun register(com.arkivanov.essenty.backhandler/BackCallback) // com.arkivanov.essenty.backhandler/BackHandler.register|register(com.arkivanov.essenty.backhandler.BackCallback){}[0]
-    abstract fun unregister(com.arkivanov.essenty.backhandler/BackCallback) // com.arkivanov.essenty.backhandler/BackHandler.unregister|unregister(com.arkivanov.essenty.backhandler.BackCallback){}[0]
-}
-abstract interface com.arkivanov.essenty.backhandler/BackHandlerOwner { // com.arkivanov.essenty.backhandler/BackHandlerOwner|null[0]
-    abstract val backHandler // com.arkivanov.essenty.backhandler/BackHandlerOwner.backHandler|{}backHandler[0]
-        abstract fun <get-backHandler>(): com.arkivanov.essenty.backhandler/BackHandler // com.arkivanov.essenty.backhandler/BackHandlerOwner.backHandler.<get-backHandler>|<get-backHandler>(){}[0]
-}
+
 final class com.arkivanov.essenty.backhandler/BackEvent { // com.arkivanov.essenty.backhandler/BackEvent|null[0]
     constructor <init>(kotlin/Float = ..., com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge = ..., kotlin/Float = ..., kotlin/Float = ...) // com.arkivanov.essenty.backhandler/BackEvent.<init>|<init>(kotlin.Float;com.arkivanov.essenty.backhandler.BackEvent.SwipeEdge;kotlin.Float;kotlin.Float){}[0]
-    final enum class SwipeEdge : kotlin/Enum<com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge> { // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge|null[0]
-        enum entry LEFT // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.LEFT|null[0]
-        enum entry RIGHT // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.RIGHT|null[0]
-        enum entry UNKNOWN // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.UNKNOWN|null[0]
-        final fun valueOf(kotlin/String): com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.valueOf|valueOf#static(kotlin.String){}[0]
-        final fun values(): kotlin/Array<com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge> // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.values|values#static(){}[0]
-        final val entries // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.entries|#static{}entries[0]
-            final fun <get-entries>(): kotlin.enums/EnumEntries<com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge> // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.entries.<get-entries>|<get-entries>#static(){}[0]
-    }
-    final fun component1(): kotlin/Float // com.arkivanov.essenty.backhandler/BackEvent.component1|component1(){}[0]
-    final fun component2(): com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge // com.arkivanov.essenty.backhandler/BackEvent.component2|component2(){}[0]
-    final fun component3(): kotlin/Float // com.arkivanov.essenty.backhandler/BackEvent.component3|component3(){}[0]
-    final fun component4(): kotlin/Float // com.arkivanov.essenty.backhandler/BackEvent.component4|component4(){}[0]
-    final fun copy(kotlin/Float = ..., com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge = ..., kotlin/Float = ..., kotlin/Float = ...): com.arkivanov.essenty.backhandler/BackEvent // com.arkivanov.essenty.backhandler/BackEvent.copy|copy(kotlin.Float;com.arkivanov.essenty.backhandler.BackEvent.SwipeEdge;kotlin.Float;kotlin.Float){}[0]
-    final fun equals(kotlin/Any?): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackEvent.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // com.arkivanov.essenty.backhandler/BackEvent.hashCode|hashCode(){}[0]
-    final fun toString(): kotlin/String // com.arkivanov.essenty.backhandler/BackEvent.toString|toString(){}[0]
+
     final val progress // com.arkivanov.essenty.backhandler/BackEvent.progress|{}progress[0]
         final fun <get-progress>(): kotlin/Float // com.arkivanov.essenty.backhandler/BackEvent.progress.<get-progress>|<get-progress>(){}[0]
     final val swipeEdge // com.arkivanov.essenty.backhandler/BackEvent.swipeEdge|{}swipeEdge[0]
@@ -75,6 +67,28 @@ final class com.arkivanov.essenty.backhandler/BackEvent { // com.arkivanov.essen
         final fun <get-touchX>(): kotlin/Float // com.arkivanov.essenty.backhandler/BackEvent.touchX.<get-touchX>|<get-touchX>(){}[0]
     final val touchY // com.arkivanov.essenty.backhandler/BackEvent.touchY|{}touchY[0]
         final fun <get-touchY>(): kotlin/Float // com.arkivanov.essenty.backhandler/BackEvent.touchY.<get-touchY>|<get-touchY>(){}[0]
+
+    final fun component1(): kotlin/Float // com.arkivanov.essenty.backhandler/BackEvent.component1|component1(){}[0]
+    final fun component2(): com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge // com.arkivanov.essenty.backhandler/BackEvent.component2|component2(){}[0]
+    final fun component3(): kotlin/Float // com.arkivanov.essenty.backhandler/BackEvent.component3|component3(){}[0]
+    final fun component4(): kotlin/Float // com.arkivanov.essenty.backhandler/BackEvent.component4|component4(){}[0]
+    final fun copy(kotlin/Float = ..., com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge = ..., kotlin/Float = ..., kotlin/Float = ...): com.arkivanov.essenty.backhandler/BackEvent // com.arkivanov.essenty.backhandler/BackEvent.copy|copy(kotlin.Float;com.arkivanov.essenty.backhandler.BackEvent.SwipeEdge;kotlin.Float;kotlin.Float){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.arkivanov.essenty.backhandler/BackEvent.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.arkivanov.essenty.backhandler/BackEvent.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.arkivanov.essenty.backhandler/BackEvent.toString|toString(){}[0]
+
+    final enum class SwipeEdge : kotlin/Enum<com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge> { // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge|null[0]
+        enum entry LEFT // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.LEFT|null[0]
+        enum entry RIGHT // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.RIGHT|null[0]
+        enum entry UNKNOWN // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.UNKNOWN|null[0]
+
+        final val entries // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.entries|#static{}entries[0]
+            final fun <get-entries>(): kotlin.enums/EnumEntries<com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge> // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.entries.<get-entries>|<get-entries>#static(){}[0]
+
+        final fun valueOf(kotlin/String): com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.valueOf|valueOf#static(kotlin.String){}[0]
+        final fun values(): kotlin/Array<com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge> // com.arkivanov.essenty.backhandler/BackEvent.SwipeEdge.values|values#static(){}[0]
+    }
 }
+
 final fun com.arkivanov.essenty.backhandler/BackCallback(kotlin/Boolean = ..., kotlin/Int = ..., kotlin/Function1<com.arkivanov.essenty.backhandler/BackEvent, kotlin/Unit>? = ..., kotlin/Function1<com.arkivanov.essenty.backhandler/BackEvent, kotlin/Unit>? = ..., kotlin/Function0<kotlin/Unit>? = ..., kotlin/Function0<kotlin/Unit>): com.arkivanov.essenty.backhandler/BackCallback // com.arkivanov.essenty.backhandler/BackCallback|BackCallback(kotlin.Boolean;kotlin.Int;kotlin.Function1<com.arkivanov.essenty.backhandler.BackEvent,kotlin.Unit>?;kotlin.Function1<com.arkivanov.essenty.backhandler.BackEvent,kotlin.Unit>?;kotlin.Function0<kotlin.Unit>?;kotlin.Function0<kotlin.Unit>){}[0]
 final fun com.arkivanov.essenty.backhandler/BackDispatcher(): com.arkivanov.essenty.backhandler/BackDispatcher // com.arkivanov.essenty.backhandler/BackDispatcher|BackDispatcher(){}[0]
