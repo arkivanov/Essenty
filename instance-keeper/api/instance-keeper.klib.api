@@ -6,26 +6,36 @@
 // - Show declarations: true
 
 // Library unique name: <com.arkivanov.essenty:instance-keeper>
+open annotation class com.arkivanov.essenty.instancekeeper/ExperimentalInstanceKeeperApi : kotlin/Annotation { // com.arkivanov.essenty.instancekeeper/ExperimentalInstanceKeeperApi|null[0]
+    constructor <init>() // com.arkivanov.essenty.instancekeeper/ExperimentalInstanceKeeperApi.<init>|<init>(){}[0]
+}
+
 abstract interface com.arkivanov.essenty.instancekeeper/InstanceKeeper { // com.arkivanov.essenty.instancekeeper/InstanceKeeper|null[0]
     abstract fun get(kotlin/Any): com.arkivanov.essenty.instancekeeper/InstanceKeeper.Instance? // com.arkivanov.essenty.instancekeeper/InstanceKeeper.get|get(kotlin.Any){}[0]
     abstract fun put(kotlin/Any, com.arkivanov.essenty.instancekeeper/InstanceKeeper.Instance) // com.arkivanov.essenty.instancekeeper/InstanceKeeper.put|put(kotlin.Any;com.arkivanov.essenty.instancekeeper.InstanceKeeper.Instance){}[0]
     abstract fun remove(kotlin/Any): com.arkivanov.essenty.instancekeeper/InstanceKeeper.Instance? // com.arkivanov.essenty.instancekeeper/InstanceKeeper.remove|remove(kotlin.Any){}[0]
+
     abstract interface Instance { // com.arkivanov.essenty.instancekeeper/InstanceKeeper.Instance|null[0]
         open fun onDestroy() // com.arkivanov.essenty.instancekeeper/InstanceKeeper.Instance.onDestroy|onDestroy(){}[0]
     }
+
     final class <#A1: out kotlin/Any?> SimpleInstance : com.arkivanov.essenty.instancekeeper/InstanceKeeper.Instance { // com.arkivanov.essenty.instancekeeper/InstanceKeeper.SimpleInstance|null[0]
         constructor <init>(#A1) // com.arkivanov.essenty.instancekeeper/InstanceKeeper.SimpleInstance.<init>|<init>(1:0){}[0]
+
         final val instance // com.arkivanov.essenty.instancekeeper/InstanceKeeper.SimpleInstance.instance|{}instance[0]
             final fun <get-instance>(): #A1 // com.arkivanov.essenty.instancekeeper/InstanceKeeper.SimpleInstance.instance.<get-instance>|<get-instance>(){}[0]
     }
 }
+
 abstract interface com.arkivanov.essenty.instancekeeper/InstanceKeeperDispatcher : com.arkivanov.essenty.instancekeeper/InstanceKeeper { // com.arkivanov.essenty.instancekeeper/InstanceKeeperDispatcher|null[0]
     abstract fun destroy() // com.arkivanov.essenty.instancekeeper/InstanceKeeperDispatcher.destroy|destroy(){}[0]
 }
+
 abstract interface com.arkivanov.essenty.instancekeeper/InstanceKeeperOwner { // com.arkivanov.essenty.instancekeeper/InstanceKeeperOwner|null[0]
     abstract val instanceKeeper // com.arkivanov.essenty.instancekeeper/InstanceKeeperOwner.instanceKeeper|{}instanceKeeper[0]
         abstract fun <get-instanceKeeper>(): com.arkivanov.essenty.instancekeeper/InstanceKeeper // com.arkivanov.essenty.instancekeeper/InstanceKeeperOwner.instanceKeeper.<get-instanceKeeper>|<get-instanceKeeper>(){}[0]
 }
+
 final fun com.arkivanov.essenty.instancekeeper/InstanceKeeperDispatcher(): com.arkivanov.essenty.instancekeeper/InstanceKeeperDispatcher // com.arkivanov.essenty.instancekeeper/InstanceKeeperDispatcher|InstanceKeeperDispatcher(){}[0]
 final inline fun <#A: com.arkivanov.essenty.instancekeeper/InstanceKeeper.Instance> (com.arkivanov.essenty.instancekeeper/InstanceKeeper).com.arkivanov.essenty.instancekeeper/getOrCreate(kotlin/Any, kotlin/Function0<#A>): #A // com.arkivanov.essenty.instancekeeper/getOrCreate|getOrCreate@com.arkivanov.essenty.instancekeeper.InstanceKeeper(kotlin.Any;kotlin.Function0<0:0>){0§<com.arkivanov.essenty.instancekeeper.InstanceKeeper.Instance>}[0]
 final inline fun <#A: kotlin/Any?> (com.arkivanov.essenty.instancekeeper/InstanceKeeper).com.arkivanov.essenty.instancekeeper/getOrCreateSimple(kotlin/Any, kotlin/Function0<#A>): #A // com.arkivanov.essenty.instancekeeper/getOrCreateSimple|getOrCreateSimple@com.arkivanov.essenty.instancekeeper.InstanceKeeper(kotlin.Any;kotlin.Function0<0:0>){0§<kotlin.Any?>}[0]
@@ -35,6 +45,3 @@ final inline fun <#A: reified com.arkivanov.essenty.instancekeeper/InstanceKeepe
 final inline fun <#A: reified kotlin/Any?> (com.arkivanov.essenty.instancekeeper/InstanceKeeper).com.arkivanov.essenty.instancekeeper/getOrCreateSimple(kotlin/Function0<#A>): #A // com.arkivanov.essenty.instancekeeper/getOrCreateSimple|getOrCreateSimple@com.arkivanov.essenty.instancekeeper.InstanceKeeper(kotlin.Function0<0:0>){0§<kotlin.Any?>}[0]
 final inline fun <#A: reified kotlin/Any?> (com.arkivanov.essenty.instancekeeper/InstanceKeeperOwner).com.arkivanov.essenty.instancekeeper/retainedSimpleInstance(kotlin/Any, kotlin/Function0<#A>): #A // com.arkivanov.essenty.instancekeeper/retainedSimpleInstance|retainedSimpleInstance@com.arkivanov.essenty.instancekeeper.InstanceKeeperOwner(kotlin.Any;kotlin.Function0<0:0>){0§<kotlin.Any?>}[0]
 final inline fun <#A: reified kotlin/Any?> (com.arkivanov.essenty.instancekeeper/InstanceKeeperOwner).com.arkivanov.essenty.instancekeeper/retainedSimpleInstance(kotlin/Function0<#A>): #A // com.arkivanov.essenty.instancekeeper/retainedSimpleInstance|retainedSimpleInstance@com.arkivanov.essenty.instancekeeper.InstanceKeeperOwner(kotlin.Function0<0:0>){0§<kotlin.Any?>}[0]
-open annotation class com.arkivanov.essenty.instancekeeper/ExperimentalInstanceKeeperApi : kotlin/Annotation { // com.arkivanov.essenty.instancekeeper/ExperimentalInstanceKeeperApi|null[0]
-    constructor <init>() // com.arkivanov.essenty.instancekeeper/ExperimentalInstanceKeeperApi.<init>|<init>(){}[0]
-}
