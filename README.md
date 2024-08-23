@@ -54,7 +54,7 @@ From Android, the `Lifecycle` can be obtained by using special functions, can be
 
 #### iOS and tvOS extensions
 
-There is [ApplicationLifecycle](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/itvosMain/kotlin/com/arkivanov/essenty/lifecycle/ApplicationLifecycle.kt) awailable for `ios` and `tvos` targets. It follows the `UIApplication` lifecycle notifications.
+There is [ApplicationLifecycle](https://github.com/arkivanov/Essenty/blob/master/lifecycle/src/itvosMain/kotlin/com/arkivanov/essenty/lifecycle/ApplicationLifecycle.kt) available for `ios` and `tvos` targets. It follows the `UIApplication` lifecycle notifications.
 
 > ⚠️  Since this implementation subscribes to `UIApplication` global lifecycle events, the instance and all its registered callbacks (and whatever they capture) will stay in memory until the application is destroyed or until `ApplicationLifecycle#destroy` method is called. It's ok to use it in a global scope like `UIApplicationDelegate`, but it may cause memory leaks when used in a narrower scope like `UIViewController` if it gets destroyed earlier. Use the `destroy` method to destroy the lifecycle manually and prevent memory leaks.
 
