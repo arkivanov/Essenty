@@ -13,6 +13,9 @@ import kotlinx.serialization.SerializationStrategy
  * Inserts the provided `kotlinx-serialization` [Serializable][kotlinx.serialization.Serializable] value
  * into this [PersistableBundle], replacing any existing value for the given [key].
  * Either [key] or [value] may be `null`.
+ *
+ * **Note:** unlike [Bundle.putSerializable], due to the specifics of [PersistableBundle] this function
+ * serializes the [value] eagerly, which may degrade the performance for large payloads.
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 fun <T : Any> PersistableBundle.putSerializable(key: String?, value: T?, strategy: SerializationStrategy<T>) {
@@ -31,6 +34,9 @@ fun <T : Any> PersistableBundle.getSerializable(key: String?, strategy: Deserial
 /**
  * Inserts the provided [SerializableContainer] into this [Bundle],
  * replacing any existing value for the given [key]. Either [key] or [value] may be `null`.
+ *
+ * **Note:** unlike [Bundle.putSerializableContainer], due to the specifics of [PersistableBundle]
+ * this function serializes the [value] eagerly, which may degrade the performance for large payloads.
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 fun PersistableBundle.putSerializableContainer(key: String?, value: SerializableContainer?) {
