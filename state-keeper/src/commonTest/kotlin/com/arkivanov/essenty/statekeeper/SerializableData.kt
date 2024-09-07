@@ -8,6 +8,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 @Suppress("DataClassPrivateConstructor")
+@ConsistentCopyVisibility
 @Serializable
 data class SerializableData private constructor(
     private val i1: Int,

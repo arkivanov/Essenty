@@ -1,7 +1,7 @@
 [versions]
 
 essenty = "2.2.0-alpha04"
-kotlin = "2.0.10"
+kotlin = "2.0.20"
 kotlinxBinaryCompatibilityValidator = "0.16.3"
 kotlinxCoroutines = "1.8.1"
 detektGradlePlugin = "1.23.6"
