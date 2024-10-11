@@ -271,6 +271,13 @@ class RatingFilter(val stars: Int) : Filter { /* Omitted code */ }
 Now we can create a polymorphic serializer for `Filter` as follows. It can be used to save and restore `Filter` directly via StateKeeper, or to have `Filter` as part of another `Serializable` class.
 
 ```kotlin
+import com.arkivanov.essenty.statekeeper.polymorphicSerializer
+import com.slack.circuit.runtime.screen.Screen
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+
 object FilterSerializer : KSerializer<Filter> by polymorphicSerializer(
     SerializersModule {
         polymorphic(Filter::class) {
