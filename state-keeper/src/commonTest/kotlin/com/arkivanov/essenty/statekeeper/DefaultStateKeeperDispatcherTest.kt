@@ -21,9 +21,7 @@ class DefaultStateKeeperDispatcherTest {
         dispatcher1.register(key = "key2", strategy = Data.serializer()) { data2 }
         dispatcher1.register(key = "key3", strategy = Data.serializer()) { null }
 
-        val savedState = dispatcher1.save()
-            .serialize(strategy = SerializableContainer.serializer())
-            .deserialize(strategy = SerializableContainer.serializer())
+        val savedState = dispatcher1.save().serializeAndDeserialize()
 
         val dispatcher2 = DefaultStateKeeperDispatcher(savedState = savedState)
 
@@ -34,6 +32,30 @@ class DefaultStateKeeperDispatcherTest {
         assertEquals(data1, restoredData1)
         assertEquals(data2, restoredData2)
         assertNull(restoredData3)
+    }
+
+    @Test
+    fun WHEN_save_recreate_twice_consume_THEN_data_restored() {
+        val dispatcher1 = DefaultStateKeeperDispatcher(savedState = null)
+
+        val data1 = Data(value = "value1")
+        val data2 = Data(value = "value2")
+        val data3 = Data(value = "value3")
+
+        dispatcher1.register(key = "key1", strategy = Data.serializer()) { data1 }
+        dispatcher1.register(key = "key2", strategy = Data.serializer()) { data2 }
+
+        val savedState1 = dispatcher1.save().serializeAndDeserialize()
+        val dispatcher2 = DefaultStateKeeperDispatcher(savedState = savedState1)
+        dispatcher2.register(key = "key1", strategy = Data.serializer()) { data3 }
+        val savedState2 = dispatcher2.save().serializeAndDeserialize()
+        val dispatcher3 = DefaultStateKeeperDispatcher(savedState = savedState2)
+
+        val restoredData1 = dispatcher3.consume(key = "key1", strategy = Data.serializer())
+        val restoredData2 = dispatcher3.consume(key = "key2", strategy = Data.serializer())
+
+        assertEquals(data3, restoredData1)
+        assertEquals(data2, restoredData2)
     }
 
     @Test

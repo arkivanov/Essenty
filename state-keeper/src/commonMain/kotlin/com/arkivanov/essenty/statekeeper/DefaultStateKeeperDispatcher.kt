@@ -12,7 +12,8 @@ internal class DefaultStateKeeperDispatcher(
     private val suppliers = HashMap<String, Supplier<*>>()
 
     override fun save(): SerializableContainer {
-        val map = HashMap<String, SerializableContainer>()
+        val map = savedState?.toMutableMap() ?: HashMap()
+
         suppliers.forEach { (key, supplier) ->
             supplier.toSerializableContainer()?.also { container ->
                 map[key] = container
