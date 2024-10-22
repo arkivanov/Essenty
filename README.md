@@ -360,7 +360,7 @@ class ViewModel : InstanceKeeper.Instance {
 }
 ```
 
-##### Alternative way (experimental since version 2.2.0-alpha01)
+##### Alternative way (experimental since version 2.2.0-alpha01, stable since 2.2.0)
 
 ```kotlin
 class SomeLogic(instanceKeeperOwner: InstanceKeeperOwner) : InstanceKeeperOwner by instanceKeeperOwner {
