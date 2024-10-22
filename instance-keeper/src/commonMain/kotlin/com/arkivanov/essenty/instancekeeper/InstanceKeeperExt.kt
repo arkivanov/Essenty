@@ -28,14 +28,12 @@ inline fun <reified T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(fact
 /**
  * A convenience function for [InstanceKeeper.getOrCreate].
  */
-@ExperimentalInstanceKeeperApi
 inline fun <reified T : InstanceKeeper.Instance> InstanceKeeperOwner.retainedInstance(key: Any, factory: () -> T): T =
     instanceKeeper.getOrCreate(key = key, factory = factory)
 
 /**
  * A convenience function for [InstanceKeeper.getOrCreate].
  */
-@ExperimentalInstanceKeeperApi
 inline fun <reified T : InstanceKeeper.Instance> InstanceKeeperOwner.retainedInstance(factory: () -> T): T =
     instanceKeeper.getOrCreate(factory = factory)
 
@@ -61,13 +59,11 @@ inline fun <reified T> InstanceKeeper.getOrCreateSimple(factory: () -> T): T =
 /**
  * A convenience function for [InstanceKeeper.getOrCreateSimple].
  */
-@ExperimentalInstanceKeeperApi
 inline fun <reified T> InstanceKeeperOwner.retainedSimpleInstance(key: Any, factory: () -> T): T =
     instanceKeeper.getOrCreateSimple(key = key, factory = factory)
 
 /**
  * A convenience function for [InstanceKeeper.getOrCreateSimple].
  */
-@ExperimentalInstanceKeeperApi
 inline fun <reified T> InstanceKeeperOwner.retainedSimpleInstance(factory: () -> T): T =
     instanceKeeper.getOrCreateSimple(factory = factory)
