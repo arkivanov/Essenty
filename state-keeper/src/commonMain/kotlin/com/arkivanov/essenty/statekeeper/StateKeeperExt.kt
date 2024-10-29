@@ -28,7 +28,7 @@ inline fun <T, S : Any> StateKeeper.saveable(
     crossinline init: (savedState: S?) -> T,
 ): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>> =
     PropertyDelegateProvider { _, property ->
-        val stateKey = key ?: "SAVEABLE_HOLDER_{$property.name}"
+        val stateKey = key ?: "SAVEABLE_HOLDER_${property.name}"
         val result = init(consume(key = stateKey, strategy = serializer))
         register(key = stateKey, strategy = serializer) { state(result) }
         ReadOnlyProperty { _, _ -> result }
