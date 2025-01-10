@@ -26,6 +26,26 @@ inline fun <reified T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(fact
     getOrCreate(key = typeOf<T>(), factory = factory)
 
 /**
+ * Returns a previously stored [AutoCloseable] instance of type [T] with the given [key],
+ * or creates and stores a new one if it doesn't exist.
+ *
+ * @param key a key to store and retrieve the instance, default value is `typeOf<T>()`.
+ * @param factory a function creating a new instance of type [T].
+ */
+inline fun <reified T : AutoCloseable> InstanceKeeper.getOrCreateCloseable(key: Any = typeOf<T>(), factory: () -> T): T =
+    getOrCreate(key = key) {
+        val instance = factory()
+
+        object : InstanceKeeper.Instance {
+            val instance: T = instance
+
+            override fun onDestroy() {
+                instance.close()
+            }
+        }
+    }.instance
+
+/**
  * A convenience function for [InstanceKeeper.getOrCreate].
  */
 inline fun <reified T : InstanceKeeper.Instance> InstanceKeeperOwner.retainedInstance(key: Any, factory: () -> T): T =
@@ -36,6 +56,12 @@ inline fun <reified T : InstanceKeeper.Instance> InstanceKeeperOwner.retainedIns
  */
 inline fun <reified T : InstanceKeeper.Instance> InstanceKeeperOwner.retainedInstance(factory: () -> T): T =
     instanceKeeper.getOrCreate(factory = factory)
+
+/**
+ * A convenience function for [InstanceKeeper.getOrCreateCloseable].
+ */
+inline fun <reified T : AutoCloseable> InstanceKeeperOwner.retainedCloseable(key: Any = typeOf<T>(), factory: () -> T): T =
+    instanceKeeper.getOrCreateCloseable(key = key, factory = factory)
 
 /**
  * Returns a previously stored instance of type [T] with the given key,
