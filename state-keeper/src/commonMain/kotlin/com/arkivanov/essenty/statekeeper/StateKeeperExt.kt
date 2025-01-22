@@ -1,6 +1,8 @@
 package com.arkivanov.essenty.statekeeper
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlin.concurrent.Volatile
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
@@ -21,16 +23,17 @@ import kotlin.reflect.KProperty
  * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
  */
 @ExperimentalStateKeeperApi
-inline fun <T, S : Any> StateKeeper.saveable(
+fun <T, S> StateKeeper.saveable(
     serializer: KSerializer<S>,
-    crossinline state: (T) -> S,
+    state: (T) -> S,
     key: String? = null,
-    crossinline init: (savedState: S?) -> T,
+    init: (savedState: S?) -> T,
 ): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>> =
     PropertyDelegateProvider { _, property ->
         val stateKey = key ?: "SAVEABLE_HOLDER_${property.name}"
-        val result = init(consume(key = stateKey, strategy = serializer))
-        register(key = stateKey, strategy = serializer) { state(result) }
+        val holderSerializer = Holder.serializer(serializer)
+        val result = init(consume(key = stateKey, strategy = holderSerializer)?.value)
+        register(key = stateKey, strategy = holderSerializer) { Holder(state(result)) }
         ReadOnlyProperty { _, _ -> result }
     }
 
@@ -49,11 +52,11 @@ inline fun <T, S : Any> StateKeeper.saveable(
  * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
  */
 @ExperimentalStateKeeperApi
-inline fun <T, S : Any> StateKeeperOwner.saveable(
+fun <T, S : Any> StateKeeperOwner.saveable(
     serializer: KSerializer<S>,
-    crossinline state: (T) -> S,
+    state: (T) -> S,
     key: String? = null,
-    crossinline init: (savedState: S?) -> T,
+    init: (savedState: S?) -> T,
 ): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>> =
     stateKeeper.saveable(
         serializer = serializer,
@@ -74,25 +77,28 @@ inline fun <T, S : Any> StateKeeperOwner.saveable(
  * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
  */
 @ExperimentalStateKeeperApi
-inline fun <T : Any> StateKeeper.saveable(
+fun <T> StateKeeper.saveable(
     serializer: KSerializer<T>,
     key: String? = null,
-    crossinline init: () -> T,
+    init: () -> T,
 ): PropertyDelegateProvider<Any?, ReadWriteProperty<Any?, T>> =
     PropertyDelegateProvider { _, property ->
         val stateKey = key ?: "SAVEABLE_${property.name}"
-        var saveable = consume(key = stateKey, strategy = serializer) ?: init()
-        register(key = stateKey, strategy = serializer) { saveable }
-
-        object : ReadWriteProperty<Any?, T> {
-            override fun getValue(thisRef: Any?, property: KProperty<*>): T =
-                saveable
-
-            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-                saveable = value
-            }
-        }
+        val holderSerializer = Holder.serializer(serializer)
+        val holder = consume(key = stateKey, strategy = holderSerializer) ?: Holder(init())
+        register(key = stateKey, strategy = holderSerializer) { Holder(holder.value) }
+        holder
     }
+
+@Serializable
+private class Holder<T>(@Volatile var value: T) : ReadWriteProperty<Any?, T> {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T =
+        this.value
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        this.value = value
+    }
+}
 
 /**
  * Helper function for creating a mutable
@@ -106,10 +112,10 @@ inline fun <T : Any> StateKeeper.saveable(
  * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
  */
 @ExperimentalStateKeeperApi
-inline fun <T : Any> StateKeeperOwner.saveable(
+fun <T> StateKeeperOwner.saveable(
     serializer: KSerializer<T>,
     key: String? = null,
-    crossinline init: () -> T,
+    init: () -> T,
 ): PropertyDelegateProvider<Any?, ReadWriteProperty<Any?, T>> =
     stateKeeper.saveable(
         serializer = serializer,
