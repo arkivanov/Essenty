@@ -4,7 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertNotSame
 import kotlin.test.assertSame
 
-@Suppress("TestFunctionName")
+@Suppress("TestFunctionName", "DEPRECATION")
 class InstanceKeeperExtTest {
 
     private val dispatcher = InstanceKeeperDispatcher()
