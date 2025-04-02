@@ -1,6 +1,8 @@
 package com.arkivanov.essenty.instancekeeper
 
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper.SimpleInstance
+import kotlin.properties.PropertyDelegateProvider
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.typeOf
 
 /**
@@ -39,7 +41,7 @@ inline fun <reified T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(fact
  * Returns a previously stored [AutoCloseable] instance of type [T] with the given [key],
  * or creates and stores a new one if it doesn't exist.
  *
- * @param key a key to store and retrieve the instance, default value is `typeOf<T>()`.
+ * @param key a key to store and retrieve the instance.
  * @param factory a function creating a new instance of type [T].
  */
 inline fun <T : AutoCloseable> InstanceKeeper.getOrCreateCloseable(key: Any, factory: () -> T): T =
@@ -168,3 +170,230 @@ inline fun <T> InstanceKeeperOwner.retainedSimpleInstance(key: Any, factory: () 
 )
 inline fun <reified T> InstanceKeeperOwner.retainedSimpleInstance(factory: () -> T): T =
     instanceKeeper.getOrCreateSimple(key = typeOf<T>(), factory = factory)
+
+/**
+ * Helper function for creating a
+ * [delegated property]((https://kotlinlang.org/docs/delegated-properties.html)) whose value is
+ * automatically retained using [InstanceKeeper].
+ *
+ * Example:
+ *
+ * ```
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeperOwner
+ * import com.arkivanov.essenty.instancekeeper.retainingInstance
+ *
+ * class SomeLogic(override val instanceKeeper: InstanceKeeper) : InstanceKeeperOwner {
+ *     private val viewModel by retainingInstance { RetainedViewModel() }
+ *
+ *     private class RetainedViewModel : InstanceKeeper.Instance {
+ *         // ...
+ *     }
+ * }
+ * ```
+ *
+ * @param key an optional key for storing and retrieving the instance. If not provided, then the
+ * property name is used as a key.
+ * @param factory a function creating a new instance of type [T].
+ * @param T a type of the property, extends [InstanceKeeper.Instance].
+ * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
+ * @see getOrCreate
+ */
+@ExperimentalInstanceKeeperApi
+inline fun <T : InstanceKeeper.Instance> InstanceKeeper.retainingInstance(
+    key: Any? = null,
+    crossinline factory: () -> T,
+): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>> =
+    PropertyDelegateProvider { _, property ->
+        val instance = getOrCreate(key = key ?: "RETAINING_INSTANCE_${property.name}", factory = factory)
+        ReadOnlyProperty { _, _ -> instance }
+    }
+
+/**
+ * Helper function for creating a
+ * [delegated property]((https://kotlinlang.org/docs/delegated-properties.html)) whose value is
+ * automatically retained using [InstanceKeeper].
+ *
+ * Example:
+ *
+ * ```
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeperOwner
+ * import com.arkivanov.essenty.instancekeeper.retainingInstance
+ *
+ * class SomeLogic(override val instanceKeeper: InstanceKeeper) : InstanceKeeperOwner {
+ *     private val viewModel by retainingInstance { RetainedViewModel() }
+ *
+ *     private class RetainedViewModel : InstanceKeeper.Instance {
+ *         // ...
+ *     }
+ * }
+ * ```
+ *
+ * @param key an optional key for storing and retrieving the instance. If not provided, then the
+ * property name is used as a key.
+ * @param factory a function creating a new instance of type [T].
+ * @param T a type of the property, extends [InstanceKeeper.Instance].
+ * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
+ * @see getOrCreate
+ */
+@ExperimentalInstanceKeeperApi
+inline fun <T : InstanceKeeper.Instance> InstanceKeeperOwner.retainingInstance(
+    key: Any? = null,
+    crossinline factory: () -> T,
+): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>> =
+    instanceKeeper.retainingInstance(key = key, factory = factory)
+
+/**
+ * Helper function for creating a
+ * [delegated property]((https://kotlinlang.org/docs/delegated-properties.html)) whose value is
+ * automatically retained using [InstanceKeeper].
+ *
+ * This overload is for simple cases when instance destroying is not required.
+ *
+ * Example:
+ *
+ * ```
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeperOwner
+ * import com.arkivanov.essenty.instancekeeper.retainingSimpleInstance
+ *
+ * class SomeLogic(override val instanceKeeper: InstanceKeeper) : InstanceKeeperOwner {
+ *     private val viewModel by retainingSimpleInstance { RetainedClass() }
+ *
+ *     private class RetainedClass {
+ *         // ...
+ *     }
+ * }
+ * ```
+ *
+ * @param key an optional key for storing and retrieving the instance. If not provided, then the
+ * property name is used as a key.
+ * @param factory a function creating a new instance of type [T].
+ * @param T a type of the property.
+ * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
+ * @see getOrCreateSimple
+ */
+@ExperimentalInstanceKeeperApi
+inline fun <T> InstanceKeeper.retainingSimpleInstance(
+    key: Any? = null,
+    crossinline factory: () -> T,
+): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>> =
+    PropertyDelegateProvider { _, property ->
+        val instance = getOrCreateSimple(key = key ?: "RETAINING_SIMPLE_INSTANCE_${property.name}", factory = factory)
+        ReadOnlyProperty { _, _ -> instance }
+    }
+
+/**
+ * Helper function for creating a
+ * [delegated property]((https://kotlinlang.org/docs/delegated-properties.html)) whose value is
+ * automatically retained using [InstanceKeeper].
+ *
+ * This overload is for simple cases when instance destroying is not required.
+ *
+ * Example:
+ *
+ * ```
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeperOwner
+ * import com.arkivanov.essenty.instancekeeper.retainingSimpleInstance
+ *
+ * class SomeLogic(override val instanceKeeper: InstanceKeeper) : InstanceKeeperOwner {
+ *     private val viewModel by retainingSimpleInstance { RetainedClass() }
+ *
+ *     private class RetainedClass {
+ *         // ...
+ *     }
+ * }
+ * ```
+ *
+ * @param key an optional key for storing and retrieving the instance. If not provided, then the
+ * property name is used as a key.
+ * @param factory a function creating a new instance of type [T].
+ * @param T a type of the property.
+ * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
+ * @see getOrCreateSimple
+ */
+@ExperimentalInstanceKeeperApi
+inline fun <T> InstanceKeeperOwner.retainingSimpleInstance(
+    key: Any? = null,
+    crossinline factory: () -> T,
+): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>> =
+    instanceKeeper.retainingSimpleInstance(key = key, factory = factory)
+
+/**
+ * Helper function for creating a
+ * [delegated property]((https://kotlinlang.org/docs/delegated-properties.html)) whose value is
+ * automatically retained using [InstanceKeeper].
+ *
+ * This overload is for simple cases when instance destroying is not required.
+ *
+ * Example:
+ *
+ * ```
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeperOwner
+ * import com.arkivanov.essenty.instancekeeper.retainingSimpleInstance
+ *
+ * class SomeLogic(override val instanceKeeper: InstanceKeeper) : InstanceKeeperOwner {
+ *     private val viewModel by retainingSimpleInstance { RetainedViewModel() }
+ *
+ *     private class RetainedViewModel : AutoCloseable {
+ *         // ...
+ *     }
+ * }
+ * ```
+ *
+ * @param key an optional key for storing and retrieving the instance. If not provided, then the
+ * property name is used as a key.
+ * @param factory a function creating a new instance of type [T].
+ * @param T a type of the property, extends [AutoCloseable].
+ * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
+ * @see getOrCreateCloseable
+ */
+@ExperimentalInstanceKeeperApi
+inline fun <T : AutoCloseable> InstanceKeeper.retainingCloseable(
+    key: Any? = null,
+    crossinline factory: () -> T,
+): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>> =
+    PropertyDelegateProvider { _, property ->
+        val instance = getOrCreateCloseable(key = key ?: "RETAINING_CLOSEABLE_${property.name}", factory = factory)
+        ReadOnlyProperty { _, _ -> instance }
+    }
+
+/**
+ * Helper function for creating a
+ * [delegated property]((https://kotlinlang.org/docs/delegated-properties.html)) whose value is
+ * automatically retained using [InstanceKeeper].
+ *
+ * This overload is for simple cases when instance destroying is not required.
+ *
+ * Example:
+ *
+ * ```
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+ * import com.arkivanov.essenty.instancekeeper.InstanceKeeperOwner
+ * import com.arkivanov.essenty.instancekeeper.retainingSimpleInstance
+ *
+ * class SomeLogic(override val instanceKeeper: InstanceKeeper) : InstanceKeeperOwner {
+ *     private val viewModel by retainingSimpleInstance { RetainedViewModel() }
+ *
+ *     private class RetainedViewModel : AutoCloseable {
+ *         // ...
+ *     }
+ * }
+ * ```
+ *
+ * @param key an optional key for storing and retrieving the instance. If not provided, then the
+ * property name is used as a key.
+ * @param factory a function creating a new instance of type [T].
+ * @param T a type of the property, extends [AutoCloseable].
+ * @return [PropertyDelegateProvider] of type [T], typically used to define a delegated property.
+ * @see getOrCreateCloseable
+ */
+@ExperimentalInstanceKeeperApi
+inline fun <T : AutoCloseable> InstanceKeeperOwner.retainingCloseable(
+    key: Any? = null,
+    crossinline factory: () -> T,
+): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, T>> =
+    instanceKeeper.retainingCloseable(key = key, factory = factory)
