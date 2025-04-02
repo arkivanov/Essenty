@@ -42,7 +42,7 @@ inline fun <reified T : InstanceKeeper.Instance> InstanceKeeper.getOrCreate(fact
  * @param key a key to store and retrieve the instance, default value is `typeOf<T>()`.
  * @param factory a function creating a new instance of type [T].
  */
-inline fun <reified T : AutoCloseable> InstanceKeeper.getOrCreateCloseable(key: Any, factory: () -> T): T =
+inline fun <T : AutoCloseable> InstanceKeeper.getOrCreateCloseable(key: Any, factory: () -> T): T =
     getOrCreate(key = key) {
         val instance = factory()
 
@@ -77,7 +77,7 @@ inline fun <reified T : AutoCloseable> InstanceKeeper.getOrCreateCloseable(facto
 /**
  * A convenience function for [InstanceKeeper.getOrCreate].
  */
-inline fun <reified T : InstanceKeeper.Instance> InstanceKeeperOwner.retainedInstance(key: Any, factory: () -> T): T =
+inline fun <T : InstanceKeeper.Instance> InstanceKeeperOwner.retainedInstance(key: Any, factory: () -> T): T =
     instanceKeeper.getOrCreate(key = key, factory = factory)
 
 /**
@@ -99,7 +99,7 @@ inline fun <reified T : InstanceKeeper.Instance> InstanceKeeperOwner.retainedIns
 /**
  * A convenience function for [InstanceKeeper.getOrCreateCloseable].
  */
-inline fun <reified T : AutoCloseable> InstanceKeeperOwner.retainedCloseable(key: Any, factory: () -> T): T =
+inline fun <T : AutoCloseable> InstanceKeeperOwner.retainedCloseable(key: Any, factory: () -> T): T =
     instanceKeeper.getOrCreateCloseable(key = key, factory = factory)
 
 /**
@@ -150,7 +150,7 @@ inline fun <reified T> InstanceKeeper.getOrCreateSimple(factory: () -> T): T =
 /**
  * A convenience function for [InstanceKeeper.getOrCreateSimple].
  */
-inline fun <reified T> InstanceKeeperOwner.retainedSimpleInstance(key: Any, factory: () -> T): T =
+inline fun <T> InstanceKeeperOwner.retainedSimpleInstance(key: Any, factory: () -> T): T =
     instanceKeeper.getOrCreateSimple(key = key, factory = factory)
 
 /**
