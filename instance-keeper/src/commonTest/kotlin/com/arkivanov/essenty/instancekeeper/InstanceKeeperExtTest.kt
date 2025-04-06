@@ -5,6 +5,7 @@ import kotlin.test.assertNotSame
 import kotlin.test.assertSame
 
 @Suppress("TestFunctionName", "DEPRECATION")
+@OptIn(ExperimentalInstanceKeeperApi::class)
 class InstanceKeeperExtTest {
 
     private val dispatcher = InstanceKeeperDispatcher()
@@ -73,9 +74,52 @@ class InstanceKeeperExtTest {
         assertNotSame<Thing<*>>(thing1, thing2)
     }
 
+    @Test
+    fun retainingInstance_retains_instance() {
+        val instanceKeeper = InstanceKeeperDispatcher()
+        val component1 = Component(instanceKeeper)
+
+        val component2 = Component(instanceKeeper)
+
+        assertSame(component1.instance, component2.instance)
+    }
+
+    @Test
+    fun retainingSimpleInstance_retains_instance() {
+        val instanceKeeper = InstanceKeeperDispatcher()
+        val component1 = Component(instanceKeeper)
+
+        val component2 = Component(instanceKeeper)
+
+        assertSame(component1.simpleInstance, component2.simpleInstance)
+    }
+
+    @Test
+    fun retainingClosable_retains_instance() {
+        val instanceKeeper = InstanceKeeperDispatcher()
+        val component1 = Component(instanceKeeper)
+
+        val component2 = Component(instanceKeeper)
+
+        assertSame(component1.closeable, component2.closeable)
+    }
+
     @Suppress("unused")
     private class Thing<out T>
 
     @Suppress("unused")
     private class ThingInstance<out T> : InstanceKeeper.Instance
+
+    @Suppress("unused")
+    private class ThingCloseable<out T> : AutoCloseable {
+        override fun close() {
+            // no-op
+        }
+    }
+
+    private class Component(override val instanceKeeper: InstanceKeeper) : InstanceKeeperOwner {
+        val instance by retainingInstance { ThingInstance<Int>() }
+        val simpleInstance by retainingSimpleInstance { Thing<Int>() }
+        val closeable by retainingCloseable { ThingCloseable<Int>() }
+    }
 }
