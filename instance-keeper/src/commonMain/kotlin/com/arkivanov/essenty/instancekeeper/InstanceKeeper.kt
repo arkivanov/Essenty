@@ -5,6 +5,9 @@ package com.arkivanov.essenty.instancekeeper
  * [InstanceKeeper]'s scope, which is typically tied to the scope of a back stack entry.
  * E.g. instances are retained over Android configuration changes, and destroyed when the
  * corresponding back stack entry is popped.
+ *
+ * The default [InstanceKeeperDispatcher] implementation is thread-safe and can be accessed
+ * from any thread.
  */
 interface InstanceKeeper {
 
@@ -16,6 +19,9 @@ interface InstanceKeeper {
     /**
      * Stores the given [instance] with the given [key]. Throws [IllegalStateException] if another
      * instance is already registered with the given [key].
+     *
+     * If this [InstanceKeeper] is already destroyed (see [InstanceKeeperDispatcher.destroy]),
+     * the [instance] is still stored and immediately destroyed via [Instance.onDestroy].
      */
     fun put(key: Any, instance: Instance)
 

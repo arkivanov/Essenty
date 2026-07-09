@@ -96,6 +96,17 @@ class DefaultInstanceKeeperDispatcherTest {
     }
 
     @Test
+    fun GIVEN_destroyed_WHEN_put_THEN_instance_is_destroyed() {
+        val dispatcher = DefaultInstanceKeeperDispatcher()
+        val instance = TestInstance()
+        dispatcher.destroy()
+
+        dispatcher.put(key = "key", instance = instance)
+
+        assertTrue(instance.isDestroyed)
+    }
+
+    @Test
     fun GIVEN_destroyed_and_put_WHEN_get_THEN_returns_instance() {
         val dispatcher = DefaultInstanceKeeperDispatcher()
         val instance = TestInstance()
