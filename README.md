@@ -308,7 +308,7 @@ val savedState: SerializableContainer = stateKeeperDispatcher.save()
 
 ## InstanceKeeper
 
-When writing common code targetting Android, it might be required to retain objects over Android configuration changes. This use case is covered by the `InstanceKeeper` API, which is similar to the AndroidX [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel).
+When writing common code targeting Android, it might be required to retain objects over Android configuration changes. This use case is covered by the `InstanceKeeper` API, which is similar to the AndroidX [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel).
 
 ### Setup
 
