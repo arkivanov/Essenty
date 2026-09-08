@@ -5,12 +5,12 @@ public abstract interface class com/arkivanov/essenty/lifecycle/Lifecycle {
 }
 
 public abstract interface class com/arkivanov/essenty/lifecycle/Lifecycle$Callbacks {
-	public abstract fun onCreate ()V
-	public abstract fun onDestroy ()V
-	public abstract fun onPause ()V
-	public abstract fun onResume ()V
-	public abstract fun onStart ()V
-	public abstract fun onStop ()V
+	public fun onCreate ()V
+	public fun onDestroy ()V
+	public fun onPause ()V
+	public fun onResume ()V
+	public fun onStart ()V
+	public fun onStop ()V
 }
 
 public final class com/arkivanov/essenty/lifecycle/Lifecycle$Callbacks$DefaultImpls {

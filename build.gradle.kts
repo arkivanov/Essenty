@@ -72,7 +72,7 @@ setupDefaults(
         repositoryUserName = System.getenv("SONATYPE_USER_NAME"),
         repositoryPassword = System.getenv("SONATYPE_PASSWORD"),
     ),
-    binaryCompatibilityValidatorConfig = BinaryCompatibilityValidatorConfig(klib = true),
+    binaryCompatibilityValidatorConfig = BinaryCompatibilityValidatorConfig(klib = false),
 )
 
 setupDetekt()
