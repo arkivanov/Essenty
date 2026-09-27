@@ -12,10 +12,6 @@ plugins {
     id("com.arkivanov.gradle.setup")
 }
 
-kotlin {
-    linuxArm64()
-}
-
 setupMultiplatform()
 setupPublication()
 setupBinaryCompatibilityValidator()
@@ -25,6 +21,8 @@ android {
 }
 
 kotlin {
+    linuxArm64()
+
     setupSourceSets {
         val java by bundle()
         val nonJava by bundle()

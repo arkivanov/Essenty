@@ -9,10 +9,6 @@ plugins {
     id("com.arkivanov.gradle.setup")
 }
 
-kotlin {
-    linuxArm64()
-}
-
 setupMultiplatform()
 setupPublication()
 setupBinaryCompatibilityValidator()
@@ -22,6 +18,8 @@ android {
 }
 
 kotlin {
+    linuxArm64()
+
     setupSourceSets {
         common.main.dependencies {
             implementation(project(":lifecycle"))
