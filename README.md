@@ -17,6 +17,7 @@ Supported targets:
 - `tvos`
 - `macos`
 - `linuxX64`
+- `linuxArm64`
 
 ## Lifecycle
 
