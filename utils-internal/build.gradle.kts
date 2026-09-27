@@ -7,13 +7,13 @@ plugins {
     id("com.arkivanov.gradle.setup")
 }
 
-kotlin {
-    linuxArm64()
-}
-
 setupMultiplatform()
 setupPublication()
 
 android {
     namespace = "com.arkivanov.essenty.utils.internal"
+}
+
+kotlin {
+    linuxArm64()
 }
