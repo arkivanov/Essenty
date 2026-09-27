@@ -1,6 +1,6 @@
 [versions]
 
-essenty = "2.6.0"
+essenty = "2.7.0-alpha01"
 kotlin = "2.3.21"
 kotlinxBinaryCompatibilityValidator = "0.18.2"
 kotlinxCoroutines = "1.9.0"
