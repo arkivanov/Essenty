@@ -21,6 +21,8 @@ android {
 }
 
 kotlin {
+    linuxArm64()
+
     setupSourceSets {
         val java by bundle()
         val nonJava by bundle()

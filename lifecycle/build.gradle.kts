@@ -20,6 +20,8 @@ android {
 }
 
 kotlin {
+    linuxArm64()
+
     setupSourceSets {
         val android by bundle()
         val itvos by bundle()

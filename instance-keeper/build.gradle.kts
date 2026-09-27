@@ -19,6 +19,8 @@ android {
 }
 
 kotlin {
+    linuxArm64()
+
     setupSourceSets {
         val android by bundle()
 

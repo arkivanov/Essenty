@@ -13,3 +13,7 @@ setupPublication()
 android {
     namespace = "com.arkivanov.essenty.utils.internal"
 }
+
+kotlin {
+    linuxArm64()
+}

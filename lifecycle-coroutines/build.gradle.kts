@@ -18,6 +18,8 @@ android {
 }
 
 kotlin {
+    linuxArm64()
+
     setupSourceSets {
         common.main.dependencies {
             implementation(project(":lifecycle"))
