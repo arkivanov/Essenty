@@ -17,7 +17,7 @@ Supported targets:
 - `tvos`
 - `macos`
 - `linuxX64`
-- `linuxArm64`
+- `linuxArm64` (not available for `lifecycle-reaktive`, as Reaktive doesn't support it yet)
 
 ## Lifecycle
 

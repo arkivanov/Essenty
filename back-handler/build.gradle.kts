@@ -10,6 +10,10 @@ plugins {
     id("com.arkivanov.gradle.setup")
 }
 
+kotlin {
+    linuxArm64()
+}
+
 setupMultiplatform()
 setupPublication()
 setupBinaryCompatibilityValidator()
