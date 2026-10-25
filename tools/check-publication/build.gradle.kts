@@ -1,5 +1,6 @@
 import com.arkivanov.gradle.setupMultiplatform
 import com.arkivanov.gradle.setupSourceSets
+import java.util.Base64
 
 plugins {
     id("kotlin-multiplatform")
@@ -9,12 +10,21 @@ plugins {
 
 setupMultiplatform()
 
+val sonatypeUserName =
+    System.getenv("SONATYPE_USER_NAME")?.takeUnless(String::isBlank) ?: error("SONATYPE_USER_NAME is not set")
+
+val sonatypePassword =
+    System.getenv("SONATYPE_PASSWORD")?.takeUnless(String::isBlank) ?: error("SONATYPE_PASSWORD is not set")
+
+val sonatypeToken: String =
+    Base64.getEncoder().encodeToString("$sonatypeUserName:$sonatypePassword".toByteArray(Charsets.UTF_8))
+
 repositories {
     maven("https://central.sonatype.com/api/v1/publisher/deployments/download/") {
         name = "deployments"
         credentials(HttpHeaderCredentials::class) {
             name = "Authorization"
-            value = "Bearer ${System.getenv("SONATYPE_AUTH_BASE64")}"
+            value = "Bearer $sonatypeToken"
         }
         authentication {
             create<HttpHeaderAuthentication>("header")
