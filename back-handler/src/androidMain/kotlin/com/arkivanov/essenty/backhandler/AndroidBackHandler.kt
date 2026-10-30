@@ -66,7 +66,7 @@ private class OnBackPressedCallbackAdapter(
 
     private fun BackEventCompat.toEssentyBackEvent(): BackEvent =
         BackEvent(
-            progress = progress,
+            progress = progress.takeUnless { it.isNaN() }?.coerceIn(0F, 1F) ?: 0F,
             swipeEdge = when (swipeEdge) {
                 BackEventCompat.EDGE_LEFT -> BackEvent.SwipeEdge.LEFT
                 BackEventCompat.EDGE_RIGHT -> BackEvent.SwipeEdge.RIGHT

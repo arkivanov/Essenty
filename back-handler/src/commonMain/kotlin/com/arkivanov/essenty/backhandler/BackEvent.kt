@@ -16,7 +16,7 @@ data class BackEvent(
 ) {
 
     init {
-        require(progress in 0F..1F) { "The 'progress' argument must be between 0 and 1 (both inclusive)" }
+        require(progress in 0F..1F) { "The 'progress' argument must be between 0 and 1 (both inclusive), was $progress" }
     }
 
     enum class SwipeEdge {

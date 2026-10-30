@@ -1,6 +1,7 @@
 package com.arkivanov.essenty.backhandler
 
 import androidx.activity.BackEventCompat
+import kotlin.Float.Companion.NaN
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertFalse
@@ -141,16 +142,22 @@ class OnBackPressedCallbackAdapterTest {
             )
         )
 
-        callback.handleOnBackStarted(BackEventCompat(progress = 0.1F, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 1F, touchY = 2F))
-        callback.handleOnBackProgressed(BackEventCompat(progress = 0.2F, swipeEdge = BackEventCompat.EDGE_RIGHT, touchX = 2F, touchY = 3F))
-        callback.handleOnBackProgressed(BackEventCompat(progress = 0.3F, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 3F, touchY = 4F))
+        callback.handleOnBackStarted(BackEventCompat(progress = -0.1F, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 1F, touchY = 2F))
+        callback.handleOnBackProgressed(BackEventCompat(progress = 0.1F, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 2F, touchY = 3F))
+        callback.handleOnBackProgressed(BackEventCompat(progress = NaN, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 3F, touchY = 4F))
+        callback.handleOnBackProgressed(BackEventCompat(progress = 0.2F, swipeEdge = BackEventCompat.EDGE_RIGHT, touchX = 4F, touchY = 5F))
+        callback.handleOnBackProgressed(BackEventCompat(progress = 1.1F, swipeEdge = BackEventCompat.EDGE_RIGHT, touchX = 5F, touchY = 6F))
+        callback.handleOnBackProgressed(BackEventCompat(progress = 0.3F, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 6F, touchY = 7F))
         callback.handleOnBackPressed()
 
         assertContentEquals(
             listOf(
-                BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F),
-                BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 2F, touchY = 3F),
-                BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F),
+                BackEvent(progress = 0F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F),
+                BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 2F, touchY = 3F),
+                BackEvent(progress = 0F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F),
+                BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 4F, touchY = 5F),
+                BackEvent(progress = 1F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 5F, touchY = 6F),
+                BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 6F, touchY = 7F),
                 "Back",
             ),
             receivedEvents,
@@ -170,16 +177,22 @@ class OnBackPressedCallbackAdapterTest {
             )
         )
 
-        callback.handleOnBackStarted(BackEventCompat(progress = 0.1F, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 1F, touchY = 2F))
-        callback.handleOnBackProgressed(BackEventCompat(progress = 0.2F, swipeEdge = BackEventCompat.EDGE_RIGHT, touchX = 2F, touchY = 3F))
-        callback.handleOnBackProgressed(BackEventCompat(progress = 0.3F, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 3F, touchY = 4F))
+        callback.handleOnBackStarted(BackEventCompat(progress = -0.1F, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 1F, touchY = 2F))
+        callback.handleOnBackProgressed(BackEventCompat(progress = 0.1F, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 2F, touchY = 3F))
+        callback.handleOnBackProgressed(BackEventCompat(progress = NaN, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 3F, touchY = 4F))
+        callback.handleOnBackProgressed(BackEventCompat(progress = 0.2F, swipeEdge = BackEventCompat.EDGE_RIGHT, touchX = 4F, touchY = 5F))
+        callback.handleOnBackProgressed(BackEventCompat(progress = 1.1F, swipeEdge = BackEventCompat.EDGE_RIGHT, touchX = 5F, touchY = 6F))
+        callback.handleOnBackProgressed(BackEventCompat(progress = 0.3F, swipeEdge = BackEventCompat.EDGE_LEFT, touchX = 6F, touchY = 7F))
         callback.handleOnBackCancelled()
 
         assertContentEquals(
             listOf(
-                BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F),
-                BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 2F, touchY = 3F),
-                BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F),
+                BackEvent(progress = 0F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 1F, touchY = 2F),
+                BackEvent(progress = 0.1F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 2F, touchY = 3F),
+                BackEvent(progress = 0F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 3F, touchY = 4F),
+                BackEvent(progress = 0.2F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 4F, touchY = 5F),
+                BackEvent(progress = 1F, swipeEdge = BackEvent.SwipeEdge.RIGHT, touchX = 5F, touchY = 6F),
+                BackEvent(progress = 0.3F, swipeEdge = BackEvent.SwipeEdge.LEFT, touchX = 6F, touchY = 7F),
                 "Cancel",
             ),
             receivedEvents,
